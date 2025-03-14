@@ -1,10 +1,12 @@
 class World{
     character = new Character();
     enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
-    light = [new Light()];
-    water = [new Water()];
-    backgroundFloor = [new BackgroundFloor()];
-    floor = [new Floor()];
+    backgroundObjects = [
+        new BackgroundObject('assets/3. Background/Layers/5. Water/D1.png', 0, 0),
+        new BackgroundObject('assets/3. Background/Layers/3.Fondo 1/D1.png', 0, 0),
+        new BackgroundObject('assets/3. Background/Layers/2. Floor/D1.png', 0, 0),
+        new BackgroundObject('assets/3. Background/Layers/1. Light/1.png', 0, 0),
+    ]
     canvas;
     ctx;
     constructor(canvas){
@@ -14,27 +16,24 @@ class World{
     }
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
-        
-        this.enemies.forEach(enemy => {
-            this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
-        });
-        this.water.forEach(water => {
-            this.ctx.drawImage(water.img, water.x, water.y, water.width, water.height)}
-        );
-        this.light.forEach(light => {
-            this.ctx.drawImage(light.img, light.x, light.y, light.width, light.height);
-        });
-        this.backgroundFloor.forEach(backgroundFloor => {
-            this.ctx.drawImage(backgroundFloor.img, backgroundFloor.x, backgroundFloor.y, backgroundFloor.width, backgroundFloor.height);
-        });
-        this.floor.forEach(floor => {
-            this.ctx.drawImage(floor.img, floor.x, floor.y, floor.width, floor.height);
-        });
+       
+        this.addObjectstToMap(this.backgroundObjects);
+        this.addToMap(this.character)
+        this.addObjectstToMap(this.enemies);
+
         // draw wieder immer wieder aufgerufen. This kann man nicht in der function verwenden dafür muss man es in eine variable speichern
         let self = this;
         requestAnimationFrame(function(){
             self.draw()            
         });
+    }
+    addObjectstToMap(objects){
+        objects.forEach(o => {
+            this.addToMap(o);
+        })
+    }
+
+    addToMap(imageObject){
+        this.ctx.drawImage(imageObject.img, imageObject.x, imageObject.y, imageObject.width, imageObject.height);
     }
 }
