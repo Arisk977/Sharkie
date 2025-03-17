@@ -1,12 +1,13 @@
 class MovableObject {
-    x = 20;
+    x = 100;
     y = 320;
     img;
     currentImage = 0;
     width= 100;
     height= 100;
     imageCache= {};
-    speed = 0.15;
+    speed = 0.2;
+    otherDirection = false;
 
     loadImage(path){
         this.img= new Image();
@@ -21,12 +22,6 @@ class MovableObject {
         })
     }
 
-    moveRight(){
-        setInterval(() => {
-            if(this.world.keyboard.RIGHT){  
-            this.x += this.speed;}
-        }, 1000/60);
-    }
     moveLeft(){
         setInterval(() => {
             this.x -= this.speed;

@@ -19,10 +19,40 @@ class Character extends MovableObject{
         'assets/1.Sharkie/1.IDLE/17.png',
         'assets/1.Sharkie/1.IDLE/18.png',
     ];
+    IMAGES_CHARACTER_ANIMATION_LONG =[
+        'assets/1.Sharkie/2.Long_IDLE/i1.png',
+        'assets/1.Sharkie/2.Long_IDLE/i2.png',
+        'assets/1.Sharkie/2.Long_IDLE/i3.png',
+        'assets/1.Sharkie/2.Long_IDLE/i4.png',
+        'assets/1.Sharkie/2.Long_IDLE/i5.png',
+        'assets/1.Sharkie/2.Long_IDLE/i6.png',
+        'assets/1.Sharkie/2.Long_IDLE/i7.png',
+        'assets/1.Sharkie/2.Long_IDLE/i8.png',
+        'assets/1.Sharkie/2.Long_IDLE/i9.png',
+        'assets/1.Sharkie/2.Long_IDLE/i10.png',
+        'assets/1.Sharkie/2.Long_IDLE/i11.png',
+        'assets/1.Sharkie/2.Long_IDLE/i12.png',
+        'assets/1.Sharkie/2.Long_IDLE/i13.png',
+        'assets/1.Sharkie/2.Long_IDLE/i14.png',
+
+        'assets/1.Sharkie/2.Long_IDLE/i10.png',
+        'assets/1.Sharkie/2.Long_IDLE/i11.png',
+        'assets/1.Sharkie/2.Long_IDLE/i12.png',
+        'assets/1.Sharkie/2.Long_IDLE/i13.png',
+        'assets/1.Sharkie/2.Long_IDLE/i14.png',
+
+        'assets/1.Sharkie/2.Long_IDLE/i10.png',
+        'assets/1.Sharkie/2.Long_IDLE/i11.png',
+        'assets/1.Sharkie/2.Long_IDLE/i12.png',
+        'assets/1.Sharkie/2.Long_IDLE/i13.png',
+        'assets/1.Sharkie/2.Long_IDLE/i14.png',
+    ];
     world;
+    characterSpeed = 3;
 
     constructor(){
         super().loadImage('assets/1.Sharkie/1.IDLE/1.png');
+        this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION_LONG);
         this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION);
         this.width= 300;
         this.height= 350;
@@ -32,22 +62,46 @@ class Character extends MovableObject{
 
     animate(){
         setInterval(() => {
-                if(this.world.keyboard.RIGHT){ 
-                this.x += this.speed +0.85;}
-            }, 1000 / 60);
+            if(this.world.keyboard.RIGHT){ 
+            this.x += this.speed + this.characterSpeed;
+            this.otherDirection = false;
+        }
+        this.world.camera_x = -this.x;
+        }, 1000 / 60);
 
         setInterval(() => {
             if(this.world.keyboard.LEFT){  
-            this.x -= this.speed + 0.85;}
+            this.x -= this.speed + this.characterSpeed;
+            this.otherDirection = true;
+        }
+        this.world.camera_x = -this.x;
         }, 1000 / 60);
-    setInterval(() => {
+        
+        setInterval(() => {
+            if(this.world.keyboard.UP){  
+            this.y -= this.speed + this.characterSpeed;}
+        }, 1000 / 60);
 
-        if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){              
-            let i = this.currentImage % this.IMAGES_CHARACTER_ANIMATION.length; // das % fängt von neu an wenn die maximale length erreicht ist
-            let path = this.IMAGES_CHARACTER_ANIMATION[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;}
+        setInterval(() => {
+            if(this.world.keyboard.DOWN){  
+            this.y += this.speed + this.characterSpeed;}
+        }, 1000 / 60);
+
+
+
+    setInterval(() => {
+        if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN){              
+            this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);  
+        }
     }, 120);
+}
+    
+   
+    useAnimation(ImagesArray){
+        let i = this.currentImage % ImagesArray.length; // das % fängt von neu an wenn die maximale length erreicht ist
+        let path = ImagesArray[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
     }
 
     jump(){

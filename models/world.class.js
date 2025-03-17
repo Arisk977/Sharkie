@@ -1,16 +1,11 @@
 class World{
     character = new Character();
-    enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
-    backgroundObjects = [
-        new BackgroundObject('assets/3. Background/Layers/5. Water/D1.png', 0),
-        new BackgroundObject('assets/3. Background/Layers/4.Fondo 2/D1.png', 0),
-        new BackgroundObject('assets/3. Background/Layers/3.Fondo 1/D1.png', 0),
-        new BackgroundObject('assets/3. Background/Layers/2. Floor/D1.png', 0),
-        new BackgroundObject('assets/3. Background/Layers/1. Light/1.png', 0),
-    ]
+    enemies = level1.enemies;
+    backgroundObjects = level1.backgroundObjects;
     canvas;
     ctx;
     keyboard;
+    camera_x = 0;
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -21,10 +16,12 @@ class World{
     }
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-       
+    
+        this.ctx.translate(this.camera_x, 0);
         this.addObjectstToMap(this.backgroundObjects);
         this.addToMap(this.character)
         this.addObjectstToMap(this.enemies);
+        this.ctx.translate(-this.camera_x, 0);
 
         // draw wieder immer wieder aufgerufen. This kann man nicht in der function verwenden dafür muss man es in eine variable speichern
         let self = this;
@@ -44,6 +41,25 @@ class World{
     }
 
     addToMap(imageObject){
+        if(imageObject.otherDirection){
+            this.flipImage(imageObject);
+        }
         this.ctx.drawImage(imageObject.img, imageObject.x, imageObject.y, imageObject.width, imageObject.height);
+
+        if(imageObject.otherDirection){
+            this.flipImageBack(imageObject);
+        }
+    }
+
+    flipImage(imageObject){
+        this.ctx.save();
+        this.ctx.translate(imageObject.width, 0);
+        this.ctx.scale(-1, 1);
+        imageObject.x = imageObject.x * -1;
+    }
+    
+    flipImageBack(imageObject){
+        this.ctx.restore();
+        imageObject.x = imageObject.x * -1;
     }
 }
