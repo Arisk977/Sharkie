@@ -1,7 +1,6 @@
 class World{
     character = new Character();
-    enemies = level1.enemies;
-    backgroundObjects = level1.backgroundObjects;
+    level = level1;
     canvas;
     ctx;
     keyboard;
@@ -18,9 +17,9 @@ class World{
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     
         this.ctx.translate(this.camera_x, 0);
-        this.addObjectstToMap(this.backgroundObjects);
+        this.addObjectstToMap(this.level.backgroundObjects);
         this.addToMap(this.character)
-        this.addObjectstToMap(this.enemies);
+        this.addObjectstToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
 
         // draw wieder immer wieder aufgerufen. This kann man nicht in der function verwenden dafür muss man es in eine variable speichern

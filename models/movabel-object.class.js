@@ -27,4 +27,11 @@ class MovableObject {
             this.x -= this.speed;
         }, 1000 / 60);
     }
+
+    useAnimation(ImagesArray){
+        let i = this.currentImage % ImagesArray.length; // das % fängt von neu an wenn die maximale length erreicht ist
+        let path = ImagesArray[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
 }

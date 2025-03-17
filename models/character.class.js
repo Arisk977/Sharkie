@@ -48,7 +48,7 @@ class Character extends MovableObject{
         'assets/1.Sharkie/2.Long_IDLE/i14.png',
     ];
     world;
-    characterSpeed = 3;
+    characterSpeed = 10;
 
     constructor(){
         super().loadImage('assets/1.Sharkie/1.IDLE/1.png');
@@ -62,7 +62,7 @@ class Character extends MovableObject{
 
     animate(){
         setInterval(() => {
-            if(this.world.keyboard.RIGHT){ 
+            if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x){ 
             this.x += this.speed + this.characterSpeed;
             this.otherDirection = false;
         }
@@ -70,7 +70,7 @@ class Character extends MovableObject{
         }, 1000 / 60);
 
         setInterval(() => {
-            if(this.world.keyboard.LEFT){  
+            if(this.world.keyboard.LEFT && this.x > 0){  
             this.x -= this.speed + this.characterSpeed;
             this.otherDirection = true;
         }
@@ -78,12 +78,12 @@ class Character extends MovableObject{
         }, 1000 / 60);
         
         setInterval(() => {
-            if(this.world.keyboard.UP){  
+            if(this.world.keyboard.UP && this.y > -150){  
             this.y -= this.speed + this.characterSpeed;}
         }, 1000 / 60);
 
         setInterval(() => {
-            if(this.world.keyboard.DOWN){  
+            if(this.world.keyboard.DOWN && this.y < 190){  
             this.y += this.speed + this.characterSpeed;}
         }, 1000 / 60);
 
@@ -97,12 +97,7 @@ class Character extends MovableObject{
 }
     
    
-    useAnimation(ImagesArray){
-        let i = this.currentImage % ImagesArray.length; // das % fängt von neu an wenn die maximale length erreicht ist
-        let path = ImagesArray[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
-    }
+ 
 
     jump(){
 
