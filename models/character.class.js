@@ -47,6 +47,20 @@ class Character extends MovableObject{
         'assets/1.Sharkie/2.Long_IDLE/i13.png',
         'assets/1.Sharkie/2.Long_IDLE/i14.png',
     ];
+    IMAGES_DEAD= [
+        'assets/1.Sharkie/6.dead/1.Poisoned/1.png',
+        'assets/1.Sharkie/6.dead/1.Poisoned/2.png',
+        'assets/1.Sharkie/6.dead/1.Poisoned/3.png',
+        'assets/1.Sharkie/6.dead/1.Poisoned/4.png',
+        'assets/1.Sharkie/6.dead/1.Poisoned/5.png',
+        'assets/1.Sharkie/6.dead/1.Poisoned/6.png',
+        'assets/1.Sharkie/6.dead/1.Poisoned/7.png',
+        'assets/1.Sharkie/6.dead/1.Poisoned/8.png',
+        'assets/1.Sharkie/6.dead/1.Poisoned/9.png',
+        'assets/1.Sharkie/6.dead/1.Poisoned/10.png',
+        'assets/1.Sharkie/6.dead/1.Poisoned/11.png',
+        'assets/1.Sharkie/6.dead/1.Poisoned/12.png',
+    ]
     world;
     characterSpeed = 5;
     offset = {
@@ -60,6 +74,7 @@ class Character extends MovableObject{
         super().loadImage('assets/1.Sharkie/1.IDLE/1.png');
         this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION_LONG);
         this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION);
+        this.loadMultipleImages(this.IMAGES_DEAD);
         this.width= 300;
         this.height= 350;
         this.y = 150;
@@ -98,7 +113,10 @@ class Character extends MovableObject{
 
 
     setInterval(() => {
-        if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN){              
+        if(this.isDead()){
+            this.useAnimation(this.IMAGES_DEAD);
+        }  
+        else if(this.keyboardActions()){              
             this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);  
         }
     }, 120);
@@ -117,5 +135,8 @@ moveUp(){
 }
 moveDown(){
     this.y += this.speed + this.characterSpeed;
+}
+keyboardActions(){
+    return this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN
 }
 }

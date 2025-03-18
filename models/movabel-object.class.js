@@ -14,6 +14,7 @@ class MovableObject {
         right: 0,
         bottom: 0
     }
+    life = 100;
 
     loadImage(path) {
         this.img = new Image();
@@ -62,4 +63,14 @@ class MovableObject {
             this.y + this.offset.top <= obj.y + (obj.height - obj.offset.bottom)
     }
 
+    hit(){
+        this.life -= 5;
+        if(this.life < 0){
+            this.life = 0;
+        }
+    }
+
+    isDead(){
+        return  this.life == 0;
+    }
 }
