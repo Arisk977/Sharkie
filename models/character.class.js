@@ -63,7 +63,7 @@ class Character extends MovableObject{
     animate(){
         setInterval(() => {
             if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x){ 
-            this.x += this.speed + this.characterSpeed;
+            this.moveRight();
             this.otherDirection = false;
         }
         this.world.camera_x = -this.x;
@@ -71,7 +71,7 @@ class Character extends MovableObject{
 
         setInterval(() => {
             if(this.world.keyboard.LEFT && this.x > 0){  
-            this.x -= this.speed + this.characterSpeed;
+            this.moveLeft();
             this.otherDirection = true;
         }
         this.world.camera_x = -this.x;
@@ -79,12 +79,14 @@ class Character extends MovableObject{
         
         setInterval(() => {
             if(this.world.keyboard.UP && this.y > -150){  
-            this.y -= this.speed + this.characterSpeed;}
+           this.moveUp();
+        }
         }, 1000 / 60);
 
         setInterval(() => {
             if(this.world.keyboard.DOWN && this.y < 190){  
-            this.y += this.speed + this.characterSpeed;}
+            this.moveDown();
+        }
         }, 1000 / 60);
 
 
@@ -95,11 +97,19 @@ class Character extends MovableObject{
         }
     }, 120);
 }
-    
-   
- 
 
-    jump(){
+moveRight(){
+    this.x += this.speed + this.characterSpeed;
+}
 
-    }
+moveLeft(){
+    this.x -= this.speed + this.characterSpeed;
+}
+
+moveUp(){
+    this.y -= this.speed + this.characterSpeed;
+}
+moveDown(){
+    this.y += this.speed + this.characterSpeed;
+}
 }
