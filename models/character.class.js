@@ -48,7 +48,13 @@ class Character extends MovableObject{
         'assets/1.Sharkie/2.Long_IDLE/i14.png',
     ];
     world;
-    characterSpeed = 10;
+    characterSpeed = 5;
+    offset = {
+        top: 177,
+        left: 35,
+        right: 60,
+        bottom: 80
+    }
 
     constructor(){
         super().loadImage('assets/1.Sharkie/1.IDLE/1.png');

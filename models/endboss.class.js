@@ -14,11 +14,18 @@ class Endboss extends MovableObject{
      'assets/2.Enemy/3 Final Enemy/2.floating/12.png',
      'assets/2.Enemy/3 Final Enemy/2.floating/13.png',
     ];
+    offset = {
+        top: 250,
+        left: 27,
+        right: 50,
+        bottom: 85
+    }
+
     constructor(){
         super().loadImage(this.IMAGES_ENDBOSS_ANIMATION[0]);
         this.loadMultipleImages(this.IMAGES_ENDBOSS_ANIMATION);
-        this.x = 3000;
-        this.y = 0;
+        this.x = 700;
+        this.y = -100;
         this.height = 500;
         this.width = 400;
         this.animate();
