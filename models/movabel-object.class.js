@@ -1,11 +1,8 @@
-class MovableObject {
+class MovableObject extends DrawableObject {
     x = 100;
     y = 320;
-    img;
-    currentImage = 0;
     width = 100;
     height = 100;
-    imageCache = {};
     speed = 0.2;
     otherDirection = false;
     offset = {
@@ -14,20 +11,10 @@ class MovableObject {
         right: 0,
         bottom: 0
     }
-    life = 100;
+    
+    lastHit = 0;
 
-    loadImage(path) {
-        this.img = new Image();
-        this.img.src = path;
-    }
 
-    loadMultipleImages(arr) {
-        arr.forEach((path) => {
-            let img = new Image();
-            img.src = path;
-            this.imageCache[path] = img;
-        })
-    }
 
     moveLeft() {
         setInterval(() => {
@@ -42,19 +29,8 @@ class MovableObject {
         this.currentImage++;
     }
 
-    draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
+    
 
-    drawFrame(ctx) {
-        if (this instanceof Character || this instanceof Enemy || this instanceof Endboss) {
-            ctx.beginPath();
-            ctx.lineWidth = '5';
-            ctx.strokeStyle = 'red';
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        }
-    }
 
     isColliding(obj) {
         return this.x + (this.width - this.offset.right) >= obj.x + obj.offset.left && 
@@ -64,13 +40,23 @@ class MovableObject {
     }
 
     hit(){
-        this.life -= 5;
+        this.life -= 20;
         if(this.life < 0){
             this.life = 0;
         }
+        else{
+            this.lastHit = new Date().getTime();
+        }
+    }
+
+    isHurt(){
+        let timepassed = new Date().getTime() - this.lastHit; //Difference in ms
+        timepassed = timepassed / 1000; //Difference in s
+        return timepassed < 1;
     }
 
     isDead(){
         return  this.life == 0;
     }
+    
 }
