@@ -15,10 +15,4 @@ class Lifebar extends DrawableObject {
         this.loadMultipleImages(this.IMAGES_LIFEBAR);
         this.setPercentage(100, this.IMAGES_LIFEBAR);
     }
-
-    // setPercentage(percentage) {
-    //     this.percentage = percentage;
-    //     let path = this.IMAGES_LIFEBAR[this.resolveImageIndex()];
-    //     this.img = this.imageCache[path];
-    // }
 }

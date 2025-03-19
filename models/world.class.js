@@ -9,7 +9,6 @@ class World{
     coinbar = new Coinbar();
     poisonbar = new Poisonbar();
 
-
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;

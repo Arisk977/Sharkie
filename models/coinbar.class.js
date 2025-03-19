@@ -11,12 +11,8 @@ class Coinbar extends DrawableObject{
     constructor(){
         super();
         this.loadMultipleImages(this.IMAGES_COINBAR);
-        this.y = 65;
+        this.y = 115;
+        this.x = 33;
         this.setPercentage(0, this.IMAGES_COINBAR);
     }
-    // setPercentage(percentage) {
-    //     this.percentage = percentage;
-    //     let path = this.IMAGES_COINBAR[this.resolveImageIndex()];
-    //     this.img = this.imageCache[path];
-    // }
 }
