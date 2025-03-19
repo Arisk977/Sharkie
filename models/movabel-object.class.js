@@ -29,9 +29,6 @@ class MovableObject extends DrawableObject {
         this.currentImage++;
     }
 
-    
-
-
     isColliding(obj) {
         return this.x + (this.width - this.offset.right) >= obj.x + obj.offset.left && 
              this.x + this.offset.left <= obj.x + (obj.width - obj.offset.right) &&
@@ -41,7 +38,7 @@ class MovableObject extends DrawableObject {
 
     hit(){
         this.life -= 20;
-        if(this.life < 0){
+        if(this.life <= 0){
             this.life = 0;
         }
         else{

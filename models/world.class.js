@@ -5,7 +5,10 @@ class World{
     ctx;
     keyboard;
     camera_x = 0;
-    statusbar = new Statusbar;
+    lifebar = new Lifebar();
+    coinbar = new Coinbar();
+    poisonbar = new Poisonbar();
+
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -22,6 +25,7 @@ class World{
                 if(this.character.isColliding(enemy)){
                     this.character.hit();
                     console.log(this.character.life);
+                    this.lifebar.setPercentage(this.character.life, this.lifebar.IMAGES_LIFEBAR);
                 }
             });
         }, 1000);
@@ -33,7 +37,13 @@ class World{
         this.ctx.translate(this.camera_x, 0);
         this.addObjectstToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
-        this.addToMap(this.statusbar);
+
+        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.lifebar);
+        this.addToMap(this.coinbar);
+        this.addToMap(this.poisonbar);
+        this.ctx.translate(this.camera_x, 0);
+
         this.addObjectstToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
 
