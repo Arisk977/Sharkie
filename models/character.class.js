@@ -56,7 +56,7 @@ class Character extends MovableObject{
     setInterval(() => {
         if(this.isDead()){
             this.useAnimation(this.IMAGES_DEAD);
-        } else if(this.isHurt()){
+        } else if(this.cooldown()){
             this.useAnimation(this.IMAGES_POISONED_HURT);
         }
         else if(this.keyboardActions()){              

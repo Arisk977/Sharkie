@@ -4,14 +4,13 @@ class MovableObject extends DrawableObject {
     width = 100;
     height = 100;
     speed = 0.2;
-    otherDirection = false;
     offset = {
         top: 0,
         left: 0,
         right: 0,
         bottom: 0
     }
-    
+    otherDirection = false;
     lastHit = 0;
 
 
@@ -46,10 +45,10 @@ class MovableObject extends DrawableObject {
         }
     }
 
-    isHurt(){
+    cooldown(){
         let timepassed = new Date().getTime() - this.lastHit; //Difference in ms
         timepassed = timepassed / 1000; //Difference in s
-        return timepassed < 1;
+        return timepassed < 2;
     }
 
     isDead(){

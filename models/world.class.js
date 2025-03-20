@@ -8,6 +8,10 @@ class World{
     lifebar = new Lifebar();
     coinbar = new Coinbar();
     poisonbar = new Poisonbar();
+    bubble = [];
+    lastBubbleAttack = 0;
+    bubbleCooldown = 1000;
+   
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -15,11 +19,19 @@ class World{
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkCollsions();
+        this.run();
+    }
+
+    run(){
+        setInterval(() => {
+            this.checkCollsions();
+        }, 1000);
+        setInterval(() => {
+            this.checkThrowObjects();
+        }, 1000 / 60);
     }
 
     checkCollsions(){
-        setInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if(this.character.isColliding(enemy)){
                     this.character.hit();
@@ -27,7 +39,15 @@ class World{
                     this.lifebar.setPercentage(this.character.life, this.lifebar.IMAGES_LIFEBAR);
                 }
             });
-        }, 1000);
+    }
+
+    checkThrowObjects(){
+        let now = Date.now();
+        if(this.keyboard.SPACE && now - this.lastBubbleAttack > this.bubbleCooldown){
+                let bubbleAttack= new BubbleAttack(this.character.x + 150, this.character.y + 200, this.character.otherDirection);
+                this.bubble.push(bubbleAttack); 
+                this.lastBubbleAttack = now;
+        }
     }
 
     draw(){
@@ -36,6 +56,7 @@ class World{
         this.ctx.translate(this.camera_x, 0);
         this.addObjectstToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
+        this.addObjectstToMap(this.bubble);
 
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.lifebar);

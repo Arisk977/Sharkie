@@ -1,18 +1,40 @@
-class BubbleAttack extends Character {
-    speedX = 0;
-    acceleration= 5;
-    constructor(){
-        super().loadImage('assets/1.Sharkie/4.Attack/Bubble trap/Bubble.png');
-        this.y = 150;
+class BubbleAttack extends MovableObject {
+    speedX = 20;
+    acceleration= 0.5;
+    img = 'assets/1.Sharkie/4.Attack/Bubble trap/Bubble.png';
+    
+    constructor(x, y, otherDirection){
+        super().loadImage(this.img);
+        this.otherDirection = otherDirection;
         this.width = 50;
         this.height = 50;
-        this.attack(this.x, this.y);
+        this.x = x;
+        this.y = y;
+        this.attack();
     }
 
-    attack(x, y){
-        this.x = x + 20;
-        this.y = y;
-        this.speedX = 30;
-        this.speedX -= this.acceleration;
+    attack(){
+        if(this.otherDirection === false){ 
+            this.applyThrowBubbleRight();
+        }
+       else if (this.otherDirection === true){
+        this.applyThrowBubbleLeft();
+    }
+    }
+
+    applyThrowBubbleRight(){
+        setInterval(() => {
+            if(this.speedX >= 0){
+            this.x += this.speedX;
+        this.speedX -= this.acceleration;}
+        }, 1000 / 60);
+    }
+
+    applyThrowBubbleLeft(){
+        setInterval(() => {
+            if(this.speedX >= 0){
+            this.x -= this.speedX;
+        this.speedX -= this.acceleration;}
+        }, 1000 / 60);
     }
 }
