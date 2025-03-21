@@ -7,6 +7,8 @@ class DrawableObject {
     y = 20;
     width = 200;
     height = 60;
+    intervalIds= [];
+
 
     loadImage(path) {
         this.img = new Image();
@@ -48,6 +50,16 @@ class DrawableObject {
         this.img = this.imageCache[path];
     }
 
+    setStoppableInterval(fn, time){
+        let id = setInterval(fn, time);
+        this.intervalIds.push(id);
+        console.log(this.intervalIds.length);
+        
+    }
+
+    stopGameInterval(){
+        this.intervalIds.forEach(clearInterval);
+    }
 
     resolveImageIndex() {
         if (this.percentage == 100) {

@@ -16,9 +16,11 @@ class MovableObject extends DrawableObject {
 
 
     moveLeft() {
-        setInterval(() => {
-            this.x -= this.speed;
-        }, 1000 / 60);
+        this.setStoppableInterval(() => this.moveLeftInterval(), 1000/60);
+    }
+
+    moveLeftInterval(){
+       this.x -= this.speed;
     }
 
     useAnimation(ImagesArray) {
@@ -45,7 +47,9 @@ class MovableObject extends DrawableObject {
         }
     }
 
-    cooldown(){
+
+
+    isCooldown(){
         let timepassed = new Date().getTime() - this.lastHit; //Difference in ms
         timepassed = timepassed / 1000; //Difference in s
         return timepassed < 2;

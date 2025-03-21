@@ -23,46 +23,54 @@ class Character extends MovableObject{
     }
 
     animate(){
-        setInterval(() => {
-            if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x){ 
-            this.moveRight();
-            this.otherDirection = false;
-        }
-        this.world.camera_x = -this.x;
-        }, 1000 / 60);
-
-        setInterval(() => {
-            if(this.world.keyboard.LEFT && this.x > 0){  
-            this.moveLeft();
-            this.otherDirection = true;
-        }
-        this.world.camera_x = -this.x;
-        }, 1000 / 60);
+        this.setStoppableInterval(() => this.charMoveRight(), 1000/60);
+        this.setStoppableInterval(() => this.charMoveLeft(), 1000/60);
+        this.setStoppableInterval(() => this.charMoveUp(), 1000/60);
+        this.setStoppableInterval(() => this.charMoveDown(), 1000/60);
         
-        setInterval(() => {
-            if(this.world.keyboard.UP && this.y > -150){  
-           this.moveUp();
-        }
-        }, 1000 / 60);
+        this.setStoppableInterval(() => this.runAnimation(), 120);
+}
 
-        setInterval(() => {
-            if(this.world.keyboard.DOWN && this.y < 190){  
-            this.moveDown();
-        }
-        }, 1000 / 60);
+runAnimation(){
+    if(this.isDead()){
+        this.useAnimation(this.IMAGES_DEAD);
+        setTimeout(() => {
+            this.stopGameInterval();
+        }, 2000);
+        
+    } else if(this.isCooldown()){
+        this.useAnimation(this.IMAGES_POISONED_HURT);
+    }
+    else if(this.keyboardActions()){              
+        this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);  
+    }
+}
 
+charMoveRight(){
+    if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x){ 
+        this.moveRight();
+        this.otherDirection = false;
+    }
+    this.world.camera_x = -this.x;
+}
 
+charMoveLeft(){
+    if(this.world.keyboard.LEFT && this.x > 0){  
+        this.moveLeft();
+        this.otherDirection = true;
+    }
+    this.world.camera_x = -this.x;
+}
 
-    setInterval(() => {
-        if(this.isDead()){
-            this.useAnimation(this.IMAGES_DEAD);
-        } else if(this.cooldown()){
-            this.useAnimation(this.IMAGES_POISONED_HURT);
-        }
-        else if(this.keyboardActions()){              
-            this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);  
-        }
-    }, 120);
+charMoveUp(){
+    if(this.world.keyboard.UP && this.y > -150){  
+        this.moveUp();
+     }
+}
+charMoveDown(){
+    if(this.world.keyboard.DOWN && this.y < 190){  
+        this.moveDown();
+}
 }
 
 moveRight(){

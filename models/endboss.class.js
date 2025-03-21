@@ -19,9 +19,7 @@ class Endboss extends MovableObject{
     }
 
     animate(){
-        setInterval(() => {
-            this.useAnimation(this.IMAGES_ENDBOSS_ANIMATION);  
-        }, 1000 / 10);
+        this.setStoppableInterval(() => this.useAnimation(this.IMAGES_ENDBOSS_ANIMATION), 1000/10);
     }
     getEndbossImagesIntoArray(){
         this.pushImagesToArray(`assets/2.Enemy/3 Final Enemy/2.floating/`, '.png', this.IMAGES_ENDBOSS_ANIMATION, 13);

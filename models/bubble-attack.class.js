@@ -1,9 +1,9 @@
 class BubbleAttack extends MovableObject {
     speedX = 20;
-    acceleration= 0.5;
+    acceleration = 0.5;
     img = 'assets/1.Sharkie/4.Attack/Bubble trap/Bubble.png';
-    
-    constructor(x, y, otherDirection){
+
+    constructor(x, y, otherDirection) {
         super().loadImage(this.img);
         this.otherDirection = otherDirection;
         this.width = 50;
@@ -13,28 +13,27 @@ class BubbleAttack extends MovableObject {
         this.attack();
     }
 
-    attack(){
-        if(this.otherDirection === false){ 
-            this.applyThrowBubbleRight();
+    attack() {
+        if (this.otherDirection === false) {
+            this.setStoppableInterval(() => this.applyThrowBubbleRight(), 1000 / 60);
         }
-       else if (this.otherDirection === true){
-        this.applyThrowBubbleLeft();
-    }
+        else if (this.otherDirection === true) {
+            this.setStoppableInterval(() => this.applyThrowBubbleLeft(), 1000 / 60);
+        }
     }
 
-    applyThrowBubbleRight(){
-        setInterval(() => {
-            if(this.speedX >= 0){
+    applyThrowBubbleRight() {
+        if (this.speedX >= 0) {
             this.x += this.speedX;
-        this.speedX -= this.acceleration;}
-        }, 1000 / 60);
+            this.speedX -= this.acceleration;
+        }
+
     }
 
-    applyThrowBubbleLeft(){
-        setInterval(() => {
-            if(this.speedX >= 0){
+    applyThrowBubbleLeft() {
+        if (this.speedX >= 0) {
             this.x -= this.speedX;
-        this.speedX -= this.acceleration;}
-        }, 1000 / 60);
+            this.speedX -= this.acceleration;
+        }
     }
 }

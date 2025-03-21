@@ -11,6 +11,7 @@ class World{
     bubble = [];
     lastBubbleAttack = 0;
     bubbleCooldown = 1000;
+    intervalIds= [];
    
 
     constructor(canvas, keyboard){
@@ -23,24 +24,34 @@ class World{
     }
 
     run(){
-        setInterval(() => {
-            this.checkCollsions();
-        }, 1000);
-        setInterval(() => {
-            this.checkThrowObjects();
-        }, 1000 / 60);
+        this.setStoppableInterval(() => this.checkCollsions(), 1000);
+        this.setStoppableInterval(() => this.checkThrowObjects(), 1000/60);
     }
 
     checkCollsions(){
             this.level.enemies.forEach((enemy) => {
                 if(this.character.isColliding(enemy)){
                     this.character.hit();
-                    console.log(this.character.life);
                     this.lifebar.setPercentage(this.character.life, this.lifebar.IMAGES_LIFEBAR);
+                }
+              
+        else if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(enemy))) {
+                   enemy.enemyLife -= 20;
+                   if(enemy.enemyLife<= 0){
+                    enemy.enemyLife = 0; 
+                }
+                
                 }
             });
     }
-
+    heit(life){
+        life -= 20;
+       
+        
+        if(life<= 0){
+            life = 0; 
+        }console.log(life);
+    }
     checkThrowObjects(){
         let now = Date.now();
         if(this.keyboard.SPACE && now - this.lastBubbleAttack > this.bubbleCooldown){
@@ -58,20 +69,22 @@ class World{
         this.addToMap(this.character);
         this.addObjectstToMap(this.bubble);
 
-        this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.lifebar);
-        this.addToMap(this.coinbar);
-        this.addToMap(this.poisonbar);
-        this.ctx.translate(this.camera_x, 0);
+        this.immutableObjects();
 
         this.addObjectstToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
 
-        // draw wieder immer wieder aufgerufen. This kann man nicht in der function verwenden dafür muss man es in eine variable speichern
-        let self = this;
-        requestAnimationFrame(function(){
-            self.draw()            
-        });
+        requestAnimationFrame(() => this.draw());
+    }
+
+    immutableObjects(){
+        this.ctx.translate(-this.camera_x, 0);
+
+        this.addToMap(this.lifebar);
+        this.addToMap(this.coinbar);
+        this.addToMap(this.poisonbar);
+
+        this.ctx.translate(this.camera_x, 0);
     }
 
     setWorld(){
@@ -107,4 +120,14 @@ class World{
         this.ctx.restore();
         imageObject.x = imageObject.x * -1;
     }
+
+    setStoppableInterval(fn, time){
+        let id = setInterval(fn, time);
+        this.intervalIds.push(id);
+    }
+
+    stopGameInterval(){
+        this.intervalIds.forEach(clearInterval);
+    }
+
 }
