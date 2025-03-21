@@ -54,7 +54,6 @@ class DrawableObject {
         let id = setInterval(fn, time);
         this.intervalIds.push(id);
         console.log(this.intervalIds.length);
-        
     }
 
     stopGameInterval(){

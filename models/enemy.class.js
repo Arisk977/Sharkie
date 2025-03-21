@@ -31,4 +31,12 @@ class Enemy extends MovableObject{
     getEnemyImagesIntoArray(){
         this.pushImagesToArray(`assets/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim`, '.png', this.IMAGES_ENEMY_ANIMATION, 5);
     }
+
+    enemyIsDead() {
+        this.stopGameInterval();
+
+        this.setStoppableInterval(() => this.useAnimation (this.ENEMY_DEAD_IMAGES), 1000/5);       
+    }
+    
+ 
 }

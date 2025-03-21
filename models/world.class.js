@@ -1,4 +1,4 @@
-class World{
+class World {
     character = new Character();
     level = level1;
     canvas;
@@ -11,10 +11,10 @@ class World{
     bubble = [];
     lastBubbleAttack = 0;
     bubbleCooldown = 1000;
-    intervalIds= [];
-   
+    intervalIds = [];
 
-    constructor(canvas, keyboard){
+
+    constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
@@ -23,47 +23,48 @@ class World{
         this.run();
     }
 
-    run(){
+    run() {
         this.setStoppableInterval(() => this.checkCollsions(), 1000);
-        this.setStoppableInterval(() => this.checkThrowObjects(), 1000/60);
+        this.setStoppableInterval(() => this.checkThrowObjects(), 1000 / 60);
     }
 
-    checkCollsions(){
-            this.level.enemies.forEach((enemy) => {
-                if(this.character.isColliding(enemy)){
-                    this.character.hit();
-                    this.lifebar.setPercentage(this.character.life, this.lifebar.IMAGES_LIFEBAR);
+    checkCollsions() {
+        this.level.enemies.forEach((enemy, index) => {
+            if (this.character.isColliding(enemy)) {
+                this.character.hit();
+                this.lifebar.setPercentage(this.character.life, this.lifebar.IMAGES_LIFEBAR);
+            }
+
+            else if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(enemy))) {
+                enemy.enemyLife -= 50;
+                if (enemy.enemyLife <= 0) {
+                    enemy.enemyLife = 0;
+                    enemy.enemyIsDead();
+                    setTimeout(() => {
+                        this.level.enemies.splice(index, 1);
+                        this.draw();
+                    }, 2000);
                 }
-              
-        else if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(enemy))) {
-                   enemy.enemyLife -= 20;
-                   if(enemy.enemyLife<= 0){
-                    enemy.enemyLife = 0; 
-                }
-                
-                }
-            });
+
+            }
+        });
     }
-    heit(life){
-        life -= 20;
-       
-        
-        if(life<= 0){
-            life = 0; 
-        }console.log(life);
-    }
-    checkThrowObjects(){
+
+    checkThrowObjects() {
         let now = Date.now();
-        if(this.keyboard.SPACE && now - this.lastBubbleAttack > this.bubbleCooldown){
-                let bubbleAttack= new BubbleAttack(this.character.x + 150, this.character.y + 200, this.character.otherDirection);
-                this.bubble.push(bubbleAttack); 
-                this.lastBubbleAttack = now;
+        if (this.keyboard.SPACE && now - this.lastBubbleAttack > this.bubbleCooldown) {
+            let bubbleAttack = new BubbleAttack(this.character.x + 150, this.character.y + 200, this.character.otherDirection);
+            this.bubble.push(bubbleAttack);
+            this.lastBubbleAttack = now;
+        }
+        if (this.bubble.length >= 3){
+            this.bubble.shift();
         }
     }
 
-    draw(){
+    draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    
+
         this.ctx.translate(this.camera_x, 0);
         this.addObjectstToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
@@ -77,7 +78,7 @@ class World{
         requestAnimationFrame(() => this.draw());
     }
 
-    immutableObjects(){
+    immutableObjects() {
         this.ctx.translate(-this.camera_x, 0);
 
         this.addToMap(this.lifebar);
@@ -87,46 +88,46 @@ class World{
         this.ctx.translate(this.camera_x, 0);
     }
 
-    setWorld(){
+    setWorld() {
         this.character.world = this;
     }
 
-    addObjectstToMap(objects){
+    addObjectstToMap(objects) {
         objects.forEach(o => {
             this.addToMap(o);
         })
     }
 
-    addToMap(imageObject){
-        if(imageObject.otherDirection){
+    addToMap(imageObject) {
+        if (imageObject.otherDirection) {
             this.flipImage(imageObject);
         }
         imageObject.draw(this.ctx);
         imageObject.drawFrame(this.ctx);
 
-        if(imageObject.otherDirection){
+        if (imageObject.otherDirection) {
             this.flipImageBack(imageObject);
         }
     }
 
-    flipImage(imageObject){
+    flipImage(imageObject) {
         this.ctx.save();
         this.ctx.translate(imageObject.width, 0);
         this.ctx.scale(-1, 1);
         imageObject.x = imageObject.x * -1;
     }
-    
-    flipImageBack(imageObject){
+
+    flipImageBack(imageObject) {
         this.ctx.restore();
         imageObject.x = imageObject.x * -1;
     }
 
-    setStoppableInterval(fn, time){
+    setStoppableInterval(fn, time) {
         let id = setInterval(fn, time);
         this.intervalIds.push(id);
     }
 
-    stopGameInterval(){
+    stopGameInterval() {
         this.intervalIds.forEach(clearInterval);
     }
 
