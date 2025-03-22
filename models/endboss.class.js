@@ -11,7 +11,7 @@ class Endboss extends MovableObject{
         super().loadImage('assets/2.Enemy/3 Final Enemy/2.floating/1.png');
         this.getEndbossImagesIntoArray();
         this.loadMultipleImages(this.IMAGES_ENDBOSS_ANIMATION);
-        this.x = 3000;
+        this.x = 3500;
         this.y = -50;
         this.height = 500;
         this.width = 400;
