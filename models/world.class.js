@@ -13,6 +13,7 @@ class World {
     bubbleCooldown = 1000;
     intervalIds = [];
     collectedCoins = 0;
+    throwObjectsActive=false;
 
 
     constructor(canvas, keyboard) {
@@ -35,7 +36,6 @@ class World {
     run() {
         this.setStoppableInterval(() => this.checkCollisionsEnemy(), 1000);
         this.setStoppableInterval(() => this.checkCollisionsCoins(), 500);
-        this.setStoppableInterval(() => this.checkThrowObjects(), 1000 / 60);
     }
 
     draw() {
@@ -130,11 +130,15 @@ class World {
 
     checkThrowObjects() {
         let now = Date.now();
-        if (this.keyboard.SPACE && now - this.lastBubbleAttack > this.bubbleCooldown) {
-            let bubbleAttack = new BubbleAttack(this.character.x + 150, this.character.y + 200, this.character.otherDirection);
+            if (this.keyboard.SPACE && now - this.lastBubbleAttack > this.bubbleCooldown) {
+                console.log('active');
+                
+            let bubbleAttack = new BubbleAttack(this.character.x + 195, this.character.y + 195, this.character.otherDirection);
             this.bubble.push(bubbleAttack);
             this.lastBubbleAttack = now;
         }
+        
+        
         if (this.bubble.length >= 3) {
             this.bubble.shift();
         }
@@ -154,12 +158,20 @@ class World {
     }
 
     setStoppableInterval(fn, time) {
+        this.intervalIds= [];
         let id = setInterval(fn, time);
         this.intervalIds.push(id);
+        return id;
+    }
+
+    stopGameIntervalById(intervalId) {
+        clearInterval(intervalId);
+        this.intervalIds = this.intervalIds.filter(id => id !== intervalId);
     }
 
     stopGameInterval() {
         this.intervalIds.forEach(clearInterval);
+        this.intervalIds = [];
     }
 
 }
