@@ -146,10 +146,10 @@ class World {
         })
     }
 
-    checkThrowObjects() {
+    checkThrowObjects(attack) {
         let now = Date.now();
-            if (this.keyboard.SPACE && now - this.lastBubbleAttack > this.bubbleCooldown) {
-            let bubbleAttack = new BubbleAttack(this.character.x + 195, this.character.y + 195, this.character.otherDirection);
+            if ((this.keyboard.SPACE || this.keyboard.D) && now - this.lastBubbleAttack > this.bubbleCooldown) {
+            let bubbleAttack = new attack(this.character.x + 195, this.character.y + 195, this.character.otherDirection);
             this.level.audio[2].play();
             this.bubble.push(bubbleAttack);
             this.lastBubbleAttack = now;

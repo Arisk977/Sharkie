@@ -4,6 +4,7 @@ class Character extends MovableObject{
     IMAGES_DEAD= [];
     IMAGES_POISONED_HURT=[];
     IMAGES_BUBBLE_ATTACK_ANIMATION= [];
+    IMAGES_POISONED_BUBBLES = [];
     IMAGES_SWIM = [];
     world;
     characterSpeed = 5;
@@ -15,6 +16,7 @@ class Character extends MovableObject{
     };
     attackInterval = null;
     poisonInterval = null;
+    throwInterval = null;
 
     constructor(){
         super().loadImage('assets/1.Sharkie/1.IDLE/1.png');
@@ -55,28 +57,50 @@ runAnimation() {
         return;
     }
 
-    else if (this.world.keyboard.SPACE && !this.attackInterval && !this.poisonInterval) {
-        this.charBubbleAttack();
+    else if ((this.world.keyboard.SPACE || this.world.keyboard.D) && !this.attackInterval && !this.poisonInterval) {
+        if (this.attackInterval) {
+            clearInterval(this.attackInterval);
+            this.attackInterval = null;
+        }
+        if (this.throwInterval) {
+            clearInterval(this.throwInterval);
+            this.throwInterval = null;
+        }
+    
+        let attackType, array;
+        if (this.world.keyboard.SPACE) {
+            array = this.IMAGES_BUBBLE_ATTACK_ANIMATION;
+            attackType = BubbleAttack
+        } else if(this.world.keyboard.D) {
+            array = this.IMAGES_POISONED_BUBBLES;
+            attackType = PoisonAttack
+        }
+    
+        this.charBubbleAttack(array, attackType);
         return;
     }
+    
     
     if (!this.attackInterval && !this.poisonInterval) {
         this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);
     }
 }
 
-charBubbleAttack() {
-    let attackFrames = this.IMAGES_BUBBLE_ATTACK_ANIMATION.length;
+charBubbleAttack(array, attack) {
+    let attackFrames = array.length;
     let i = 0;
 
-    this.attackInterval = setInterval(() => {
-        this.useAnimation(this.IMAGES_BUBBLE_ATTACK_ANIMATION);
+    this.attackInterval= setInterval(() => {
+        this.useAnimation(array);
         i++;
 
+        this.throwInterval = this.world.setStoppableInterval(() => {
+                this.world.checkThrowObjects(attack);
+            }, 1000 / 60);
         if (i >= attackFrames) { 
             clearInterval(this.attackInterval);
             this.attackInterval = null;
-            this.world.setStoppableInterval(() => this.world.checkThrowObjects(), 1000/60);
+            
             this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);
         } 
     }, 100);
@@ -156,6 +180,7 @@ getCharacterImagesIntoArray(){
     this.pushImagesToArray(`assets/1.Sharkie/1.IDLE/`, '.png', this.IMAGES_CHARACTER_ANIMATION, 12);
     this.pushImagesToArray('assets/1.Sharkie/2.Long_IDLE/i', '.png', this.IMAGES_CHARACTER_ANIMATION_LONG, 14);
     this.pushImagesToArray('assets/1.Sharkie/3.Swim/', '.png', this.IMAGES_SWIM, 6);
+    this.pushImagesToArray('assets/1.Sharkie/4.Attack/Bubble trap/For Whale/', '.png', this.IMAGES_POISONED_BUBBLES, 8);
     this.pushImagesToArray('assets/1.Sharkie/6.dead/1.Poisoned/', '.png', this.IMAGES_DEAD, 12);
     this.pushImagesToArray('assets/1.Sharkie/5.Hurt/1.Poisoned/', '.png', this.IMAGES_POISONED_HURT, 5);
     this.pushImagesToArray('assets/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/', '.png', this.IMAGES_BUBBLE_ATTACK_ANIMATION, 7);
@@ -164,6 +189,7 @@ loadAllImages(){
     this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION_LONG);
     this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION);
     this.loadMultipleImages(this.IMAGES_SWIM);
+    this.loadMultipleImages(this.IMAGES_POISONED_BUBBLES);
     this.loadMultipleImages(this.IMAGES_DEAD);
     this.loadMultipleImages(this.IMAGES_POISONED_HURT);
     this.loadMultipleImages(this.IMAGES_BUBBLE_ATTACK_ANIMATION);
