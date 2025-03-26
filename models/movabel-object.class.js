@@ -38,6 +38,7 @@ class MovableObject extends DrawableObject {
     }
 
     hit(){
+        this.world.level.audio[3].play();
         this.life -= 20;
         if(this.life <= 0){
             this.life = 0;

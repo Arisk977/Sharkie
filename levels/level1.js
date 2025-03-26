@@ -48,7 +48,8 @@ const level1 = new Level(
         new Coins(), new Coins(), new Coins(), new Coins(), new Coins(), new Coins(), new Coins(), new Coins(), 
         new Coins(), new Coins(), new Coins(), new Coins(), new Coins(), new Coins(), new Coins(), new Coins(), 
     ], 
-    [new Audio('audio/aqua-temple-189227.mp3'), new Audio('audio/coin-257878_RdqkEEWL.mp3')
+    [new Audio('audio/aqua-temple-189227.mp3'), new Audio('audio/coin-257878_RdqkEEWL.mp3'), new Audio('audio/big-bubble-2-169074.mp3'),
+     new Audio('audio/male-hurt-sound-95206.mp3'), new Audio('audio/water-swimming-1-101167.mp3')
     ]
     
 );

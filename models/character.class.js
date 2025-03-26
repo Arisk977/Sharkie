@@ -4,6 +4,7 @@ class Character extends MovableObject{
     IMAGES_DEAD= [];
     IMAGES_POISONED_HURT=[];
     IMAGES_BUBBLE_ATTACK_ANIMATION= [];
+    IMAGES_SWIM = [];
     world;
     characterSpeed = 5;
     offset = {
@@ -11,8 +12,8 @@ class Character extends MovableObject{
         left: 35,
         right: 60,
         bottom: 80
-    }
-    attackInterval = null; // Speichert das Intervall
+    };
+    attackInterval = null;
     poisonInterval = null;
 
     constructor(){
@@ -22,16 +23,30 @@ class Character extends MovableObject{
         this.width= 300;
         this.height= 350;
         this.y = 150;
-        this.animate();
+       
     }
 
     animate(){
+        try{
         this.setStoppableInterval(() => this.charMoveRight(), 1000/60);
         this.setStoppableInterval(() => this.charMoveLeft(), 1000/60);
         this.setStoppableInterval(() => this.charMoveUp(), 1000/60);
         this.setStoppableInterval(() => this.charMoveDown(), 1000/60);
-        
+
+        this.setStoppableInterval(() => {
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                this.world.stopGameInterval();
+                this.moveAnimation();
+                this.world.level.audio[4].play();
+            }
+        }, 1000/30);
+
         this.setStoppableInterval(() => this.runAnimation(), 120);
+    }
+
+        catch(e){
+            console.warn('no Keyboard found', e)
+        }
 }
 
 runAnimation() {
@@ -41,16 +56,16 @@ runAnimation() {
         return;
     }
 
-    else if (this.isCooldown() && !this.poisonInterval && !this.attackInterval) {
+    if (this.isCooldown() && !this.poisonInterval && !this.attackInterval) {
         this.charPoisoned();
         return;
     }
 
-    else if (this.world.keyboard.SPACE && !this.attackInterval && !this.poisonInterval) {
+    if (this.world.keyboard.SPACE && !this.attackInterval && !this.poisonInterval) {
         this.charBubbleAttack();
         return;
     }
-
+    
     if (!this.attackInterval && !this.poisonInterval) {
         this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);
     }
@@ -67,9 +82,9 @@ charBubbleAttack() {
         if (i >= attackFrames) { 
             clearInterval(this.attackInterval);
             this.attackInterval = null;
+            this.world.setStoppableInterval(() => this.world.checkThrowObjects(), 1000/60);
             this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);
-            this.world.setStoppableInterval(() => this.world.checkThrowObjects(), 1000 / 60);
-        }
+        } 
     }, 100);
 }
 
@@ -89,10 +104,14 @@ charPoisoned() {
     }, 200);
 }
 
+moveAnimation(){
+    this.useAnimation(this.IMAGES_SWIM);
+}
 
 charMoveRight(){
     if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x){ 
         this.moveRight();
+ 
         this.otherDirection = false;
     }
     this.world.camera_x = -this.x;
@@ -101,6 +120,7 @@ charMoveRight(){
 charMoveLeft(){
     if(this.world.keyboard.LEFT && this.x > 0){  
         this.moveLeft();
+
         this.otherDirection = true;
     }
     this.world.camera_x = -this.x;
@@ -138,6 +158,7 @@ keyboardActions(){
 getCharacterImagesIntoArray(){
     this.pushImagesToArray(`assets/1.Sharkie/1.IDLE/`, '.png', this.IMAGES_CHARACTER_ANIMATION, 12);
     this.pushImagesToArray('assets/1.Sharkie/2.Long_IDLE/i', '.png', this.IMAGES_CHARACTER_ANIMATION_LONG, 14);
+    this.pushImagesToArray('assets/1.Sharkie/3.Swim/', '.png', this.IMAGES_SWIM, 6);
     this.pushImagesToArray('assets/1.Sharkie/6.dead/1.Poisoned/', '.png', this.IMAGES_DEAD, 12);
     this.pushImagesToArray('assets/1.Sharkie/5.Hurt/1.Poisoned/', '.png', this.IMAGES_POISONED_HURT, 5);
     this.pushImagesToArray('assets/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/', '.png', this.IMAGES_BUBBLE_ATTACK_ANIMATION, 7);
@@ -145,6 +166,7 @@ getCharacterImagesIntoArray(){
 loadAllImages(){
     this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION_LONG);
     this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION);
+    this.loadMultipleImages(this.IMAGES_SWIM);
     this.loadMultipleImages(this.IMAGES_DEAD);
     this.loadMultipleImages(this.IMAGES_POISONED_HURT);
     this.loadMultipleImages(this.IMAGES_BUBBLE_ATTACK_ANIMATION);
