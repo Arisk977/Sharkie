@@ -36,6 +36,8 @@ class World {
     run() {
         this.setStoppableInterval(() => this.checkCollisionsEnemy(), 1000);
         this.setStoppableInterval(() => this.checkCollisionsCoins(), 500);
+        this.setStoppableInterval(() => this.checkCollisionsPoisonBottles(), 500);
+       
     }
 
     draw() {
@@ -44,6 +46,7 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         this.addObjectstToMap(this.level.backgroundObjects);
         this.addObjectstToMap(this.level.coins);
+        this.addObjectstToMap(this.level.poisonBottles);
         this.addToMap(this.character);
         this.addObjectstToMap(this.bubble);
         this.addObjectstToMap(this.level.enemies);
@@ -101,8 +104,22 @@ class World {
         this.level.coins.forEach((coins, index) => {
             if (this.character.isColliding(coins)) {
                 this.level.coins.splice(index, 1);
+                this.level.audio[1].playbackRate = 1.2;
                 this.level.audio[1].play();
                 this.collectedCoins++;
+                this.draw();
+            }
+        })
+    }
+
+    checkCollisionsPoisonBottles() {
+        this.level.poisonBottles.forEach((poisonBottles, index) => {
+            if (this.character.isColliding(poisonBottles) && this.character.poison < 100) {
+                this.level.poisonBottles.splice(index, 1);
+                this.character.collectPoison();
+                this.level.audio[5].playbackRate= 1.5;
+                this.level.audio[5].play();
+                this.poisonbar.setPercentage(this.character.poison, this.poisonbar.IMAGES_POISONBAR);
                 this.draw();
             }
         })

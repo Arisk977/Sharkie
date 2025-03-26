@@ -48,6 +48,13 @@ class MovableObject extends DrawableObject {
         }
     }
 
+    collectPoison(){
+        this.poison += 20;
+        if(this.poison >= 100){
+            this.poison = 100;
+        }
+    }
+
 
 
     isCooldown(){

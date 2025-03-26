@@ -9,11 +9,13 @@ class Poisonbar extends DrawableObject{
         
     ]
 
+    percentage = 0;
+
     constructor(){
         super();
         this.loadMultipleImages(this.IMAGES_POISONBAR);
         this.y = 65;
-        this.setPercentage(40, this.IMAGES_POISONBAR);
+        this.setPercentage(this.percentage, this.IMAGES_POISONBAR);
     }
 
 }

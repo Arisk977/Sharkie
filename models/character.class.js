@@ -20,8 +20,8 @@ class Character extends MovableObject{
         super().loadImage('assets/1.Sharkie/1.IDLE/1.png');
         this.getCharacterImagesIntoArray();
         this.loadAllImages();
-        this.width= 300;
-        this.height= 350;
+        this.width= 280;
+        this.height= 330;
         this.y = 150;
        
     }
@@ -33,13 +33,7 @@ class Character extends MovableObject{
         this.setStoppableInterval(() => this.charMoveUp(), 1000/60);
         this.setStoppableInterval(() => this.charMoveDown(), 1000/60);
 
-        this.setStoppableInterval(() => {
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                this.world.stopGameInterval();
-                this.moveAnimation();
-                this.world.level.audio[4].play();
-            }
-        }, 1000/30);
+        this.setStoppableInterval(() => this.moveAnimation(), 300);
 
         this.setStoppableInterval(() => this.runAnimation(), 120);
     }
@@ -56,12 +50,12 @@ runAnimation() {
         return;
     }
 
-    if (this.isCooldown() && !this.poisonInterval && !this.attackInterval) {
+    else if (this.isCooldown() && !this.poisonInterval && !this.attackInterval) {
         this.charPoisoned();
         return;
     }
 
-    if (this.world.keyboard.SPACE && !this.attackInterval && !this.poisonInterval) {
+    else if (this.world.keyboard.SPACE && !this.attackInterval && !this.poisonInterval) {
         this.charBubbleAttack();
         return;
     }
@@ -105,7 +99,10 @@ charPoisoned() {
 }
 
 moveAnimation(){
-    this.useAnimation(this.IMAGES_SWIM);
+    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT && !this.attackInterval && !this.poisonInterval) {
+        this.useAnimation(this.IMAGES_SWIM);
+        this.world.level.audio[4].play();
+    }
 }
 
 charMoveRight(){

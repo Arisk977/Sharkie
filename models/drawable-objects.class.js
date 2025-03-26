@@ -1,5 +1,6 @@
 class DrawableObject {
     life = 100;
+    poison= 0;
     img;
     imageCache = {};
     currentImage = 0;
