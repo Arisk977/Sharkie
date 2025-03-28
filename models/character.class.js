@@ -46,65 +46,80 @@ class Character extends MovableObject {
     }
 
     runAnimation() {
-        if (this.isDead()) {
+        if (this.isDead() && this.intervalStatus()) {
             this.useAnimation(this.IMAGES_DEAD);
-            setTimeout(() => this.stopGameInterval(), 2000);
+            setTimeout(() => {
+                this.stopGameInterval();
+                this.loadImage('assets/1.Sharkie/6.dead/1.Poisoned/12.png');
+            }, 2000);
             return;
         }
 
-        else if (this.isCooldown() && !this.poisonInterval && !this.attackInterval) {
+        else if (this.isCooldown() && this.intervalStatus()) {
             this.charPoisoned();
             return;
         }
 
-        else if (this.world.keyboard.SPACE && !this.attackInterval && !this.poisonInterval) {
-            let array;
-            if (this.attackInterval) {
-                clearInterval(this.attackInterval);
-                this.attackInterval = null;
-            }
-            if (this.throwInterval) {
-                clearInterval(this.throwInterval);
-                this.throwInterval = null;
-            }
-
-            if (!this.attackInterval && !this.poisonInterval) {
-
-
-                array = this.IMAGES_BUBBLE_ATTACK_ANIMATION;
-                this.charBubbleAttack(array);
-            }
-
-
-            return;
-
-
+        else if (this.world.keyboard.SPACE && this.intervalStatus()) {
+           this.bubbleAttack();
         }
+        
 
-        else if (this.world.keyboard.D && !this.attackInterval && !this.poisonInterval) {
-            if (this.poison <= 0) return;  // Blockiert Angriff, wenn kein Gift da ist!
-        
-            this.poison -= 20;  // Poison sofort reduzieren
-            this.world.poisonbar.setPercentage(this.poison, this.world.poisonbar.IMAGES_POISONBAR);
-        
-            let array = this.IMAGES_POISONED_BUBBLES;
-            this.charBubbleAttack(array);
-            return;
+        else if (this.world.keyboard.D && this.intervalStatus() && this.poison > 0) {
+           this.poisonAttack();
         }
-
-
-
-        if (!this.attackInterval && !this.poisonInterval) {
+        
+        else if(this.intervalStatus()){
             this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);
+            return;
         }
+        
+
     }
 
-    charBubbleAttack(array) {
+    intervalStatus(){
+        return !this.attackInterval && !this.poisonInterval;
+    }
+
+    bubbleAttack(){
+        this.checkInterval();
+
+        let array = this.IMAGES_BUBBLE_ATTACK_ANIMATION;
+        this.charBubbleAttack(array);
+
+        return;
+    }
+
+    poisonAttack(){
+        let array = this.IMAGES_POISONED_BUBBLES;
+
+        this.checkInterval();
+
+        if (this.poison <= 0) {
+            this.world.keyboard.D = false;  // Blockiert D nach SPACE
+            return;
+        }
+    
+        this.poison -= 20;
+        this.world.poisonbar.setPercentage(this.poison, this.world.poisonbar.IMAGES_POISONBAR);
+        
+        this.charBubbleAttack(array);
+    
+        return;
+    }
+
+    checkInterval(){
         if (this.throwInterval) {
             clearInterval(this.throwInterval);
             this.throwInterval = null;
         }
+        if (this.attackInterval) {
+            clearInterval(this.attackInterval);
+            this.attackInterval = null;
+        }
+    }
 
+    charBubbleAttack(array) {
         let attackFrames = array.length;
         let i = 0;
 

@@ -150,24 +150,31 @@ class World {
         let now = Date.now();
     
         if (this.keyboard.SPACE && now - this.lastBubbleAttack > this.bubbleCooldown) {
-            let bubbleAttack = new BubbleAttack(this.character.x + 195, this.character.y + 195, this.character.otherDirection);
-            this.level.audio[2].play();
-            this.bubble.push(bubbleAttack);
-            this.lastBubbleAttack = now;
+           this.throwBubbles(now);
         }
     
-        if (this.keyboard.D && now - this.lastBubbleAttack > this.bubbleCooldown) {
-            let poisonAttack = new PoisonAttack(this.character.x + 195, this.character.y + 195, this.character.otherDirection);
-            this.level.audio[2].play();
-            this.bubble.push(poisonAttack);
-            this.lastBubbleAttack = now;
+        if (this.keyboard.D && now - this.lastBubbleAttack > this.bubbleCooldown && this.character.poison > 0) {
+            this.throwPoisonBubbles(now);
         }
     
         if (this.bubble.length >= 3) {
             this.bubble.shift();
         }
     }
-    
+
+    throwPoisonBubbles(now){
+        let poisonAttack = new PoisonAttack(this.character.x + 195, this.character.y + 195, this.character.otherDirection);
+        this.level.audio[2].play();
+        this.bubble.push(poisonAttack);
+        this.lastBubbleAttack = now;
+    }
+
+    throwBubbles(now){
+        let bubbleAttack = new BubbleAttack(this.character.x + 195, this.character.y + 195, this.character.otherDirection);
+        this.level.audio[2].play();
+        this.bubble.push(bubbleAttack);
+        this.lastBubbleAttack = now;
+    }
 
 
     flipImage(imageObject) {
