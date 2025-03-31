@@ -1,5 +1,6 @@
 class World {
     character = new Character();
+    endboss = new Endboss(this.character);
     level = level1;
     canvas;
     ctx;
@@ -50,6 +51,7 @@ class World {
         this.addToMap(this.character);
         this.addObjectstToMap(this.bubble);
         this.addObjectstToMap(this.level.enemies);
+        this.addToMap(this.endboss);
         this.immutableObjects();
         this.ctx.translate(-this.camera_x, 0);
 
@@ -123,6 +125,20 @@ class World {
                 this.draw();
             }
         })
+    }
+
+    checkCollisionsEndboss(){
+            if(this.character.isColliding(this.endboss)){
+                this.character.hit();
+                this.lifebar.setPercentage(this.character.life, this.lifebar.IMAGES_LIFEBAR);
+            }
+            else if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(this.endboss))){
+            this.endboss.endboss_life -= 30;
+
+            if (this.endboss.endboss_life <= 0){
+                
+            }
+            }
     }
 
     checkCollisionsEnemy() {

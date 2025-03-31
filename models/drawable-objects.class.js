@@ -10,7 +10,6 @@ class DrawableObject {
     height = 60;
     intervalIds= [];
 
-
     loadImage(path) {
         this.img = new Image();
         this.img.src = path;
