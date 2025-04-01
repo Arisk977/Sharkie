@@ -14,7 +14,7 @@ class World {
     bubbleCooldown = 1000;
     intervalIds = [];
     collectedCoins = 0;
-    throwObjectsActive=false;
+
 
 
     constructor(canvas, keyboard) {
@@ -38,7 +38,8 @@ class World {
         this.setStoppableInterval(() => this.checkCollisionsEnemy(), 1000);
         this.setStoppableInterval(() => this.checkCollisionsCoins(), 500);
         this.setStoppableInterval(() => this.checkCollisionsPoisonBottles(), 500);
-       
+        this.setStoppableInterval(() => this.checkCollisionsEndboss(), 1000);
+
     }
 
     draw() {
@@ -119,7 +120,7 @@ class World {
             if (this.character.isColliding(poisonBottles) && this.character.poison < 100) {
                 this.level.poisonBottles.splice(index, 1);
                 this.character.collectPoison();
-                this.level.audio[5].playbackRate= 1.5;
+                this.level.audio[5].playbackRate = 1.5;
                 this.level.audio[5].play();
                 this.poisonbar.setPercentage(this.character.poison, this.poisonbar.IMAGES_POISONBAR);
                 this.draw();
@@ -127,18 +128,23 @@ class World {
         })
     }
 
-    checkCollisionsEndboss(){
-            if(this.character.isColliding(this.endboss)){
-                this.character.hit();
-                this.lifebar.setPercentage(this.character.life, this.lifebar.IMAGES_LIFEBAR);
-            }
-            else if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(this.endboss))){
-            this.endboss.endboss_life -= 30;
+    checkCollisionsEndboss() {
+        if (this.character.isColliding(this.endboss)) {
+            this.character.hit();
+            this.lifebar.setPercentage(this.character.life, this.lifebar.IMAGES_LIFEBAR);
+        }
 
-            if (this.endboss.endboss_life <= 0){
-                
+        else if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(this.endboss))) {
+            this.endboss.endboss_life -= 30;
+            this.endbossHurt();
+            this.level.audio[6].playbackRate = 2;
+            this.level.audio[6].play();
+
+            if (this.endboss.endboss_life <= 0) {
+                this.endboss.endboss_life = 0;
             }
-            }
+        }
+
     }
 
     checkCollisionsEnemy() {
@@ -162,36 +168,51 @@ class World {
         })
     }
 
+    
     checkThrowObjects() {
         let now = Date.now();
-    
         if (this.keyboard.SPACE && now - this.lastBubbleAttack > this.bubbleCooldown) {
-           this.throwBubbles(now);
+            this.throwBubbles(now);
         }
-    
         if (this.keyboard.D && now - this.lastBubbleAttack > this.bubbleCooldown && this.character.poison > 0) {
             this.throwPoisonBubbles(now);
         }
-    
         if (this.bubble.length >= 3) {
             this.bubble.shift();
         }
     }
 
-    throwPoisonBubbles(now){
+    throwPoisonBubbles(now) {
         let poisonAttack = new PoisonAttack(this.character.x + 195, this.character.y + 195, this.character.otherDirection);
         this.level.audio[2].play();
         this.bubble.push(poisonAttack);
         this.lastBubbleAttack = now;
     }
 
-    throwBubbles(now){
+    throwBubbles(now) {
         let bubbleAttack = new BubbleAttack(this.character.x + 195, this.character.y + 195, this.character.otherDirection);
         this.level.audio[2].play();
         this.bubble.push(bubbleAttack);
         this.lastBubbleAttack = now;
     }
+    
+    endbossHurt(){
+        if (!this.hurtAnimationInterval) {
+            let i = 0;
+            let hurtFrames = this.endboss.IMAGES_ENDBOSS_HURT.length;
 
+            this.hurtAnimationInterval = setInterval(() => {
+                this.endboss.useAnimation(this.endboss.IMAGES_ENDBOSS_HURT);
+                this.bubble.pop();
+                i++;
+                if (i >= hurtFrames) {
+                    clearInterval(this.hurtAnimationInterval);
+                    this.hurtAnimationInterval = null;
+                }
+
+            }, 1000/30);
+        }
+    }
 
     flipImage(imageObject) {
         this.ctx.save();
@@ -206,7 +227,7 @@ class World {
     }
 
     setStoppableInterval(fn, time) {
-        this.intervalIds= [];
+        this.intervalIds = [];
         let id = setInterval(fn, time);
         this.intervalIds.push(id);
         return id;

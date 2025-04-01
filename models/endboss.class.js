@@ -1,11 +1,14 @@
-class Endboss extends MovableObject{
-    IMAGES_ENDBOSS_ANIMATION=[];
-    IMAGES_ENDBOSS_INTRO=[];
-    IMAGES_ENDBOSS_ATTACK=[];
+class Endboss extends MovableObject {
+    IMAGES_ENDBOSS_ANIMATION = [];
+    IMAGES_ENDBOSS_INTRO = [];
+    IMAGES_ENDBOSS_ATTACK = [];
+    IMAGES_ENDBOSS_HURT = [];
+    IMAGES_ENDBOSS_FLOATING = [];
     character;
     intro = null;
-    standard= null;
+    standard = null;
     attack = null;
+    floating= null;
     offset = {
         top: 250,
         left: 27,
@@ -13,14 +16,13 @@ class Endboss extends MovableObject{
         bottom: 85
     };
     endboss_life = 90;
-
-    constructor(character){
-        super().loadImage('assets/2.Enemy/3 Final Enemy/2.floating/1.png');
+    
+    
+    constructor(character) {
+        super().loadImage('');
         this.character = character;
         this.getEndbossImagesIntoArray();
-        this.loadMultipleImages(this.IMAGES_ENDBOSS_ANIMATION);
-        this.loadMultipleImages(this.IMAGES_ENDBOSS_INTRO);
-        this.loadMultipleImages(this.IMAGES_ENDBOSS_ATTACK);
+        this.loadAllImages();
         this.x = 1000;
         this.y = -50;
         this.height = 500;
@@ -29,41 +31,67 @@ class Endboss extends MovableObject{
     }
 
     animate() {
-      let introFrames= this.IMAGES_ENDBOSS_INTRO.length;
-      let i = 0;
+        this.endbossIntroSequenz();
+        this.endbossAttackSequenz();
+    }
+
+    // endbossFloating(){
+    // this.useAnimation(this.IMAGES_ENDBOSS_FLOATING)
+    // this.x -= 10;
+    // }
+
+    endbossIntroSequenz() {
+        let introFrames = this.IMAGES_ENDBOSS_INTRO.length;
+        let i = 0;
         this.setStoppableInterval(() => {
-            if (this.character.x >= (this.x - 500) && i <= introFrames){
+            if (this.character.x >= (this.x - 500) && i <= introFrames) {
 
                 this.intro = this.useAnimation(this.IMAGES_ENDBOSS_INTRO);
-                console.log(i);
-                
-                i++;
+                this.character.world.level.audio[7].play();
+
+               i++;
             }
-            else if(i >= introFrames && !this.endbossAttackCoordination()){
-                    this.endbossIntervalClear(this.attack);
-                    this.endbossIntervalClear(this.intro);
-                    this.standard=  this.useAnimation(this.IMAGES_ENDBOSS_ANIMATION);
-                }
-            else if(this.endbossAttackCoordination()){
-                this.endbossIntervalClear(this.standard);
-                console.log('attack');
-                
-                this.attack = this.useAnimation(this.IMAGES_ENDBOSS_ATTACK);
+            else if (i >= introFrames && !this.endbossAttackCoordination()) {
+                this.endbossIntervalClear(this.attack);
+                this.endbossIntervalClear(this.intro);
+                this.standard = this.useAnimation(this.IMAGES_ENDBOSS_ANIMATION);
             }
-    }, 120);
-   
+        }, 220);
     }
 
-    endbossAttackCoordination(){
+    endbossAttackSequenz() {
+        this.setStoppableInterval(() => {
+            if (this.endbossAttackCoordination()) {
+                this.endbossIntervalClear(this.standard);
+                this.attack = this.useAnimation(this.IMAGES_ENDBOSS_ATTACK);
+                this.character.world.level.audio[8].playbackRate = 2;
+                this.character.world.level.audio[8].play();
+            }
+        }, 100)
+    }
+
+    endbossAttackCoordination() {
         return this.character.x >= this.x - 200
     }
-    endbossIntervalClear(vari){
+
+    endbossIntervalClear(vari) {
         clearInterval(vari);
         vari = null;
     }
-    getEndbossImagesIntoArray(){
+
+    loadAllImages(){
+        this.loadMultipleImages(this.IMAGES_ENDBOSS_ANIMATION);
+        this.loadMultipleImages(this.IMAGES_ENDBOSS_INTRO);
+        this.loadMultipleImages(this.IMAGES_ENDBOSS_ATTACK);
+        this.loadMultipleImages(this.IMAGES_ENDBOSS_HURT);
+        this.loadMultipleImages(this.IMAGES_ENDBOSS_FLOATING);
+    }
+
+    getEndbossImagesIntoArray() {
         this.pushImagesToArray(`assets/2.Enemy/3 Final Enemy/2.floating/`, '.png', this.IMAGES_ENDBOSS_ANIMATION, 13);
         this.pushImagesToArray('assets/2.Enemy/3 Final Enemy/1.Introduce/', '.png', this.IMAGES_ENDBOSS_INTRO, 10);
         this.pushImagesToArray('assets/2.Enemy/3 Final Enemy/Attack/', '.png', this.IMAGES_ENDBOSS_ATTACK, 6);
+        this.pushImagesToArray('assets/2.Enemy/3 Final Enemy/Hurt/', '.png', this.IMAGES_ENDBOSS_HURT, 4);
+        this.pushImagesToArray('assets/2.Enemy/3 Final Enemy/2.floating/', '.png', this.IMAGES_ENDBOSS_FLOATING, 13)
     }
 }
