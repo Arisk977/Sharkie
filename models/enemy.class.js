@@ -34,9 +34,7 @@ class Enemy extends MovableObject{
 
     enemyIsDead() {
         this.stopGameInterval();
-
         this.setStoppableInterval(() => this.useAnimation (this.ENEMY_DEAD_IMAGES), 1000/5);       
     }
     
- 
 }

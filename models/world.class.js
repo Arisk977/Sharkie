@@ -13,12 +13,19 @@ class World {
     lastBubbleAttack = 0;
     bubbleCooldown = 1000;
     intervalIds = [];
+    hurtAnimationInterval= null;
+    endbossDeadIntervall = null;
     collectedCoins = 0;
 
 
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
+        this.setStoppableInterval(()=>{
+            console.log(this.character.intervalIds);
+            
+            console.log(this.intervalIds)}, 5000);
+        
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.draw();
@@ -35,10 +42,10 @@ class World {
     }
 
     run() {
+        this.setStoppableInterval(() => this.checkCollisionsEndboss(), 1000);
         this.setStoppableInterval(() => this.checkCollisionsEnemy(), 1000);
         this.setStoppableInterval(() => this.checkCollisionsCoins(), 500);
         this.setStoppableInterval(() => this.checkCollisionsPoisonBottles(), 500);
-        this.setStoppableInterval(() => this.checkCollisionsEndboss(), 1000);
 
     }
 
@@ -142,6 +149,8 @@ class World {
 
             if (this.endboss.endboss_life <= 0) {
                 this.endboss.endboss_life = 0;
+                this.endbossDead();
+                
             }
         }
 
@@ -201,7 +210,7 @@ class World {
             let i = 0;
             let hurtFrames = this.endboss.IMAGES_ENDBOSS_HURT.length;
 
-            this.hurtAnimationInterval = setInterval(() => {
+            this.hurtAnimationInterval = this.setStoppableInterval(() => {
                 this.endboss.useAnimation(this.endboss.IMAGES_ENDBOSS_HURT);
                 this.bubble.pop();
                 i++;
@@ -209,9 +218,25 @@ class World {
                     clearInterval(this.hurtAnimationInterval);
                     this.hurtAnimationInterval = null;
                 }
-
             }, 1000/30);
         }
+    }
+
+    endbossDead(){
+            let i = 0;
+            let deadFrames = this.endboss.IMAGES_ENDBOSS_DEAD.length;
+
+            this.endbossDeadIntervall = this.setStoppableInterval(()=> {
+                this.endboss.useAnimation(this.endboss.IMAGES_ENDBOSS_DEAD);
+                i++
+                if(i >= deadFrames){
+                    clearInterval(this.endbossDeadIntervall);
+                    this.endbossDeadIntervall = null;
+                    this.stopGameInterval();
+                    
+                    //You Win Screen
+                }
+            }, 100)
     }
 
     flipImage(imageObject) {
@@ -241,6 +266,10 @@ class World {
     stopGameInterval() {
         this.intervalIds.forEach(clearInterval);
         this.intervalIds = [];
+        this.character.intervalIds.forEach(clearInterval);
+        this.character.intervalIds = [];
+        this.endboss.intervalIds.forEach(clearInterval);
+        this.endboss.intervalIds = []; 
     }
 
 }
