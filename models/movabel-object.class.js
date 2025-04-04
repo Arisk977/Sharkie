@@ -3,7 +3,7 @@ class MovableObject extends DrawableObject {
     y = 320;
     width = 100;
     height = 100;
-    speed = 0.2;
+    speed = 1;
     offset = {
         top: 0,
         left: 0,

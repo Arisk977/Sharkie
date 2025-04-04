@@ -1,6 +1,6 @@
 class World {
-    character = new Character(this);
-    endboss = new Endboss(this.character);
+    character;
+    endboss;
     level = level1;
     canvas;
     ctx;
@@ -16,12 +16,15 @@ class World {
     hurtAnimationInterval = null;
     endbossDeadIntervall = null;
     collectedCoins = 0;
+    wallActive= true;
     speechBubble = new SpeechBubble(false);
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.character = new Character(this);
+        this.endboss = new Endboss(this.character, this);
         this.draw();
         this.startGame();
         this.setWorld();
@@ -36,14 +39,16 @@ class World {
     }
 
     run() {
-        if(this.level.wall.length <= 0){
-            this.setStoppableInterval(() => this.checkCollisionsEndboss(), 1000);
-        }
-        
         this.setStoppableInterval(() => this.checkCollisionsEnemy(), 1000);
-        this.setStoppableInterval(() => this.checkCollisionsCoins(), 500);
+        this.setStoppableInterval(() => this.checkCollisionsCoins(), 300);
         this.setStoppableInterval(() => this.checkCollisionsPoisonBottles(), 500);
-
+        this.setStoppableInterval(() => this.checkCollisionsBubbleWithWall(), 1000/60);
+        this.setStoppableInterval(() => {
+            if (this.level.wall.length === 0) { 
+                this.checkCollisionsEndboss() 
+                this.wallActive = false
+            }
+        }, 1000);
     }
 
     draw() {
@@ -120,9 +125,10 @@ class World {
         })
 
         if (this.level.coins.length === 0 && !this.wallClearingStarted) {
-            this.wallClearingStarted = true; // Damit es nur einmal ausgeführt wird
+            this.wallClearingStarted = true;
             this.level.audio[9].play();
             this.removeWall();
+            this.wallActive = false;
             this.speechBubble = new SpeechBubble(false);
 
         }
@@ -189,6 +195,15 @@ class World {
         })
     }
 
+    checkCollisionsBubbleWithWall() {
+        this.level.wall.forEach((wall) => {
+            if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(wall))) {
+                this.bubble.pop();
+            }
+        })
+
+    }
+
 
     checkThrowObjects() {
         let now = Date.now();
@@ -222,7 +237,6 @@ class World {
             this.level.wall.shift();
             setTimeout(() => this.removeWall(), 200);
         }
-
     }
 
     endbossHurt() {

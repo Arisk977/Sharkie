@@ -7,7 +7,7 @@ class Character extends MovableObject {
     IMAGES_POISONED_BUBBLES = [];
     IMAGES_SWIM = [];
     world;
-    characterSpeed = 5;
+    characterSpeed = 4;
     offset = {
         top: 177,
         left: 35,
@@ -193,6 +193,7 @@ class Character extends MovableObject {
 
     moveRight() {
         this.x += this.speed + this.characterSpeed;
+    
     }
 
     moveLeft() {

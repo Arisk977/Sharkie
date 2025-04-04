@@ -1,4 +1,6 @@
 class Endboss extends MovableObject {
+    character;
+    world;
     IMAGES_ENDBOSS_ANIMATION = [];
     IMAGES_ENDBOSS_INTRO = [];
     IMAGES_ENDBOSS_ATTACK = [];
@@ -12,7 +14,6 @@ class Endboss extends MovableObject {
         'assets/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 9.png',
         'assets/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png',
     ];
-    character;
     intro = null;
     standard = null;
     attack = null;
@@ -23,12 +24,13 @@ class Endboss extends MovableObject {
         right: 50,
         bottom: 85
     };
-    endboss_life = 90;
+    endboss_life = 150;
 
 
-    constructor(character) {
+    constructor(character, world) {
         super().loadImage('');
         this.character = character;
+        this.world = world;
         this.getEndbossImagesIntoArray();
         this.loadAllImages();
         this.x = 3500;
@@ -39,33 +41,11 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        this.endbossIntroSequenz();
-        this.endbossAttackSequenz();
+        this.endbossAnimation();
+        this.movement();
     }
 
-    movement() {
-        this.endbossIntervalClear(this.standard);
-        this.endbossIntervalClear(this.intro);
-        this.endbossIntervalClear(this.attack);
-        this.moveLeftEndboss();
-        this.moveRightEndboss();
-        this.floating = this.setStoppableInterval(() => this.useAnimation(this.IMAGES_ENDBOSS_FLOATING), 100);
-
-    }
-
-    moveLeftEndboss() {
-        if (this.character.x <= this.x) {
-            this.x -= 10;
-        }
-    }
-
-    moveRightEndboss(){
-        if (this.character.x >= this.x) {
-            this.x += 10;
-        }
-    }
-
-    endbossIntroSequenz() {
+    endbossAnimation() {
         let introFrames = this.IMAGES_ENDBOSS_INTRO.length;
         let i = 0;
         this.setStoppableInterval(() => {
@@ -76,27 +56,91 @@ class Endboss extends MovableObject {
 
                 i++;
             }
-            else if (i >= introFrames && !this.endbossAttackCoordination()) {
-                this.endbossIntervalClear(this.attack);
-                this.endbossIntervalClear(this.intro);
-                this.standard = this.useAnimation(this.IMAGES_ENDBOSS_ANIMATION);  
+            else if (i >= introFrames && !this.returnEndbossAttackCoordination()) {
+                this.idleMode();
             }
-        }, 220);
+            else if (i >= introFrames && this.returnEndbossAttackCoordination()) {
+                this.attackMode();
+            }
+            else if (i >= introFrames && !this.returnEndbossAttackCoordination() && !this.world.wallActive) {
+                this.floatingMode();
+            }
+        }, 100);
+    }
+
+    movement() {
+        this.setStoppableInterval(() => {
+            this.moveLeftEndboss();
+            this.moveRightEndboss();
+            this.moveDownEndboss();
+            this.moveUpEndboss();
+        }, 100)
+    }
+
+    idleMode() {
+        this.endbossIntervalClear(this.attack);
+        this.endbossIntervalClear(this.intro);
+        this.addSpeech();
+        this.standard = this.useAnimation(this.IMAGES_ENDBOSS_ANIMATION);
+    }
+
+    attackMode() {
+        this.endbossIntervalClear(this.standard);
+        this.endbossIntervalClear(this.floating);
+        this.attack = this.useAnimation(this.IMAGES_ENDBOSS_ATTACK);
+        this.character.world.level.audio[8].playbackRate = 2;
+        this.character.world.level.audio[8].play();
+    }
+
+    floatingMode() {
+        this.endbossIntervalClear(this.standard);
+        this.endbossIntervalClear(this.attack);
+        this.floating = this.useAnimation(this.IMAGES_ENDBOSS_FLOATING);
+    }
+
+    addSpeech() {
+        if (this.world.wallActive) {
+            this.world.speechBubble = new SpeechBubble(true);
+        }
+        else {
+            this.world.speechBubble = new SpeechBubble(false);
+        }
+    }
+
+    moveLeftEndboss() {
+        if (this.character.x <= this.x && !this.world.wallActive) {
+            this.x -= 10;
+        }
+    }
+
+    moveUpEndboss() {
+        if (this.character.y >= (this.y + 100) && !this.world.wallActive) {
+            this.y += 10;
+        }
+    }
+
+    moveDownEndboss() {
+        if (this.character.y <= (this.y + 150) && !this.world.wallActive) {
+            this.y -= 10;
+        }
+    }
+
+    moveRightEndboss() {
+        if (this.character.x >= this.x && !this.world.wallActive) {
+            this.x += 10;
+        }
     }
 
     endbossAttackSequenz() {
         this.setStoppableInterval(() => {
             if (this.endbossAttackCoordination()) {
-                this.endbossIntervalClear(this.standard);
-                this.attack = this.useAnimation(this.IMAGES_ENDBOSS_ATTACK);
-                this.character.world.level.audio[8].playbackRate = 2;
-                this.character.world.level.audio[8].play();
+
             }
         }, 100)
     }
 
-    endbossAttackCoordination() {
-        return this.character.x >= this.x - 200
+    returnEndbossAttackCoordination() {
+        return Math.abs(this.character.x - this.x) <= 200
     }
 
     endbossIntervalClear(vari) {
