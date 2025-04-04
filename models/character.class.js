@@ -18,8 +18,9 @@ class Character extends MovableObject {
     poisonInterval = null;
     throwInterval = null;
 
-    constructor() {
+    constructor(world) {
         super().loadImage('assets/1.Sharkie/1.IDLE/1.png');
+        this.world = world;
         this.getCharacterImagesIntoArray();
         this.loadAllImages();
         this.width = 280;
@@ -92,11 +93,10 @@ class Character extends MovableObject {
 
     poisonAttack(){
         let array = this.IMAGES_POISONED_BUBBLES;
-
         this.checkInterval();
 
         if (this.poison <= 0) {
-            this.world.keyboard.D = false;  // Blockiert D nach SPACE
+            this.world.keyboard.D = false;
             return;
         }
     
@@ -163,7 +163,7 @@ class Character extends MovableObject {
     }
 
     charMoveRight() {
-        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && !this.world.checkCollisionsWall()) {
             this.moveRight();
 
             this.otherDirection = false;

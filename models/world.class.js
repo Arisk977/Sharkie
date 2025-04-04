@@ -1,5 +1,5 @@
 class World {
-    character = new Character();
+    character = new Character(this);
     endboss = new Endboss(this.character);
     level = level1;
     canvas;
@@ -13,19 +13,13 @@ class World {
     lastBubbleAttack = 0;
     bubbleCooldown = 1000;
     intervalIds = [];
-    hurtAnimationInterval= null;
+    hurtAnimationInterval = null;
     endbossDeadIntervall = null;
     collectedCoins = 0;
-
-
+    speechBubble = new SpeechBubble(false);
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
-        this.setStoppableInterval(()=>{
-            console.log(this.character.intervalIds);
-            
-            console.log(this.intervalIds)}, 5000);
-        
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.draw();
@@ -42,7 +36,10 @@ class World {
     }
 
     run() {
-        this.setStoppableInterval(() => this.checkCollisionsEndboss(), 1000);
+        if(this.level.wall.length <= 0){
+            this.setStoppableInterval(() => this.checkCollisionsEndboss(), 1000);
+        }
+        
         this.setStoppableInterval(() => this.checkCollisionsEnemy(), 1000);
         this.setStoppableInterval(() => this.checkCollisionsCoins(), 500);
         this.setStoppableInterval(() => this.checkCollisionsPoisonBottles(), 500);
@@ -59,10 +56,12 @@ class World {
         this.addToMap(this.character);
         this.addObjectstToMap(this.bubble);
         this.addObjectstToMap(this.level.enemies);
+        this.addObjectstToMap(this.level.wall);
         this.addToMap(this.endboss);
         this.immutableObjects();
-        this.ctx.translate(-this.camera_x, 0);
+        this.speechBubble?.draw(this.ctx);
 
+        this.ctx.translate(-this.camera_x, 0);
 
         requestAnimationFrame(() => this.draw());
     }
@@ -88,7 +87,6 @@ class World {
     }
 
     setWorld() {
-        this.character.world = this;
         this.character.animate();
     }
 
@@ -120,7 +118,22 @@ class World {
                 this.draw();
             }
         })
+
+        if (this.level.coins.length === 0 && !this.wallClearingStarted) {
+            this.wallClearingStarted = true; // Damit es nur einmal ausgeführt wird
+            this.level.audio[9].play();
+            this.removeWall();
+            this.speechBubble = new SpeechBubble(false);
+
+        }
     }
+
+    checkCollisionsWall() {
+        return this.level.wall.some((wall) => {
+            return this.character.isColliding(wall);
+        });
+    }
+
 
     checkCollisionsPoisonBottles() {
         this.level.poisonBottles.forEach((poisonBottles, index) => {
@@ -150,7 +163,6 @@ class World {
             if (this.endboss.endboss_life <= 0) {
                 this.endboss.endboss_life = 0;
                 this.endbossDead();
-                
             }
         }
 
@@ -177,7 +189,7 @@ class World {
         })
     }
 
-    
+
     checkThrowObjects() {
         let now = Date.now();
         if (this.keyboard.SPACE && now - this.lastBubbleAttack > this.bubbleCooldown) {
@@ -204,8 +216,16 @@ class World {
         this.bubble.push(bubbleAttack);
         this.lastBubbleAttack = now;
     }
-    
-    endbossHurt(){
+
+    removeWall() {
+        if (this.level.wall.length > 0) {
+            this.level.wall.shift();
+            setTimeout(() => this.removeWall(), 200);
+        }
+
+    }
+
+    endbossHurt() {
         if (!this.hurtAnimationInterval) {
             let i = 0;
             let hurtFrames = this.endboss.IMAGES_ENDBOSS_HURT.length;
@@ -218,25 +238,29 @@ class World {
                     clearInterval(this.hurtAnimationInterval);
                     this.hurtAnimationInterval = null;
                 }
-            }, 1000/30);
+            }, 1000 / 30);
         }
     }
 
-    endbossDead(){
-            let i = 0;
-            let deadFrames = this.endboss.IMAGES_ENDBOSS_DEAD.length;
+    endbossDead() {
+        clearInterval(this.hurtAnimationInterval);
+        this.hurtAnimationInterval = null;
+        let i = 0;
+        let deadFrames = this.endboss.IMAGES_ENDBOSS_DEAD.length;
 
-            this.endbossDeadIntervall = this.setStoppableInterval(()=> {
-                this.endboss.useAnimation(this.endboss.IMAGES_ENDBOSS_DEAD);
-                i++
-                if(i >= deadFrames){
-                    clearInterval(this.endbossDeadIntervall);
-                    this.endbossDeadIntervall = null;
-                    this.stopGameInterval();
-                    
-                    //You Win Screen
-                }
-            }, 100)
+        this.endbossDeadIntervall = this.setStoppableInterval(() => {
+            this.endboss.useAnimation(this.endboss.IMAGES_ENDBOSS_DEAD);
+            this.keyboard = '';
+            this.bubble.pop();
+            i++
+            if (i >= deadFrames) {
+                clearInterval(this.endbossDeadIntervall);
+                this.endbossDeadIntervall = null;
+                this.stopGameInterval();
+
+                //You Win Screen
+            }
+        }, 100)
     }
 
     flipImage(imageObject) {
@@ -258,18 +282,13 @@ class World {
         return id;
     }
 
-    stopGameIntervalById(intervalId) {
-        clearInterval(intervalId);
-        this.intervalIds = this.intervalIds.filter(id => id !== intervalId);
-    }
-
     stopGameInterval() {
         this.intervalIds.forEach(clearInterval);
         this.intervalIds = [];
         this.character.intervalIds.forEach(clearInterval);
         this.character.intervalIds = [];
         this.endboss.intervalIds.forEach(clearInterval);
-        this.endboss.intervalIds = []; 
+        this.endboss.intervalIds = [];
     }
 
 }

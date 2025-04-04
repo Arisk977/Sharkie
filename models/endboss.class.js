@@ -36,7 +36,6 @@ class Endboss extends MovableObject {
         this.height = 500;
         this.width = 400;
         this.animate();
-        this.movement();
     }
 
     animate() {
@@ -80,7 +79,7 @@ class Endboss extends MovableObject {
             else if (i >= introFrames && !this.endbossAttackCoordination()) {
                 this.endbossIntervalClear(this.attack);
                 this.endbossIntervalClear(this.intro);
-                this.standard = this.useAnimation(this.IMAGES_ENDBOSS_ANIMATION);
+                this.standard = this.useAnimation(this.IMAGES_ENDBOSS_ANIMATION);  
             }
         }, 220);
     }

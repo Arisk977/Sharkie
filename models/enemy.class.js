@@ -18,7 +18,7 @@ class Enemy extends MovableObject{
         this.getEnemyImagesIntoArray();
         this.loadMultipleImages(this.IMAGES_ENEMY_ANIMATION);
         this.loadMultipleImages(this.ENEMY_DEAD_IMAGES);
-        this.x = 450 + Math.random()*3500;
+        this.x = 450 + Math.random()*3300;
         this.y = 100 + Math.random()*300;
         this.speed = this.speed + Math.random() * 0.25;
         this.animate();
