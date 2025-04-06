@@ -18,6 +18,8 @@ class World {
     collectedCoins = 0;
     wallActive= true;
     speechBubble = new SpeechBubble(false);
+    youwin;
+    youlose;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -71,6 +73,21 @@ class World {
         requestAnimationFrame(() => this.draw());
     }
 
+    drawEndScreen(endscreen){
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectstToMap(this.level.backgroundObjects);
+        this.addObjectstToMap(this.level.coins);
+        this.addObjectstToMap(this.level.poisonBottles);
+        this.addObjectstToMap(this.level.enemies);
+        this.addToMap(this.endboss);
+        this.addToMap(endscreen);
+        this.ctx.translate(-this.camera_x, 0);
+
+        requestAnimationFrame(() => this.drawEndScreen(endscreen));
+    }
+
     immutableObjects() {
         this.ctx.translate(-this.camera_x, 0);
         this.writeText();
@@ -87,8 +104,8 @@ class World {
         this.ctx.lineWidth = 3;
 
         this.ctx.font = 'bold 40px LuckiestGuy';
-        this.ctx.strokeText(`${this.collectedCoins}`, 90, 170);
-        this.ctx.fillText(`${this.collectedCoins}`, 90, 170);
+        this.ctx.strokeText(`${this.collectedCoins}`, 100, 170);
+        this.ctx.fillText(`${this.collectedCoins}`, 100, 170);
     }
 
     setWorld() {
@@ -125,13 +142,19 @@ class World {
         })
 
         if (this.level.coins.length === 0 && !this.wallClearingStarted) {
-            this.wallClearingStarted = true;
-            this.level.audio[9].play();
-            this.removeWall();
-            this.wallActive = false;
-            this.speechBubble = new SpeechBubble(false);
-
+            this.unlockBossStage();
         }
+    }
+
+    unlockBossStage(){
+        this.wallClearingStarted = true;
+        this.level.audio[9].play();
+        this.removeWall();
+        this.wallActive = false;
+        this.speechBubble = new SpeechBubble(false);
+        this.level.audio[0].pause();
+        this.level.audio[10].loop = true;
+        this.level.audio[10].play();
     }
 
     checkCollisionsWall() {
@@ -268,13 +291,41 @@ class World {
             this.bubble.pop();
             i++
             if (i >= deadFrames) {
-                clearInterval(this.endbossDeadIntervall);
-                this.endbossDeadIntervall = null;
-                this.stopGameInterval();
-
-                //You Win Screen
+                this.playerHasWon(enemyIsDead);
             }
         }, 100)
+    }
+
+    playerHasWon(){
+        clearInterval(this.endbossDeadIntervall);
+        this.endbossDeadIntervall = null;
+        this.stopGameInterval();
+        this.stopAudio();
+
+        setTimeout(()=> {
+            this.level.audio[11].play();
+            this.youwin = new YouWin(this.character.x);
+            this.drawEndScreen(this.youwin);
+            
+        }, 1000)
+    }
+
+    playerHasLose(){
+        this.stopGameInterval();
+        this.stopAudio()
+
+        setTimeout(()=> {
+            this.level.audio[12].play();
+            this.youlose = new YouLose(this.character.x);
+            this.drawEndScreen(this.youlose);
+            
+        }, 1000)
+    }
+
+    stopAudio(){
+        this.level.audio.forEach(audio => {
+            audio.pause();
+          });          
     }
 
     flipImage(imageObject) {
