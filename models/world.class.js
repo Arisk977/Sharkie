@@ -41,7 +41,7 @@ class World {
     }
 
     run() {
-        this.setStoppableInterval(() => this.checkCollisionsEnemy(), 1000);
+        this.setStoppableInterval(() => {this.checkCollisionsEnemy()}, 1000);
         this.setStoppableInterval(() => this.checkCollisionsCoins(), 300);
         this.setStoppableInterval(() => this.checkCollisionsPoisonBottles(), 500);
         this.setStoppableInterval(() => this.checkCollisionsBubbleWithWall(), 1000/60);
