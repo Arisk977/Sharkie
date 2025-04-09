@@ -19,7 +19,6 @@
     <script src="./models/speech-bubble.class.js"></script>
     <script src="./models/you-lose.class.js"></script>
     <script src="./models/you-win.class.js"></script>
-    <script src="./models/start-button.class.js"></script>
     <script src="./models/endboss-wall.class.js"></script>
     <script src="./models/enemy.class.js"></script>
     <script src="./models/endboss.class.js"></script>
@@ -32,13 +31,14 @@
 <body onload="init()">
     <div class="background-overlay"></div>
 
-    <div id="menu-screen">
-        <canvas id="menu-canvas" width="720" height="480"></canvas>
-      </div>
-      <div id="game-container" style="display:none;">
-        <canvas id="canvas" width="720" height="480"></canvas>
-      </div>
-
+    <div id="menu-overlay">
+        <div><h1>༄꩜𖦹SHARKIE𖦹꩜༄</h1></div>
+        <div><img src="./assets/6.Botones/Start/1.png" id="start" onclick="clickStart()"></div>
+        <div><img src="./assets/6.Botones/Controls/controls.png" id="controls" onclick="clickControls()"></div>
+    </div>
+    <canvas id="canvas" width="720" height="480"></canvas>
+      
+ 
     </canvas>
 </body>
 </html>

@@ -1,77 +1,47 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let menuAudio = new Audio('audio/loop-menu-preview-109594.mp3');
+let clickSound = new Audio('audio/click-buttons-ui-menu-sounds-effects-button-4-203597.mp3');
 
 function init() {
-    showMenuScreen();
+  playMenuAudio();
 }
 
-function showMenuScreen() {
-    const menuCanvas = document.getElementById("menu-canvas");
-    const ctx = menuCanvas.getContext("2d");
-    const startButton = new Start(); // deine Klasse aus vorher
-
-    draw(ctx, startButton, menuCanvas)
-
-    addCursorPointer(menuCanvas, startButton);
-    startGameEventListener(menuCanvas, startButton);
+function clickStart(){
+    let menu = document.getElementById('menu-overlay');
+    menu.classList.add('d_none');
+    clickSound.play();
+    menuAudio.pause();
+    startGame();
 }
 
-function draw(ctx, startButton, menuCanvas) {
-    ctx.clearRect(0, 0, menuCanvas.width, menuCanvas.height);
-    startButton.draw(ctx);
-    requestAnimationFrame(() => draw(ctx, startButton, menuCanvas));
+function clickBack(){
+    let menu = document.getElementById('menu-overlay');
+    menu.innerHTML = `  <div><h1>༄꩜𖦹SHARKIE𖦹꩜༄</h1></div>
+        <div><img src="./assets/6.Botones/Start/1.png" id="start" onclick="clickStart()"></div>
+        <div><img src="./assets/6.Botones/Controls/controls.png" id="controls" onclick="clickControls()"></div>`;
+    clickSound.play();
 }
 
-function addCursorPointer(menuCanvas, startButton) {
-    menuCanvas.addEventListener("mousemove", (e) => {
-        const rect = menuCanvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-
-        if (
-            mouseX >= startButton.x &&
-            mouseX <= startButton.x + startButton.width &&
-            mouseY >= startButton.y &&
-            mouseY <= startButton.y + startButton.height
-        ) {
-            menuCanvas.style.cursor = "pointer";
-        } else {
-            menuCanvas.style.cursor = "default";
-        }
-    });
+function clickControls(){
+    let menu = document.getElementById('menu-overlay');
+    menu.innerHTML = `<div><h1>༄꩜𖦹SHARKIE𖦹꩜༄</h1></div>
+        <div><img src="./assets/6.Botones/Instructions 1.png" id="instructions"></div>
+        <div><img src="./assets/6.Botones/Controls/back-24838_640.png" alt="" id="back" onclick="clickBack()"></div>`;
+    clickSound.play();
 }
 
-function startGameEventListener(menuCanvas, startButton) {
-    menuCanvas.addEventListener("click", (e) => {
-        const rect = menuCanvas.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const clickY = e.clientY - rect.top;
-
-        if (
-            clickX >= startButton.x &&
-            clickX <= startButton.x + startButton.width &&
-            clickY >= startButton.y &&
-            clickY <= startButton.y + startButton.height
-        ) {
-            startGame();
-        }
-    });
+function playMenuAudio(){
+    menuAudio.loop = true;
+    menuAudio.play();
 }
 
 function startGame() {
-    document.getElementById("menu-screen").style.display = "none";
-    document.getElementById("game-container").style.display = "block";
-
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard);
 }
 
-
-function openWorld() {
-    canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
-}
 
 window.addEventListener('keydown', (e) => {
     if (e.keyCode == 39) {
