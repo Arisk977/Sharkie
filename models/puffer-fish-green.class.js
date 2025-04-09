@@ -1,4 +1,4 @@
-class Enemy extends MovableObject{
+class PufferFishGreen extends MovableObject{
     IMAGES_ENEMY_ANIMATION=[];
     ENEMY_DEAD_IMAGES=[
         'assets/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 1 (can animate by going up).png',
@@ -34,7 +34,7 @@ class Enemy extends MovableObject{
 
     enemyIsDead() {
         this.stopGameInterval();
-        this.setStoppableInterval(() => this.useAnimation (this.ENEMY_DEAD_IMAGES), 1000/5);       
+        this.setStoppableInterval(() => this.useAnimation (this.ENEMY_DEAD_IMAGES), 120);       
     }
     
 }

@@ -49,6 +49,7 @@ class Endboss extends MovableObject {
         let introFrames = this.IMAGES_ENDBOSS_INTRO.length;
         let i = 0;
         this.setStoppableInterval(() => {
+            
             if (this.character.x >= (this.x - 500) && i <= introFrames) {
 
                 this.intro = this.useAnimation(this.IMAGES_ENDBOSS_INTRO);

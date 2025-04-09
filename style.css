@@ -51,6 +51,15 @@ h1{
     margin: -10px;
 }
 
+h3{
+    font-family: 'LuckiestGuy';
+    letter-spacing: 2px;
+    -webkit-text-stroke: 0.2px;
+    -webkit-text-stroke-color: black;
+    padding-top: 200px;
+    color: white;
+}
+
 canvas{
     background-color: black;
     border-radius: 20px;

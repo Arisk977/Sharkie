@@ -28,29 +28,16 @@ class World {
         this.character = new Character(this);
         this.endboss = new Endboss(this.character, this);
         this.draw();
-        this.startGame();
         this.setWorld();
         this.run();
     }
 
-    startGame() {
-        document.addEventListener("click", () => {
-            this.level.audio[0].loop = true;
-            this.level.audio[0].play();
-        }, { once: true });
-    }
-
     run() {
-        this.setStoppableInterval(() => {this.checkCollisionsEnemy()}, 1000);
+        this.setStoppableInterval(() => this.checkCollisionsEnemy(), 1000);
         this.setStoppableInterval(() => this.checkCollisionsCoins(), 300);
         this.setStoppableInterval(() => this.checkCollisionsPoisonBottles(), 500);
         this.setStoppableInterval(() => this.checkCollisionsBubbleWithWall(), 1000/60);
-        this.setStoppableInterval(() => {
-            if (this.level.wall.length === 0) { 
-                this.checkCollisionsEndboss() 
-                this.wallActive = false
-            }
-        }, 1000);
+        this.setStoppableInterval(() => this.checkCollisionsEndboss(), 1000);
     }
 
     draw() {
@@ -123,7 +110,7 @@ class World {
             this.flipImage(imageObject);
         }
         imageObject.draw(this.ctx);
-        imageObject.drawFrame(this.ctx);
+        // imageObject.drawFrame(this.ctx);
 
         if (imageObject.otherDirection) {
             this.flipImageBack(imageObject);
@@ -291,7 +278,8 @@ class World {
             this.bubble.pop();
             i++
             if (i >= deadFrames) {
-                this.playerHasWon(enemyIsDead);
+                this.endboss.loadImage('assets/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png')
+                this.playerHasWon();
             }
         }, 100)
     }
