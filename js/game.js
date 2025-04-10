@@ -9,6 +9,21 @@ function init() {
     openMenu();
 }
 
+function fullscreen(){
+    let fullscreen = document.getElementById('fullscreen');
+    openFullscreen(fullscreen);
+}
+
+function openFullscreen(elem) {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+      elem.msRequestFullscreen();
+    }
+  }
+
 function openMenu() {
     let overlay = document.getElementById('menu-overlay');
     overlay.addEventListener('click', touchDisplay, { once: true });
