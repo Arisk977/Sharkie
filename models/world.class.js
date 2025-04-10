@@ -16,7 +16,7 @@ class World {
     hurtAnimationInterval = null;
     endbossDeadIntervall = null;
     collectedCoins = 0;
-    wallActive= true;
+    wallActive = true;
     speechBubble = new SpeechBubble(false);
     youwin;
     youlose;
@@ -27,16 +27,17 @@ class World {
         this.keyboard = keyboard;
         this.character = new Character(this);
         this.endboss = new Endboss(this.character, this);
-        this.draw();
         this.setWorld();
         this.run();
+        this.draw();
     }
 
     run() {
-        this.setStoppableInterval(() => this.checkCollisionsEnemy(), 1000);
+        this.setStoppableInterval(() => this.checkCollisionsEnemyAndChar(), 1000);
+        this.setStoppableInterval(() => this.checkCollisionsEnemyAndBubble(), 1000/60);
         this.setStoppableInterval(() => this.checkCollisionsCoins(), 300);
         this.setStoppableInterval(() => this.checkCollisionsPoisonBottles(), 500);
-        this.setStoppableInterval(() => this.checkCollisionsBubbleWithWall(), 1000/60);
+        this.setStoppableInterval(() => this.checkCollisionsBubbleWithWall(), 1000 / 60);
         this.setStoppableInterval(() => this.checkCollisionsEndboss(), 1000);
     }
 
@@ -60,7 +61,7 @@ class World {
         requestAnimationFrame(() => this.draw());
     }
 
-    drawEndScreen(endscreen){
+    drawEndScreen(endscreen) {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
         this.ctx.translate(this.camera_x, 0);
@@ -133,7 +134,7 @@ class World {
         }
     }
 
-    unlockBossStage(){
+    unlockBossStage() {
         this.wallClearingStarted = true;
         this.level.audio[9].play();
         this.removeWall();
@@ -184,26 +185,31 @@ class World {
 
     }
 
-    checkCollisionsEnemy() {
-        this.level.enemies.forEach((enemy, index) => {
-            if (this.character.isColliding(enemy)) {
+    checkCollisionsEnemyAndChar() {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy) && enemy.enemyLife > 0) {
                 this.character.hit();
                 this.lifebar.setPercentage(this.character.life, this.lifebar.IMAGES_LIFEBAR);
             }
+        })
+    }
 
-            else if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(enemy))) {
-                enemy.enemyLife -= 50;
-                if (enemy.enemyLife <= 0) {
+    checkCollisionsEnemyAndBubble() {
+        this.level.enemies.forEach((enemy, index) => {
+            this.bubble.forEach((bubble, bIndex) => {
+                if (bubble.isColliding(enemy)) {
+                    this.bubble.splice(bIndex, 1);
                     enemy.enemyLife = 0;
                     enemy.enemyIsDead();
                     setTimeout(() => {
                         this.level.enemies.splice(index, 1);
                         this.draw();
-                    }, 2000);
+                    }, 1000);  
                 }
-            }
-        })
+            });
+        });
     }
+
 
     checkCollisionsBubbleWithWall() {
         this.level.wall.forEach((wall) => {
@@ -284,36 +290,36 @@ class World {
         }, 100)
     }
 
-    playerHasWon(){
+    playerHasWon() {
         clearInterval(this.endbossDeadIntervall);
         this.endbossDeadIntervall = null;
         this.stopGameInterval();
         this.stopAudio();
 
-        setTimeout(()=> {
+        setTimeout(() => {
             this.level.audio[11].play();
             this.youwin = new YouWin(this.character.x);
             this.drawEndScreen(this.youwin);
-            
+
         }, 1000)
     }
 
-    playerHasLose(){
+    playerHasLose() {
         this.stopGameInterval();
         this.stopAudio()
 
-        setTimeout(()=> {
+        setTimeout(() => {
             this.level.audio[12].play();
             this.youlose = new YouLose(this.character.x);
             this.drawEndScreen(this.youlose);
-            
+
         }, 1000)
     }
 
-    stopAudio(){
+    stopAudio() {
         this.level.audio.forEach(audio => {
             audio.pause();
-          });          
+        });
     }
 
     flipImage(imageObject) {

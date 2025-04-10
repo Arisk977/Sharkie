@@ -30,7 +30,6 @@ class DrawableObject {
         }
     }
 
-    
     drawFrame(ctx) {
         if (this instanceof Character || this instanceof Enemy || this instanceof Endboss) {
             ctx.beginPath();

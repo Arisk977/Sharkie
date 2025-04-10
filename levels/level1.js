@@ -1,7 +1,10 @@
 let level1;
 function levelInit(){
     level1 = new Level(
-        [new PufferFishGreen(), new PufferFishGreen(), new PufferFishGreen(), new PufferFishGreen(), new PufferFishOrange(), new PufferFishOrange()],
+        [new PufferFishGreen(), new PufferFishGreen(), new PufferFishGreen(), new PufferFishGreen(), new PufferFishOrange(), new PufferFishOrange(),
+        new PufferFishRed(), new PufferFishRed(), new PufferFishRed(), new PufferFishRed(), new PufferFishRed(), new JellyPink(600), new JellyViolett(800), new JellyYellow(1200), 
+        new JellyPink(1600), new JellyGreen(2000), new JellyViolett(2400), new JellyYellow(3000)
+        ],
         [
             new BackgroundObject('assets/3. Background/Layers/5. Water/D1.png', -719*2),
             new BackgroundObject('assets/3. Background/Layers/4.Fondo 2/D1.png', -719*2),

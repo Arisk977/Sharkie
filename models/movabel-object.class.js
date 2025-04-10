@@ -12,12 +12,29 @@ class MovableObject extends DrawableObject {
     }
     otherDirection = false;
     lastHit = 0;
-
+    direction = "down";
 
 
     moveLeft() {
         this.setStoppableInterval(() => this.moveLeftInterval(), 1000/60);
     }
+
+    moveUpAndDown() {
+        if (this.direction === "down") {
+            this.y += this.speed;
+            if (this.y + this.height >= 480) {
+                this.direction = "up";
+            }
+        } else if (this.direction === "up") {
+            this.y -= this.speed;
+            if (this.y <= 0) {
+                this.direction = "down";
+            }
+        }
+    }
+    
+    
+    
 
     moveLeftInterval(){
        this.x -= this.speed;
@@ -54,8 +71,6 @@ class MovableObject extends DrawableObject {
             this.poison = 100;
         }
     }
-
-
 
     isCooldown(){
         let timepassed = new Date().getTime() - this.lastHit; //Difference in ms
