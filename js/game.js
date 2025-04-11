@@ -9,6 +9,25 @@ function init() {
     openMenu();
 }
 
+function lockToLandscape() {
+    const rotateOverlay = document.getElementById('rotate-lock');
+    const gameContent = document.getElementById('fullscreen');
+
+    if (window.innerHeight > window.innerWidth) {
+        // Hochformat → blockieren
+        rotateOverlay.style.display = 'block';
+        gameContent.style.display = 'none';
+    } else {
+        // Querformat → Spiel zeigen
+        rotateOverlay.style.display = 'none';
+        gameContent.style.display = 'block';
+    }
+}
+
+window.addEventListener('load', lockToLandscape);
+window.addEventListener('resize', lockToLandscape);
+window.addEventListener('orientationchange', lockToLandscape);
+
 function fullscreen(){
     let fullscreen = document.getElementById('fullscreen');
     openFullscreen(fullscreen);

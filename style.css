@@ -78,6 +78,29 @@ canvas{
     height: 100vh;
 }
 
+#rotate-lock {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 9999;
+}
+
+#screen-rotation {
+    width: 100%;
+    height: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 42px;
+    text-align: center;
+    padding: 20px;
+}
+
+
 #menu-overlay{
     height: 480px;
     width: 720px;
