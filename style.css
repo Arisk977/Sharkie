@@ -153,6 +153,46 @@ canvas{
 
 }
 
+/* Gemeinsamer Button-Stil */
+.btn {
+    width: 60px;
+    height: 60px;
+    font-size: 18px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 0 5px #000;
+    margin: 5px;
+}
+
+/* D-Pad links unten */
+#dpad {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 999;
+}
+
+#dpad .horizontal {
+    display: flex;
+    justify-content: center;
+}
+
+/* Action-Buttons rechts unten */
+#actions {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 999;
+}
+
+
 @media only screen and (max-width: 720px){
     canvas {
         width: 100%;

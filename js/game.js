@@ -7,6 +7,7 @@ let clickSound = new Audio('audio/click-buttons-ui-menu-sounds-effects-button-4-
 
 function init() {
     openMenu();
+    setupGamepadButtons();
 }
 
 function lockToLandscape() {
@@ -125,8 +126,6 @@ window.addEventListener('keydown', (e) => {
 })
 
 window.addEventListener('keyup', (e) => {
-
-
     if (e.keyCode == 39) {
         keyboard.RIGHT = false;
     }
@@ -146,3 +145,26 @@ window.addEventListener('keyup', (e) => {
         keyboard.D = false;
     }
 })
+  
+function bindButton(buttonId, keyName) {
+    const btn = document.getElementById(buttonId);
+    btn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard[keyName] = true;
+    }, { passive: false });
+
+    btn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        keyboard[keyName] = false;
+    }, { passive: false });
+}
+
+  
+  function setupGamepadButtons() {
+    bindButton('btn-up', 'UP');
+    bindButton('btn-down', 'DOWN');
+    bindButton('btn-left', 'LEFT');
+    bindButton('btn-right', 'RIGHT');
+    bindButton('btn-space', 'SPACE');
+    bindButton('btn-d', 'D');
+}
