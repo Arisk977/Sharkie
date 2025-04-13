@@ -7,7 +7,7 @@ let clickSound = new Audio('audio/click-buttons-ui-menu-sounds-effects-button-4-
 
 function init() {
     openMenu();
-    setupGamepadButtons();
+    eventListener();
 }
 
 function lockToLandscape() {
@@ -159,6 +159,13 @@ function bindButton(buttonId, keyName) {
     }, { passive: false });
 }
 
+
+function eventListener(){
+    setupGamepadButtons();
+    fullscreenEventListener();
+    gamepadVisibility();
+    audioMuteEventListener();
+}
   
   function setupGamepadButtons() {
     bindButton('btn-up', 'UP');
@@ -167,4 +174,55 @@ function bindButton(buttonId, keyName) {
     bindButton('btn-right', 'RIGHT');
     bindButton('btn-space', 'SPACE');
     bindButton('btn-d', 'D');
+}
+
+function fullscreenEventListener() {
+    const fullscreenBtn = document.getElementById('btn-fullscreen');
+    let isFullscreen = false;
+
+    function toggleFullscreen() {
+        if (!isFullscreen) {
+            fullscreen(); // Deine eigene fullscreen()-Funktion
+            isFullscreen = true;
+        } else {
+            document.exitFullscreen();
+            isFullscreen = false;
+        }
+    }
+
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    fullscreenBtn.addEventListener('touchstart', toggleFullscreen);
+}
+
+function gamepadVisibility() {
+    const visibilityBtn = document.getElementById('btn-visibility');
+    let isVisible = true;
+
+    function toggleVisibility() {
+        isVisible = !isVisible;
+        const dpad = document.getElementById('dpad');
+        const actions = document.getElementById('actions');
+        dpad.style.display = isVisible ? 'flex' : 'none';
+        actions.style.display = isVisible ? 'flex' : 'none';
+        visibilityBtn.textContent = isVisible ? '👁️' : '🚫';
+    }
+
+    visibilityBtn.addEventListener('click', toggleVisibility);
+    visibilityBtn.addEventListener('touchstart', toggleVisibility);
+}
+
+function audioMuteEventListener() {
+    const muteBtn = document.getElementById('btn-mute');
+    let isMuted = false;
+
+    function toggleMute() {
+        isMuted = !isMuted;
+        muteBtn.textContent = isMuted ? '🔇' : '🔊';
+        document.querySelectorAll('audio, video').forEach(media => {
+            media.muted = isMuted;
+        });
+    }
+
+    muteBtn.addEventListener('click', toggleMute);
+    muteBtn.addEventListener('touchstart', toggleMute);
 }

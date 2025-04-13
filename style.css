@@ -168,12 +168,12 @@ canvas{
 /* D-Pad links unten */
 #dpad {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    bottom: 40px;
+    left: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 999;
+    z-index: 99;
 }
 
 #dpad .horizontal {
@@ -181,15 +181,42 @@ canvas{
     justify-content: center;
 }
 
-/* Action-Buttons rechts unten */
+#btn-space{
+    width: 100px;
+}
+
 #actions {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 40px;
+    right: 40px;
     display: flex;
-    flex-direction: column;
     gap: 10px;
     z-index: 999;
+}
+
+
+#ui-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+    z-index: 99;
+}
+
+.ui-btn {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.ui-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 
@@ -197,10 +224,13 @@ canvas{
     canvas {
         width: 100%;
     }
+    #menu-overlay{
+        width: 100%;
+    }
 }
 
 @media only screen and (max-height: 480px){
-    canvas {
+    canvas, #menu-overlay{
         height: 100vh;
     }
 }
