@@ -29,20 +29,6 @@ window.addEventListener('load', lockToLandscape);
 window.addEventListener('resize', lockToLandscape);
 window.addEventListener('orientationchange', lockToLandscape);
 
-function fullscreen(){
-    let fullscreen = document.getElementById('fullscreen');
-    openFullscreen(fullscreen);
-}
-
-function openFullscreen(elem) {
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { /* Safari */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE11 */
-      elem.msRequestFullscreen();
-    }
-  }
 
 function openMenu() {
     let overlay = document.getElementById('menu-overlay');
@@ -93,12 +79,11 @@ function playMenuAudio(){
 function startGame() {
     levelInit();
     setTimeout(() => {
-    let level = level1
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard);
 
-    level.audio[0].loop = true;
-    level.audio[0].play();
+    world.level.audio[0].loop = true;
+    world.level.audio[0].play();
     }, 100)
   
 }
@@ -145,84 +130,3 @@ window.addEventListener('keyup', (e) => {
         keyboard.D = false;
     }
 })
-  
-function bindButton(buttonId, keyName) {
-    const btn = document.getElementById(buttonId);
-    btn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        keyboard[keyName] = true;
-    }, { passive: false });
-
-    btn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        keyboard[keyName] = false;
-    }, { passive: false });
-}
-
-
-function eventListener(){
-    setupGamepadButtons();
-    fullscreenEventListener();
-    gamepadVisibility();
-    audioMuteEventListener();
-}
-  
-  function setupGamepadButtons() {
-    bindButton('btn-up', 'UP');
-    bindButton('btn-down', 'DOWN');
-    bindButton('btn-left', 'LEFT');
-    bindButton('btn-right', 'RIGHT');
-    bindButton('btn-space', 'SPACE');
-    bindButton('btn-d', 'D');
-}
-
-function fullscreenEventListener() {
-    const fullscreenBtn = document.getElementById('btn-fullscreen');
-    let isFullscreen = false;
-
-    function toggleFullscreen() {
-        if (!isFullscreen) {
-            fullscreen(); // Deine eigene fullscreen()-Funktion
-            isFullscreen = true;
-        } else {
-            document.exitFullscreen();
-            isFullscreen = false;
-        }
-    }
-
-    fullscreenBtn.addEventListener('click', toggleFullscreen);
-    fullscreenBtn.addEventListener('touchstart', toggleFullscreen);
-}
-
-function gamepadVisibility() {
-    const visibilityBtn = document.getElementById('btn-visibility');
-    let isVisible = true;
-
-    function toggleVisibility() {
-        isVisible = !isVisible;
-        const dpad = document.getElementById('dpad');
-        const actions = document.getElementById('actions');
-        dpad.style.display = isVisible ? 'flex' : 'none';
-        actions.style.display = isVisible ? 'flex' : 'none';
-        visibilityBtn.textContent = isVisible ? '👁️' : '🚫';
-    }
-
-    visibilityBtn.addEventListener('click', toggleVisibility);
-    visibilityBtn.addEventListener('touchstart', toggleVisibility);
-}
-
-function audioMuteEventListener() {
-    const muteBtn = document.getElementById('btn-mute');
-    let isMuted = false;
-
-    function toggleMute() {
-        isMuted = !isMuted;
-        muteBtn.textContent = isMuted ? '🔇' : '🔊';
-        document.querySelectorAll('audio, video').forEach(media => {
-            media.muted = isMuted;
-        });
-    }
-
-    muteBtn.addEventListener('click', toggleMute);
-    muteBtn.addEventListener('touchstart', toggleMute);
-}
