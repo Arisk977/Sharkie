@@ -84,7 +84,7 @@ canvas{
     top: 0; left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: black;
+    background-color: rgba(199, 197, 197, 0.642);
     z-index: 9999;
 }
 
@@ -93,13 +93,19 @@ canvas{
     height: 100%;
     color: white;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 42px;
+    font-size: 20px;
+    letter-spacing: 3px;
+    font-family: 'LuckiestGuy';
     text-align: center;
-    padding: 20px;
+    gap: 20px;
 }
 
+#screen-rotation img{
+    width: 100px;
+}
 
 #menu-overlay{
     height: 480px;

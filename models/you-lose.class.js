@@ -1,6 +1,6 @@
 class YouLose extends MovableObject{
     width=350;
-    height= 150;
+    height= 130;
     IMAGES_GAMEOVER=[
         'assets/6.Botones/Tittles/Game Over/Recurso 9.png',
         'assets/6.Botones/Tittles/Game Over/Recurso 10.png',
@@ -12,7 +12,7 @@ class YouLose extends MovableObject{
     constructor(x){
         super().loadImage('assets/6.Botones/Tittles/Game Over/Recurso 9.png');
         this.x = x + 180;
-        this.y= 150;
+        this.y= 80;
         this.loadMultipleImages(this.IMAGES_GAMEOVER);
         this.animate();
     }

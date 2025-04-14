@@ -20,6 +20,8 @@ class World {
     speechBubble = new SpeechBubble(false);
     youwin;
     youlose;
+    tryAgain;
+    isMuted= false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -61,7 +63,7 @@ class World {
         requestAnimationFrame(() => this.draw());
     }
 
-    drawEndScreen(endscreen) {
+    drawEndScreen(endscreen, tryAgain) {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
         this.ctx.translate(this.camera_x, 0);
@@ -71,9 +73,10 @@ class World {
         this.addObjectstToMap(this.level.enemies);
         this.addToMap(this.endboss);
         this.addToMap(endscreen);
+        this.addToMap(tryAgain);
         this.ctx.translate(-this.camera_x, 0);
 
-        requestAnimationFrame(() => this.drawEndScreen(endscreen));
+        requestAnimationFrame(() => this.drawEndScreen(endscreen, tryAgain));
     }
 
     immutableObjects() {
@@ -297,10 +300,11 @@ class World {
         this.stopAudio();
 
         setTimeout(() => {
+            this.level.audio[11].muted = false;
             this.level.audio[11].play();
             this.youwin = new YouWin(this.character.x);
-            this.drawEndScreen(this.youwin);
-
+            this.tryAgain = new TryAgain(this.character.x, 350);
+            this.drawEndScreen(this.youwin, this.tryAgain);
         }, 1000)
     }
 
@@ -309,16 +313,21 @@ class World {
         this.stopAudio()
 
         setTimeout(() => {
+            this.level.audio[12].muted = false;
             this.level.audio[12].play();
             this.youlose = new YouLose(this.character.x);
-            this.drawEndScreen(this.youlose);
+            this.tryAgain = new TryAgain(this.character.x, 250);
 
+            this.drawEndScreen(this.youlose, this.tryAgain);
+          
+            
         }, 1000)
     }
 
     stopAudio() {
+        this.isMuted = !this.isMuted;
         this.level.audio.forEach(audio => {
-            audio.pause();
+            audio.muted = this.isMuted;
         });
     }
 

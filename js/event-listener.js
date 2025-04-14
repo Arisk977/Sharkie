@@ -121,5 +121,41 @@ function audioMuteEventListener() {
     }, { passive: false });
 }
 
+function handleClick(e) {
+    if (!world?.tryAgain) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const adjustedX = mouseX - world.camera_x;
+    const ta = world.tryAgain;
+
+    if (adjustedX >= ta.x && adjustedX <= ta.x + ta.width &&
+        mouseY >= ta.y && mouseY <= ta.y + ta.height) {
+        restartGame();
+        canvas.style.cursor = 'default'; 
+    }
+}
+
+
+function setupCursorListener() {
+    canvas.addEventListener('mousemove', (e) => {
+        if (!world?.tryAgain) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const adjustedX = mouseX - world.camera_x;
+        const ta = world.tryAgain;
+
+        if (adjustedX >= ta.x && adjustedX <= ta.x + ta.width &&
+            mouseY >= ta.y && mouseY <= ta.y + ta.height) {
+            canvas.style.cursor = 'pointer';
+        } else {
+            canvas.style.cursor = 'default';
+        }
+    });
+}
+
 
 

@@ -15,11 +15,9 @@ function lockToLandscape() {
     const gameContent = document.getElementById('fullscreen');
 
     if (window.innerHeight > window.innerWidth) {
-        // Hochformat → blockieren
         rotateOverlay.style.display = 'block';
         gameContent.style.display = 'none';
     } else {
-        // Querformat → Spiel zeigen
         rotateOverlay.style.display = 'none';
         gameContent.style.display = 'block';
     }
@@ -85,7 +83,15 @@ function startGame() {
     world.level.audio[0].loop = true;
     world.level.audio[0].play();
     }, 100)
-  
+}
+
+function restartGame() {
+    if (world) {
+        world.stopGameInterval();
+    }
+    world = null;
+    levelInit();
+    startGame();
 }
 
 
