@@ -233,7 +233,28 @@ button, .gamepad-button, #dpad, #actions {
     touch-action: none;
 }
 
-
+@media(max-height: 450px){
+    #start{
+        width: 225px;
+    }
+    #controls{
+        height: 200px;
+        width: 250px;
+    }
+    #instructions {
+        width: 500px;
+        height: 250px;
+        margin: -50px;
+    }
+    #back{
+        width: 60px;
+        height: 60px;
+        
+    }
+    h3{
+        padding-top: 150px;
+    }
+}
 
 @media only screen and (max-width: 720px){
     canvas {

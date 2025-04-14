@@ -57,7 +57,7 @@ function openFullscreen(elem) {
     if (!isFullscreen) {
         fullscreen(); // Deine eigene fullscreen()-Funktion
         isFullscreen = true;
-    } else {
+    } else if(isFullscreen) {
         document.exitFullscreen();
         isFullscreen = false;
     }
