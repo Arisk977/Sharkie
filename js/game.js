@@ -76,6 +76,10 @@ function playMenuAudio(){
 
 function startGame() {
     levelInit();
+    if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
+        let gamepadRef= document.getElementById('gamepad');
+        if(gamepadRef) gamepadRef.classList.remove('d_none')
+      }
     setTimeout(() => {
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard);
@@ -92,6 +96,8 @@ function restartGame() {
     world = null;
     levelInit();
     startGame();
+    let tryAgainRef = document.getElementById('try-again');
+    tryAgainRef.classList.add('d_none');
 }
 
 

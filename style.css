@@ -122,6 +122,44 @@ canvas{
     align-items: center;
 }
 
+#try-again{
+    width: 220px;
+    height: 70px;
+    position: fixed;
+    left: 45%;
+    top: 50%;
+}
+
+.animated-button {
+    background-size: 220px 70px;
+    background-position: center;
+    animation: changeImage 2s infinite; /* Animation für den Hintergrund */
+  }
+.animated-button:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+  
+  /* Die Keyframes definieren die verschiedenen Bilder in der Reihenfolge */
+  @keyframes changeImage {
+    0% {
+      background-image: url('assets/6.Botones/Try again/Recurso 15.png');
+    }
+    25% {
+      background-image: url('assets/6.Botones/Try again/Recurso 16.png');
+    }
+    50% {
+      background-image: url('assets/6.Botones/Try again/Recurso 17.png');
+    }
+    75% {
+      background-image: url('assets/6.Botones/Try again/Recurso 18.png');
+    }
+    100% {
+      background-image: url('assets/6.Botones/Try again/Recurso 15.png'); /* Zum Anfang zurück */
+    }
+  }
+  
+
 #menu-overlay img:hover{
     cursor: pointer;
     transform: scale(1.1);

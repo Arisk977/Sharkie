@@ -75,6 +75,12 @@ class DrawableObject {
             return 1;
         } else {
             return 0;
-        }}
+        }
+    }
+
+    addTryAgainButton(){
+        let tryAgainRef = document.getElementById('try-again');
+        tryAgainRef.classList.remove('d_none');
+    }
     
 }

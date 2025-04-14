@@ -15,10 +15,13 @@ class YouLose extends MovableObject{
         this.y= 80;
         this.loadMultipleImages(this.IMAGES_GAMEOVER);
         this.animate();
+        this.addTryAgainButton();
     }
 
     animate(){
         this.setStoppableInterval(() => this.useAnimation(this.IMAGES_GAMEOVER), 400);
     }
+
+    
 }
 

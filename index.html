@@ -20,12 +20,8 @@
     <script src="./models/speech-bubble.class.js"></script>
     <script src="./models/you-lose.class.js"></script>
     <script src="./models/you-win.class.js"></script>
-    <script src="./models/try-again.class.js"></script>
     <script src="./models/endboss-wall.class.js"></script>
-    <script src="./models/jellyfish-violett.class.js"></script>
-    <script src="./models/jellyfish-green.class.js"></script>
-    <script src="./models/jellyfish-yellow.class.js"></script>
-    <script src="./models/jellyfish-pink.class.js"></script>
+    <script src="./models/jellyfish.class.js"></script>
     <script src="./models/puffer-fish-green.class.js"></script>
     <script src="./models/puffer-fish-orange.class.js"></script>
     <script src="./models/puffer-fish-red.class.js"></script>
@@ -49,9 +45,12 @@
         <div><h1>༄꩜𖦹SHARKIE𖦹꩜༄</h1></div>
         <div><h3>Touch the Screen</h3></div>
     </div>
+
+    <div id="try-again" class="animated-button d_none" onclick="restartGame()"></div>
     
     <canvas id="canvas" width="720" height="480"></canvas>
 
+    <div id="gamepad" class="d_none">
     <div id="dpad">
         <button class="btn" id="btn-up">↑</button>
         <div class="horizontal">
@@ -65,6 +64,7 @@
         <button class="btn" id="btn-space">SPACE</button>
         <button class="btn" id="btn-d">D</button>
     </div>
+</div>
 
     <div id="ui-buttons">
         <button id="btn-fullscreen" class="ui-btn">⛶</button>

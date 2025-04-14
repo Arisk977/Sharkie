@@ -32,9 +32,6 @@ class MovableObject extends DrawableObject {
             }
         }
     }
-    
-    
-    
 
     moveLeftInterval(){
        this.x -= this.speed;
