@@ -5,6 +5,6 @@ class YouWin extends MovableObject{
         super().loadImage('assets/6.Botones/Tittles/You win/Mesa de trabajo 1.png');
         this.x = x;
         this.y= 480 - this.height;
-        this.addTryAgainButton();
+        this.addEndscreenButton();
     }
 }

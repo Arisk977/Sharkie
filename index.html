@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sharkie</title>
     <link rel="icon" type="image/png" href="./assets/1.Sharkie/1.IDLE/1.png">
     <link rel="stylesheet" href="./style.css">
     <script src="./models/drawable-objects.class.js"></script>
@@ -30,48 +31,58 @@
     <script src="./models/bubble-attack.class.js"></script>
     <script src="./models/character.class.js"></script>
     <script src="./levels/level1.js"></script>
+    <script src="./js/template.js"></script>
     <script src="./js/game.js"></script>
     <script src="./js/event-listener.js"></script>
 </head>
+
 <body onload="init()">
     <div id="rotate-lock">
         <div id="screen-rotation"><img src="./assets/rotate_screen.png" alt=""> please rotate your Phone</div>
     </div>
-   <div id="fullscreen">
-    
-    <div class="background-overlay"></div>
-    
-     <div id="menu-overlay">
-        <div><h1>༄꩜𖦹SHARKIE𖦹꩜༄</h1></div>
-        <div><h3>Touch the Screen</h3></div>
-    </div>
 
-    <div id="try-again" class="animated-button d_none" onclick="restartGame()"></div>
-    
-    <canvas id="canvas" width="720" height="480"></canvas>
+        <div class="background-overlay"></div>
 
-    <div id="gamepad" class="d_none">
-    <div id="dpad">
-        <button class="btn" id="btn-up">↑</button>
-        <div class="horizontal">
-            <button class="btn" id="btn-left">←</button>
-            <button class="btn" id="btn-down">↓</button>
-            <button class="btn" id="btn-right">→</button>
+        <div id="menu-overlay">
+            <div>
+                <h1>༄꩜𖦹SHARKIE𖦹꩜༄</h1>
+            </div>
+            <div>
+                <h3>Touch the Screen</h3>
+            </div>
         </div>
-    </div>
 
-    <div id="actions">
-        <button class="btn" id="btn-space">SPACE</button>
-        <button class="btn" id="btn-d">D</button>
-    </div>
-</div>
+        <div id="endscreen" class="d_none">
+            <div id="try-again" class="animated-tryagain" onclick="restartGame()"></div>
+            <div id="back-to-menu" class="animated-menu" onclick="backToMenu()"></div>
+        </div>
 
-    <div id="ui-buttons">
-        <button id="btn-fullscreen" class="ui-btn">⛶</button>
-        <button id="btn-mute" class="ui-btn">🔊</button>
-        <button id="btn-visibility" class="ui-btn">👁️</button>
+
+        <canvas id="canvas" width="720" height="480"></canvas>
+
+        <div id="gamepad" class="d_none">
+            <div id="dpad">
+                <button class="btn" id="btn-up">↑</button>
+                <div class="horizontal">
+                    <button class="btn" id="btn-left">←</button>
+                    <button class="btn" id="btn-down">↓</button>
+                    <button class="btn" id="btn-right">→</button>
+                </div>
+            </div>
+
+            <div id="actions">
+                <button class="btn" id="btn-space">SPACE</button>
+                <button class="btn" id="btn-d">D</button>
+            </div>
+        </div>
+
+        <div id="ui-buttons">
+            <button id="btn-fullscreen" class="ui-btn">⛶</button>
+            <button id="btn-mute" class="ui-btn">🔊</button>
+            <button id="btn-visibility" class="ui-btn">👁️</button>
+        </div>
+
     </div>
-    
-</div>
 </body>
+
 </html>

@@ -78,9 +78,9 @@ class DrawableObject {
         }
     }
 
-    addTryAgainButton(){
-        let tryAgainRef = document.getElementById('try-again');
-        tryAgainRef.classList.remove('d_none');
+    addEndscreenButton(){
+        let endscreenRef = document.getElementById('endscreen');
+        endscreenRef.classList.remove('d_none');
     }
     
 }

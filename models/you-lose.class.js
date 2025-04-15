@@ -1,6 +1,6 @@
 class YouLose extends MovableObject{
     width=350;
-    height= 130;
+    height= 100;
     IMAGES_GAMEOVER=[
         'assets/6.Botones/Tittles/Game Over/Recurso 9.png',
         'assets/6.Botones/Tittles/Game Over/Recurso 10.png',
@@ -15,7 +15,7 @@ class YouLose extends MovableObject{
         this.y= 80;
         this.loadMultipleImages(this.IMAGES_GAMEOVER);
         this.animate();
-        this.addTryAgainButton();
+        this.addEndscreenButton();
     }
 
     animate(){

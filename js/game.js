@@ -36,9 +36,7 @@ function openMenu() {
 
 function touchDisplay(){
     let menu = document.getElementById('menu-overlay');
-    menu.innerHTML = `  <div><h1>༄꩜𖦹SHARKIE𖦹꩜༄</h1></div>
-    <div><img src="./assets/6.Botones/Start/1.png" id="start" onclick="clickStart()"></div>
-    <div><img src="./assets/6.Botones/Controls/controls.png" id="controls" onclick="clickControls()"></div>`;
+    menu.innerHTML = menuOverlayTemp();
     playMenuAudio();
 }
 
@@ -53,18 +51,14 @@ function clickStart(){
 
 function clickBack(){
     let menu = document.getElementById('menu-overlay');
-    menu.innerHTML = `  <div><h1>༄꩜𖦹SHARKIE𖦹꩜༄</h1></div>
-        <div><img src="./assets/6.Botones/Start/1.png" id="start" onclick="clickStart()"></div>
-        <div><img src="./assets/6.Botones/Controls/controls.png" id="controls" onclick="clickControls()"></div>`;
+    menu.innerHTML = menuOverlayTemp();
         clickSound.playbackRate = 1.5;
     clickSound.play();
 }
 
 function clickControls(){
     let menu = document.getElementById('menu-overlay');
-    menu.innerHTML = `<div><h1>༄꩜𖦹SHARKIE𖦹꩜༄</h1></div>
-        <div><img src="./assets/6.Botones/Instructions 1.png" id="instructions"></div>
-        <div><img src="./assets/6.Botones/Controls/back-24838_640.png" alt="" id="back" onclick="clickBack()"></div>`;
+    menu.innerHTML = instructionsTemp();
         clickSound.playbackRate = 1.5;
         clickSound.play();
 }
@@ -89,15 +83,32 @@ function startGame() {
     }, 100)
 }
 
-function restartGame() {
+function backToMenu(){
+    level1 = []; 
+    world = null;    
+    let endscreenRef = document.getElementById('endscreen');
+    let menu = document.getElementById('menu-overlay');
+    let gamepadRef= document.getElementById('gamepad');
+
+    if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
+        if(gamepadRef) gamepadRef.classList.add('d_none');
+      }
+    menu.classList.remove('d_none');
+    endscreenRef.classList.add('d_none');  
+    setTimeout(()=>{
+        playMenuAudio();
+    }, 500);
+}
+
+function restartGame() {   
+    let endscreenRef = document.getElementById('endscreen');
     if (world) {
         world.stopGameInterval();
     }
     world = null;
+    endscreenRef.classList.add('d_none');
     levelInit();
     startGame();
-    let tryAgainRef = document.getElementById('try-again');
-    tryAgainRef.classList.add('d_none');
 }
 
 

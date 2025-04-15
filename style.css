@@ -122,25 +122,47 @@ canvas{
     align-items: center;
 }
 
+#endscreen{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    left: 40%;
+    top: 53%;
+}
+
 #try-again{
     width: 220px;
     height: 70px;
-    position: fixed;
-    left: 45%;
-    top: 50%;
 }
 
-.animated-button {
+#back-to-menu{
+    width: 240px;
+    height: 160px;
+}
+
+.animated-tryagain {
     background-size: 220px 70px;
     background-position: center;
-    animation: changeImage 2s infinite; /* Animation für den Hintergrund */
+    animation: changeImage 2s infinite;
   }
-.animated-button:hover{
+.animated-tryagain:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.animated-menu {
+    background-size: 240px 160px;
+    background-position: center;
+    animation: changeMenu 2s infinite;
+  }
+.animated-menu:hover{
     transform: scale(1.1);
     cursor: pointer;
 }
   
-  /* Die Keyframes definieren die verschiedenen Bilder in der Reihenfolge */
+
   @keyframes changeImage {
     0% {
       background-image: url('assets/6.Botones/Try again/Recurso 15.png');
@@ -155,7 +177,25 @@ canvas{
       background-image: url('assets/6.Botones/Try again/Recurso 18.png');
     }
     100% {
-      background-image: url('assets/6.Botones/Try again/Recurso 15.png'); /* Zum Anfang zurück */
+      background-image: url('assets/6.Botones/Try again/Recurso 15.png');
+    }
+  }
+
+  @keyframes changeMenu {
+    0% {
+      background-image: url('assets/6.Botones/Menü/menü-orange.png');
+    }
+    25% {
+      background-image: url('assets/6.Botones/Menü/menü-yellow.png');
+    }
+    50% {
+      background-image: url('assets/6.Botones/Menü/menü-red.png');
+    }
+    75% {
+      background-image: url('assets/6.Botones/Menü/menü-violett.png');
+    }
+    100% {
+      background-image: url('assets/6.Botones/Menü/menü-orange.png');
     }
   }
   
@@ -271,6 +311,110 @@ button, .gamepad-button, #dpad, #actions {
     touch-action: none;
 }
 
+@media(max-width: 1050px){
+    #endscreen{
+        left: 38%;
+    }
+}
+
+@media(max-width: 800px){
+    #endscreen{
+        left: 35%;
+    }
+}
+
+@media(max-width: 720px){
+    #endscreen{
+        left: 33%;
+    }
+    #try-again{
+        width: 180px;
+        height: 60px;
+    }
+    .animated-tryagain {
+        background-size: 180px 60px;
+    }
+
+    #back-to-menu{
+        width: 200px;
+        height: 140px;
+    }
+
+    .animated-menu {
+        background-size: 200px 140px;
+    }
+}
+
+@media(max-width: 600px){
+    h1{
+        font-size: 40px;
+    }
+    h3{
+        font-size: 30px;
+    }
+    #start{
+        width: 200px;
+    }
+    #controls{
+        width: 215px;
+        height: 170px;
+        margin-top: -50px;
+    }
+    #instructions {
+        width: 450px;
+        height: 250px;
+        margin-top: -80px;
+    }
+    #back {
+        width: 50px;
+        height: 50px;
+        margin-left: -200px;
+        margin-top: -20px;
+    }
+}
+
+@media(max-width: 450px){
+    #endscreen{
+        left: 30%;
+        top: 50%;
+    }
+    #back{
+        margin-left: -200px;
+    }
+}
+
+@media(max-width: 400px){
+    #endscreen{
+        left: 27%;
+    }
+    #try-again{
+        width: 150px;
+        height: 50px;
+    }
+    .animated-tryagain {
+        background-size: 150px 50px;
+    }
+
+    #back-to-menu{
+        width: 170px;
+        height: 120px;
+    }
+
+    .animated-menu {
+        background-size: 170px 120px;
+    }
+    h1{
+        font-size: 30px;
+        -webkit-text-stroke: 0.2px;
+        -webkit-text-stroke-color: black;
+    }
+    h3{
+        font-size: 20px;
+        -webkit-text-stroke: 0.2px;
+        -webkit-text-stroke-color: black;
+    }
+}
+
 @media(max-height: 450px){
     #start{
         width: 225px;
@@ -280,14 +424,15 @@ button, .gamepad-button, #dpad, #actions {
         width: 250px;
     }
     #instructions {
-        width: 500px;
+        width: 450px;
         height: 250px;
-        margin: -50px;
+        margin-top: -80px;
     }
-    #back{
-        width: 60px;
-        height: 60px;
-        
+    #back {
+        width: 50px;
+        height: 50px;
+        margin-left: -200px;
+        margin-top: -20px;
     }
     h3{
         padding-top: 150px;
