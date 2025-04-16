@@ -27,7 +27,6 @@ class BubbleAttack extends MovableObject {
             this.x += this.speedX;
             this.speedX -= this.acceleration;
         }
-
     }
 
     applyThrowBubbleLeft() {

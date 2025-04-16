@@ -1,4 +1,9 @@
 let level1;
+
+/**
+ * Initializes the level by creating game objects including enemies, background layers,
+ * coins, poison bottles, audio files, and walls. Sets up the first level with various game elements.
+ */
 function levelInit(){
     level1 = new Level(
         [new PufferFish('green'), new PufferFish('green'), new PufferFish('green'), new PufferFish('green'), new PufferFish('orange'), new PufferFish('orange'),
@@ -64,6 +69,5 @@ function levelInit(){
         ],
         [new Wall(0), new Wall(50), new Wall(100), new Wall(150), new Wall(200),
         new Wall(250), new Wall(300), new Wall(350), new Wall(400), new Wall(450)]
-        
     );
 } 
