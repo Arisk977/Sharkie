@@ -178,20 +178,6 @@ class Endboss extends MovableObject {
     }
 
 /**
- * Starts a repeated check (using `setStoppableInterval`) to verify the coordination 
- * of the endboss's attack. If the conditions are met (e.g., the endboss is close enough 
- * to the character), the method will allow for further actions. This can be extended later 
- * to trigger the actual attack sequence of the endboss.
- */
-endbossAttackSequenz() {
-    this.setStoppableInterval(() => {
-        if (this.endbossAttackCoordination()) {
-
-        }
-    }, 100)
-}
-
-/**
  * Checks if the endboss is within 200 pixels of the character. 
  * Returns `true` if the endboss is close enough to initiate an attack, otherwise returns `false`.
  * 

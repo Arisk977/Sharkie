@@ -10,11 +10,21 @@ class DrawableObject {
     height = 60;
     intervalIds= [];
 
+    /**
+ * Loads an image from the given file path and sets it to the `img` property of the object.
+ * 
+ * @param {string} path - The path to the image file to load.
+ */
     loadImage(path) {
         this.img = new Image();
         this.img.src = path;
     }
 
+    /**
+ * Loads multiple images from an array of file paths and stores them in a cache (`imageCache`).
+ * 
+ * @param {string[]} arr - An array containing the file paths of images to load.
+ */
     loadMultipleImages(arr) {
         arr.forEach((path) => {
             let img = new Image();
@@ -22,6 +32,14 @@ class DrawableObject {
             this.imageCache[path] = img;
         })
     }
+
+    /**
+ * Draws the loaded image onto the given canvas context (`ctx`). 
+ * It draws the image at the object's `x`, `y` coordinates, 
+ * with the specified width and height.
+ * 
+ * @param {CanvasRenderingContext2D} ctx - The 2D rendering context of the canvas.
+ */
     draw(ctx) {
         try{
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);}
@@ -30,6 +48,12 @@ class DrawableObject {
         }
     }
 
+    /**
+ * Draws a frame around the object on the canvas to visualize its boundaries.
+ * This is useful for debugging or development purposes.
+ * 
+ * @param {CanvasRenderingContext2D} ctx - The 2D rendering context of the canvas.
+ */
     drawFrame(ctx) {
         if (this instanceof Character || this instanceof Enemy || this instanceof Endboss) {
             ctx.beginPath();
@@ -40,6 +64,14 @@ class DrawableObject {
         }
     }
 
+    /**
+ * Pushes image paths into an array based on a specified path, file extension, and number of images.
+ * 
+ * @param {string} path - The base path to the images.
+ * @param {string} extension - The file extension (e.g., '.png') to append to the image paths.
+ * @param {string[]} array - The array to which the image paths will be added.
+ * @param {number} arrLength - The number of images to add to the array.
+ */
     pushImagesToArray(path, extension, array, arrLength) {
         for (let i = 1; i <= arrLength; i++) {
             let image = `${path}${i}${extension}`;
@@ -47,21 +79,51 @@ class DrawableObject {
         }
     }
 
+    /**
+ * Sets the image to display based on a percentage value. The percentage is used to determine which image to display
+ * from the given array of images.
+ * 
+ * @param {number} percentage - The percentage that determines which image should be displayed.
+ * @param {string[]} array - An array of image paths.
+ */
     setPercentage(percentage, array) {
         this.percentage = percentage;
         let path = array[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
+    /**
+ * Sets an interval to execute a function at a specified time interval. 
+ * The interval ID is stored for later use, so it can be cleared if needed.
+ * 
+ * @param {Function} fn - The function to execute at each interval.
+ * @param {number} time - The time interval in milliseconds.
+ */
     setStoppableInterval(fn, time){
         let id = setInterval(fn, time);
         this.intervalIds.push(id);
     }
 
+    /**
+ * Clears all game-related intervals by iterating over the stored interval IDs.
+ * This is typically used to stop all ongoing intervals when the game is paused or ended.
+ */
     stopGameInterval(){
         this.intervalIds.forEach(clearInterval);
     }
 
+    /**
+ * Resolves an index to select an image based on the percentage value.
+ * The percentage is used to determine which image index to return:
+ * - 100% -> index 5
+ * - 80-99% -> index 4
+ * - 60-79% -> index 3
+ * - 40-59% -> index 2
+ * - 20-39% -> index 1
+ * - 0-19% -> index 0
+ * 
+ * @returns {number} The resolved image index based on the percentage.
+ */
     resolveImageIndex() {
         if (this.percentage == 100) {
             return 5;
@@ -78,11 +140,19 @@ class DrawableObject {
         }
     }
 
+    /**
+ * Displays the end screen by removing the 'd_none' class from the end screen element.
+ * This function is typically called when the game ends.
+ */
     addEndscreenButton(){
         let endscreenRef = document.getElementById('endscreen');
         endscreenRef.classList.remove('d_none');
     }
 
+    /**
+ * Adds the 'win-screen' class to the end screen element, typically used to style the screen
+ * when the player wins the game.
+ */
     addWinClass(){
         let endscreenRef = document.getElementById('endscreen');
         endscreenRef.classList.add('win-screen');
