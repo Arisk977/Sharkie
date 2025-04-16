@@ -24,7 +24,7 @@ class Endboss extends MovableObject {
         right: 50,
         bottom: 85
     };
-    endboss_life = 150;
+    endboss_life = 100;
 
 
     constructor(character, world) {

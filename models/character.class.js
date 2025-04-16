@@ -35,12 +35,9 @@ class Character extends MovableObject {
             this.setStoppableInterval(() => this.charMoveLeft(), 1000 / 60);
             this.setStoppableInterval(() => this.charMoveUp(), 1000 / 60);
             this.setStoppableInterval(() => this.charMoveDown(), 1000 / 60);
-
             this.setStoppableInterval(() => this.moveAnimation(), 300);
-
             this.setStoppableInterval(() => this.runAnimation(), 120);
         }
-
         catch (e) {
             console.warn('no Keyboard found', e)
         }
@@ -48,47 +45,40 @@ class Character extends MovableObject {
 
     runAnimation() {
         if (this.isDead() && this.intervalStatus()) {
-            this.useAnimation(this.IMAGES_DEAD);
-            setTimeout(() => {
-                this.stopGameInterval();
-                this.loadImage('assets/1.Sharkie/6.dead/1.Poisoned/12.png');
-            }, 2000);
-            this.world.playerHasLose();
-            return;
+           this.deadAnimation();
         }
-
         else if (this.isCooldown() && this.intervalStatus()) {
             this.charPoisoned();
-            return;
         }
-
         else if (this.world.keyboard.SPACE && this.intervalStatus()) {
            this.bubbleAttack();
         }
-        
-
         else if (this.world.keyboard.D && this.intervalStatus() && this.poison > 0) {
            this.poisonAttack();
         }
-        
         else if(this.intervalStatus()){
             this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);
-            return;
         }
-        
-
     }
 
     intervalStatus(){
         return !this.attackInterval && !this.poisonInterval;
     }
 
+    deadAnimation(){
+        this.useAnimation(this.IMAGES_DEAD);
+        setTimeout(() => {
+            this.stopGameInterval();
+            this.loadImage('assets/1.Sharkie/6.dead/1.Poisoned/12.png');
+        }, 2000);
+        this.world.playerHasLose();
+        return;
+    }
+
     bubbleAttack(){
-        this.checkInterval();
-
         let array = this.IMAGES_BUBBLE_ATTACK_ANIMATION;
+        this.checkInterval();
         this.charBubbleAttack(array);
-
         return;
     }
 
@@ -130,14 +120,11 @@ class Character extends MovableObject {
             this.throwInterval = this.world.setStoppableInterval(() => {
                 this.world.checkThrowObjects();
             }, 1000 / 60);
-
             if (i >= attackFrames) {
                 clearInterval(this.attackInterval);
                 this.attackInterval = null;
-
                 this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);
-            }
-        }, 100);
+            }}, 100);
     }
 
     charPoisoned() {
@@ -147,13 +134,11 @@ class Character extends MovableObject {
         this.poisonInterval = setInterval(() => {
             this.useAnimation(this.IMAGES_POISONED_HURT);
             i++;
-
             if (i >= poisonFrames) {
                 clearInterval(this.poisonInterval);
                 this.poisonInterval = null;
                 this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);
-            }
-        }, 200);
+            }}, 200);
     }
 
     moveAnimation() {
@@ -166,7 +151,6 @@ class Character extends MovableObject {
     charMoveRight() {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && !this.world.checkCollisionsWall()) {
             this.moveRight();
-
             this.otherDirection = false;
         }
         this.world.camera_x = -this.x;
@@ -175,7 +159,6 @@ class Character extends MovableObject {
     charMoveLeft() {
         if (this.world.keyboard.LEFT && this.x > 0) {
             this.moveLeft();
-
             this.otherDirection = true;
         }
         this.world.camera_x = -this.x;
@@ -194,7 +177,6 @@ class Character extends MovableObject {
 
     moveRight() {
         this.x += this.speed + this.characterSpeed;
-    
     }
 
     moveLeft() {
@@ -220,6 +202,7 @@ class Character extends MovableObject {
         this.pushImagesToArray('assets/1.Sharkie/5.Hurt/1.Poisoned/', '.png', this.IMAGES_POISONED_HURT, 5);
         this.pushImagesToArray('assets/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/', '.png', this.IMAGES_BUBBLE_ATTACK_ANIMATION, 7);
     }
+    
     loadAllImages() {
         this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION_LONG);
         this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION);

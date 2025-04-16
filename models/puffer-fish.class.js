@@ -56,7 +56,7 @@ class PufferFish extends MovableObject{
 
     orangeFish(){
         this.pushImagesToArray(`assets/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim`, '.png', this.IMAGES_ENEMY_ANIMATION, 5);
-        this.pushImagesToArray(`assets/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2. `, '.png', this.ENEMY_DEAD_IMAGES, 3);
+        this.pushImagesToArray(`assets/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2.`, '.png', this.ENEMY_DEAD_IMAGES, 3);
     }
 
     redFish(){

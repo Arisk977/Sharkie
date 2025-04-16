@@ -10,8 +10,9 @@ class Lifebar extends DrawableObject {
 
     percentage = 100;
 
-    constructor() {
+    constructor(x) {
         super();
+        this.x = x;
         this.loadMultipleImages(this.IMAGES_LIFEBAR);
         this.setPercentage(100, this.IMAGES_LIFEBAR);
     }

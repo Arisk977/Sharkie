@@ -6,8 +6,9 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
-    lifebar = new Lifebar();
+    lifebar = new Lifebar(30);
     coinbar = new Coinbar();
+    endbossLifebar;
     poisonbar = new Poisonbar();
     bubble = [];
     lastBubbleAttack = 0;
@@ -96,6 +97,9 @@ class World {
         this.addToMap(this.lifebar);
         this.addToMap(this.coinbar);
         this.addToMap(this.poisonbar);
+        if (this.endbossLifebar) {
+            this.addToMap(this.endbossLifebar);
+        }
 
         this.ctx.translate(this.camera_x, 0);
     }
@@ -125,8 +129,6 @@ class World {
             this.flipImage(imageObject);
         }
         imageObject.draw(this.ctx);
-        // imageObject.drawFrame(this.ctx);
-
         if (imageObject.otherDirection) {
             this.flipImageBack(imageObject);
         }
@@ -154,6 +156,7 @@ class World {
         this.removeWall();
         this.wallActive = false;
         this.speechBubble = new SpeechBubble(false);
+        this.endbossLifebar = new Lifebar(500);
         this.level.audio[0].pause();
         this.level.audio[10].loop = true;
         this.level.audio[10].play();
@@ -186,17 +189,21 @@ class World {
         }
 
         else if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(this.endboss))) {
-            this.endboss.endboss_life -= 30;
-            this.endbossHurt();
-            this.level.audio[6].playbackRate = 2;
-            this.level.audio[6].play();
-
-            if (this.endboss.endboss_life <= 0) {
-                this.endboss.endboss_life = 0;
-                this.endbossDead();
-            }
+          this.hitEndboss()
+          this.endbossLifebar.setPercentage(this.endboss.endboss_life, this.endbossLifebar.IMAGES_LIFEBAR);
         }
+    }
 
+    hitEndboss(){
+        this.endboss.endboss_life -= 20;
+        this.endbossHurt();
+        this.level.audio[6].playbackRate = 2;
+        this.level.audio[6].play();
+
+        if (this.endboss.endboss_life <= 0) {
+            this.endboss.endboss_life = 0;
+            this.endbossDead();
+        }
     }
 
     checkCollisionsEnemyAndChar() {
@@ -231,7 +238,6 @@ class World {
                 this.bubble.pop();
             }
         })
-
     }
 
 
@@ -281,17 +287,15 @@ class World {
                 if (i >= hurtFrames) {
                     clearInterval(this.hurtAnimationInterval);
                     this.hurtAnimationInterval = null;
-                }
-            }, 1000 / 30);
-        }
+                } 
+            }, 1000 / 30); }
     }
 
     endbossDead() {
         clearInterval(this.hurtAnimationInterval);
-        this.hurtAnimationInterval = null;
         let i = 0;
         let deadFrames = this.endboss.IMAGES_ENDBOSS_DEAD.length;
-
+        this.hurtAnimationInterval = null;
         this.endbossDeadIntervall = this.setStoppableInterval(() => {
             this.endboss.useAnimation(this.endboss.IMAGES_ENDBOSS_DEAD);
             this.keyboard = '';
@@ -299,9 +303,8 @@ class World {
             i++
             if (i >= deadFrames) {
                 this.endboss.loadImage('assets/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png')
-                this.playerHasWon();
-            }
-        }, 100)
+                this.playerHasWon(); } 
+            }, 100)
     }
 
     playerHasWon() {

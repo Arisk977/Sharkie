@@ -80,7 +80,7 @@ menuOverlay.innerHTML = impressumTemp();
 
 
 function gamepadVisibility() {
-    const visibilityBtn = document.getElementById('btn-visibility');
+    const visibilityBtn = document.getElementById('btn-impressum');
    
     visibilityBtn.addEventListener('click', () => {
         toggleVisibility();
