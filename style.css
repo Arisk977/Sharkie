@@ -128,8 +128,15 @@ canvas{
     justify-content: space-around;
     align-items: center;
     position: fixed;
-    left: 40%;
-    top: 53%;
+    left: 42%;
+    top: 50%;
+}
+
+.win-screen{
+    flex-direction: row !important;
+    top: 60% !important;
+    left: 34% !important;
+    gap: 20px;
 }
 
 #try-again{
@@ -139,7 +146,7 @@ canvas{
 
 #back-to-menu{
     width: 240px;
-    height: 160px;
+    height: 170px;
 }
 
 .animated-tryagain {
@@ -153,7 +160,7 @@ canvas{
 }
 
 .animated-menu {
-    background-size: 240px 160px;
+    background-size: 240px 170px;
     background-position: center;
     animation: changeMenu 2s infinite;
   }
@@ -206,12 +213,12 @@ canvas{
 }
 
 #start{
-    width: 300px;
+    width: 250px;
 }
 
 #controls{
-    width: 325px;
-    height: 250px;
+    width: 280px;
+    height: 220px;
     margin-top: 0px;
 }
 
@@ -247,6 +254,33 @@ canvas{
     border-radius: 12px;
     box-shadow: 0 0 5px #000;
     margin: 5px;
+}
+
+button{
+    width: 50px;
+}
+
+#impressum{
+    color: white;
+    font-family: 'LuckiestGuy';
+    -webkit-text-stroke: 0.5px;
+    -webkit-text-stroke-color: black;
+}
+
+h4{
+    font-size: 30px;
+    color: wheat;
+    margin-bottom: -10px;
+}
+
+a{
+    color: aqua;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: solid underline;
+    text-decoration-color: aqua;
 }
 
 /* D-Pad links unten */

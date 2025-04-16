@@ -6,5 +6,6 @@ class YouWin extends MovableObject{
         this.x = x;
         this.y= 480 - this.height;
         this.addEndscreenButton();
+        this.addWinClass()
     }
 }

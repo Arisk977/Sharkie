@@ -1,8 +1,8 @@
 let level1;
 function levelInit(){
     level1 = new Level(
-        [new PufferFishGreen(), new PufferFishGreen(), new PufferFishGreen(), new PufferFishGreen(), new PufferFishOrange(), new PufferFishOrange(),
-        new PufferFishRed(), new PufferFishRed(), new PufferFishRed(), new PufferFishRed(), new PufferFishRed(), new JellyFish(600, 'pink'), new JellyFish(800, 'violett'), new JellyFish(1200, 'yellow'), 
+        [new PufferFish('green'), new PufferFish('green'), new PufferFish('green'), new PufferFish('green'), new PufferFish('orange'), new PufferFish('orange'),
+        new PufferFish('red'), new PufferFish('red'), new PufferFish('red'), new PufferFish('red'), new PufferFish('red'), new JellyFish(600, 'pink'), new JellyFish(800, 'violett'), new JellyFish(1200, 'yellow'), 
         new JellyFish(1600, 'pink'), new JellyFish(2000, 'green'), new JellyFish(2400, 'violett'), new JellyFish(3000, 'yellow')
         ],
         [

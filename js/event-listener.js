@@ -1,6 +1,5 @@
 let isFullscreen = false;
-let isVisible = true;
-let isMuted = false;
+let isMuted = JSON.parse(localStorage.getItem("isMuted")) || false;
 
 function eventListener(){
     setupGamepadButtons();
@@ -55,35 +54,12 @@ function openFullscreen(elem) {
  
   function toggleFullscreen() {
     if (!isFullscreen) {
-        fullscreen(); // Deine eigene fullscreen()-Funktion
+        fullscreen();
         isFullscreen = true;
     } else if(isFullscreen) {
         document.exitFullscreen();
         isFullscreen = false;
     }
-}
-
-function toggleMute(muteBtn) {
-    isMuted = !isMuted;
-    if (menuAudio) menuAudio.muted = isMuted;
-    if (clickSound) clickSound.muted = isMuted;
-
-    muteBtn.textContent = isMuted ? '🔇' : '🔊';
-    if (typeof world !== 'undefined' && world.level.audio) {
-        world.level.audio.forEach(audio => {
-            audio.muted = isMuted;
-        });
-    }
-    
-}
-
-function toggleVisibility(visibilityBtn) {
-    isVisible = !isVisible;
-    const dpad = document.getElementById('dpad');
-    const actions = document.getElementById('actions');
-    dpad.style.display = isVisible ? 'flex' : 'none';
-    actions.style.display = isVisible ? 'flex' : 'none';
-    visibilityBtn.textContent = isVisible ? '👁️' : '🚫';
 }
 
 function fullscreenEventListener() {
@@ -97,16 +73,36 @@ function fullscreenEventListener() {
     }, { passive: false });
 }
 
+function toggleVisibility() {
+let menuOverlay = document.getElementById('menu-overlay');
+menuOverlay.innerHTML = impressumTemp();
+}
+
+
 function gamepadVisibility() {
     const visibilityBtn = document.getElementById('btn-visibility');
    
     visibilityBtn.addEventListener('click', () => {
-        toggleVisibility(visibilityBtn);
+        toggleVisibility();
     });
     visibilityBtn.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        toggleVisibility(visibilityBtn);
+        toggleVisibility();
     }, { passive: false });
+}
+
+function toggleMute(muteBtn) {
+    isMuted = !isMuted;
+    localStorage.setItem("isMuted", JSON.stringify(isMuted));
+    if (menuAudio) menuAudio.muted = isMuted;
+    if (clickSound) clickSound.muted = isMuted;
+
+    muteBtn.textContent = isMuted ? '🔇' : '🔊';
+    if (typeof world !== 'undefined' && world.level.audio) {
+        world.level.audio.forEach(audio => {
+            audio.muted = isMuted;
+        });
+    }
 }
 
 function audioMuteEventListener() {
@@ -121,5 +117,22 @@ function audioMuteEventListener() {
     }, { passive: false });
 }
 
+window.addEventListener("DOMContentLoaded", () => {
+    const muteBtn = document.getElementById('btn-mute');
+
+    if (muteBtn) {
+        // Button-Zustand setzen
+        muteBtn.textContent = isMuted ? '🔇' : '🔊';
+    }
+
+    if (menuAudio) menuAudio.muted = isMuted;
+    if (clickSound) clickSound.muted = isMuted;
+
+    if (typeof world !== 'undefined' && world.level.audio) {
+        world.level.audio.forEach(audio => {
+            audio.muted = isMuted;
+        });
+    }
+});
 
 

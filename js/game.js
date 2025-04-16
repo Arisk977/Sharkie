@@ -93,15 +93,15 @@ function backToMenu(){
     if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
         if(gamepadRef) gamepadRef.classList.add('d_none');
       }
+    endscreenRef.classList.remove('win-screen');  
     menu.classList.remove('d_none');
     endscreenRef.classList.add('d_none');  
-    setTimeout(()=>{
-        playMenuAudio();
-    }, 500);
+    touchDisplay();
 }
 
 function restartGame() {   
     let endscreenRef = document.getElementById('endscreen');
+    endscreenRef.classList.remove('win-screen'); 
     if (world) {
         world.stopGameInterval();
     }

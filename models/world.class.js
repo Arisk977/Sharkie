@@ -20,17 +20,30 @@ class World {
     speechBubble = new SpeechBubble(false);
     youwin;
     youlose;
-    isMuted= false;
+    isMuted;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.isMuted = JSON.parse(localStorage.getItem("isMuted")) || false;
+        this.applyMuteState()
         this.character = new Character(this);
         this.endboss = new Endboss(this.character, this);
         this.setWorld();
         this.run();
         this.draw();
+    }
+
+    applyMuteState() {
+        if (menuAudio) menuAudio.muted = this.isMuted;
+        if (clickSound) clickSound.muted = this.isMuted;
+    
+        if (this.level && this.level.audio) {
+            this.level.audio.forEach(audio => {
+                audio.muted = this.isMuted;
+            });
+        }
     }
 
     run() {
@@ -298,7 +311,7 @@ class World {
         this.stopAudio();
 
         setTimeout(() => {
-            this.level.audio[11].muted = false;
+            this.level.audio[3].muted = true;
             this.level.audio[11].play();
             this.youwin = new YouWin(this.character.x);
             this.drawEndScreen(this.youwin);
@@ -310,7 +323,7 @@ class World {
         this.stopAudio()
 
         setTimeout(() => {
-            this.level.audio[12].muted = false;
+            this.level.audio[3].muted = true;
             this.level.audio[12].play();
             this.youlose = new YouLose(this.character.x);
             this.drawEndScreen(this.youlose);
@@ -318,9 +331,8 @@ class World {
     }
 
     stopAudio() {
-        this.isMuted = !this.isMuted;
         this.level.audio.forEach(audio => {
-            audio.muted = this.isMuted;
+            audio.pause();
         });
     }
 

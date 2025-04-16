@@ -82,5 +82,10 @@ class DrawableObject {
         let endscreenRef = document.getElementById('endscreen');
         endscreenRef.classList.remove('d_none');
     }
+
+    addWinClass(){
+        let endscreenRef = document.getElementById('endscreen');
+        endscreenRef.classList.add('win-screen');
+    }
     
 }
