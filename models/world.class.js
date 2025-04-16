@@ -498,5 +498,4 @@ class World {
         this.endboss.intervalIds.forEach(clearInterval);
         this.endboss.intervalIds = [];
     }
-
 }
