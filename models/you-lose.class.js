@@ -18,6 +18,10 @@ class YouLose extends MovableObject{
         this.addEndscreenButton();
     }
 
+    /**
+ * Starts the game over animation by cycling through the images in `IMAGES_GAMEOVER`
+ * at a fixed interval.
+ */
     animate(){
         this.setStoppableInterval(() => this.useAnimation(this.IMAGES_GAMEOVER), 400);
     }

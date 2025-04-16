@@ -13,6 +13,10 @@ class BubbleAttack extends MovableObject {
         this.attack();
     }
 
+    /**
+ * Executes the attack action. Determines the direction of the attack
+ * (left or right) based on the character's facing direction.
+ */
     attack() {
         if (this.otherDirection === false) {
             this.setStoppableInterval(() => this.applyThrowBubbleRight(), 1000 / 60);
@@ -22,6 +26,10 @@ class BubbleAttack extends MovableObject {
         }
     }
 
+    /**
+ * Applies the throw bubble action to the right. This method moves the character
+ * to the right and reduces the speed of the throw with each call (simulating the throw's distance decrease).
+ */
     applyThrowBubbleRight() {
         if (this.speedX >= 0) {
             this.x += this.speedX;
@@ -29,6 +37,10 @@ class BubbleAttack extends MovableObject {
         }
     }
 
+    /**
+ * Applies the throw bubble action to the left. This method moves the character
+ * to the left and reduces the speed of the throw with each call (simulating the throw's distance decrease).
+ */
     applyThrowBubbleLeft() {
         if (this.speedX >= 0) {
             this.x -= this.speedX;

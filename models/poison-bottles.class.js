@@ -1,4 +1,4 @@
-class PoisonBottles extends MovableObject{
+class PoisonBottles extends MovableObject {
     IMAGES_POISON_BOTTLES = [
         'assets/4. Marcadores/Posión/Animada/1.png',
         'assets/4. Marcadores/Posión/Animada/2.png',
@@ -7,7 +7,7 @@ class PoisonBottles extends MovableObject{
         'assets/4. Marcadores/Posión/Animada/5.png',
         'assets/4. Marcadores/Posión/Animada/6.png',
         'assets/4. Marcadores/Posión/Animada/7.png',
-        'assets/4. Marcadores/Posión/Animada/8.png'        
+        'assets/4. Marcadores/Posión/Animada/8.png'
     ]
     offset = {
         top: 0,
@@ -16,17 +16,22 @@ class PoisonBottles extends MovableObject{
         bottom: 0
     };
 
-    constructor(){
+    constructor() {
         super().loadImage('assets/4. Marcadores/Posión/Animada/1.png');
         this.loadMultipleImages(this.IMAGES_POISON_BOTTLES);
         this.height = 50;
         this.width = 40;
-        this.x = 750 + Math.random()*2600;
-        this.y = 50 + Math.random()*350;
+        this.x = 750 + Math.random() * 2600;
+        this.y = 50 + Math.random() * 350;
         this.animate();
     }
 
-    animate(){
-        this.setStoppableInterval( () => this.useAnimation(this.IMAGES_POISON_BOTTLES), 120);
+    /**
+  * Starts the poison bottle animation by cycling through `IMAGES_POISON_BOTTLES`.
+  * The animation frame is updated every 120 milliseconds using a stoppable interval.
+  */
+    animate() {
+        this.setStoppableInterval(() => this.useAnimation(this.IMAGES_POISON_BOTTLES), 120);
     }
+
 }
