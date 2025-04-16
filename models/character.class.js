@@ -1,6 +1,5 @@
 class Character extends MovableObject {
     IMAGES_CHARACTER_ANIMATION = [];
-    IMAGES_CHARACTER_ANIMATION_LONG = [];
     IMAGES_DEAD = [];
     IMAGES_POISONED_HURT = [];
     IMAGES_BUBBLE_ATTACK_ANIMATION = [];
@@ -287,13 +286,12 @@ class Character extends MovableObject {
  * by pushing image paths into respective arrays based on the file naming conventions and expected count.
  */
     getCharacterImagesIntoArray() {
-        this.pushImagesToArray(`assets/1.Sharkie/1.IDLE/`, '.png', this.IMAGES_CHARACTER_ANIMATION, 12);
-        this.pushImagesToArray('assets/1.Sharkie/2.Long_IDLE/i', '.png', this.IMAGES_CHARACTER_ANIMATION_LONG, 14);
-        this.pushImagesToArray('assets/1.Sharkie/3.Swim/', '.png', this.IMAGES_SWIM, 6);
-        this.pushImagesToArray('assets/1.Sharkie/4.Attack/Bubble trap/For Whale/', '.png', this.IMAGES_POISONED_BUBBLES, 8);
-        this.pushImagesToArray('assets/1.Sharkie/6.dead/1.Poisoned/', '.png', this.IMAGES_DEAD, 12);
-        this.pushImagesToArray('assets/1.Sharkie/5.Hurt/1.Poisoned/', '.png', this.IMAGES_POISONED_HURT, 5);
-        this.pushImagesToArray('assets/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/', '.png', this.IMAGES_BUBBLE_ATTACK_ANIMATION, 7);
+        this.pushImagesToArray(`./assets/1.Sharkie/1.IDLE/`, '.png', this.IMAGES_CHARACTER_ANIMATION, 12);
+        this.pushImagesToArray('./assets/1.Sharkie/3.Swim/', '.png', this.IMAGES_SWIM, 6);
+        this.pushImagesToArray('./assets/1.Sharkie/4.Attack/Bubble trap/For Whale/', '.png', this.IMAGES_POISONED_BUBBLES, 8);
+        this.pushImagesToArray('./assets/1.Sharkie/6.dead/1.Poisoned/', '.png', this.IMAGES_DEAD, 12);
+        this.pushImagesToArray('./assets/1.Sharkie/5.Hurt/1.Poisoned/', '.png', this.IMAGES_POISONED_HURT, 5);
+        this.pushImagesToArray('./assets/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/', '.png', this.IMAGES_BUBBLE_ATTACK_ANIMATION, 7);
     }
     
     /**
@@ -301,7 +299,6 @@ class Character extends MovableObject {
  * for each animation array (e.g., idle, swimming, attack, etc.).
  */
     loadAllImages() {
-        this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION_LONG);
         this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION);
         this.loadMultipleImages(this.IMAGES_SWIM);
         this.loadMultipleImages(this.IMAGES_POISONED_BUBBLES);
