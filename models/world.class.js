@@ -69,21 +69,18 @@ class World {
  */
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-
         this.ctx.translate(this.camera_x, 0);
-        this.addObjectstToMap(this.level.backgroundObjects);
-        this.addObjectstToMap(this.level.coins);
-        this.addObjectstToMap(this.level.poisonBottles);
-        this.addToMap(this.character);
-        this.addObjectstToMap(this.bubble);
-        this.addObjectstToMap(this.level.enemies);
-        this.addObjectstToMap(this.level.wall);
-        this.addToMap(this.endboss);
+        this.character.addObjectstToMap(this.level.backgroundObjects);
+        this.character.addObjectstToMap(this.level.coins);
+        this.character.addObjectstToMap(this.level.poisonBottles);
+        this.character.addToMap(this.character);
+        this.character.addObjectstToMap(this.bubble);
+        this.character.addObjectstToMap(this.level.enemies);
+        this.character.addObjectstToMap(this.level.wall);
+        this.character.addToMap(this.endboss);
         this.immutableObjects();
         this.speechBubble?.draw(this.ctx);
-
         this.ctx.translate(-this.camera_x, 0);
-
         requestAnimationFrame(() => this.draw());
     }
 
@@ -96,16 +93,14 @@ class World {
  */
     drawEndScreen(endscreen) {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-
         this.ctx.translate(this.camera_x, 0);
-        this.addObjectstToMap(this.level.backgroundObjects);
-        this.addObjectstToMap(this.level.coins);
-        this.addObjectstToMap(this.level.poisonBottles);
-        this.addObjectstToMap(this.level.enemies);
-        this.addToMap(this.endboss);
-        this.addToMap(endscreen);
+        this.character.addObjectstToMap(this.level.backgroundObjects);
+        this.character.addObjectstToMap(this.level.coins);
+        this.character.addObjectstToMap(this.level.poisonBottles);
+        this.character.addObjectstToMap(this.level.enemies);
+        this.character.addToMap(this.endboss);
+        this.character.addToMap(endscreen);
         this.ctx.translate(-this.camera_x, 0);
-
         requestAnimationFrame(() => this.drawEndScreen(endscreen));
     }
 
@@ -116,13 +111,10 @@ class World {
     immutableObjects() {
         this.ctx.translate(-this.camera_x, 0);
         this.writeText();
-        this.addToMap(this.lifebar);
-        this.addToMap(this.coinbar);
-        this.addToMap(this.poisonbar);
-        if (this.endbossLifebar) {
-            this.addToMap(this.endbossLifebar);
-        }
-
+        this.character.addToMap(this.lifebar);
+        this.character.addToMap(this.coinbar);
+        this.character.addToMap(this.poisonbar);
+        if (this.endbossLifebar) {this.character.addToMap(this.endbossLifebar);}
         this.ctx.translate(this.camera_x, 0);
     }
 
@@ -133,7 +125,6 @@ class World {
         this.ctx.fillStyle = 'white';
         this.ctx.strokeStyle = 'black';
         this.ctx.lineWidth = 3;
-
         this.ctx.font = 'bold 40px LuckiestGuy';
         this.ctx.strokeText(`${this.collectedCoins}`, 100, 170);
         this.ctx.fillText(`${this.collectedCoins}`, 100, 170);
@@ -144,33 +135,6 @@ class World {
  */
     setWorld() {
         this.character.animate();
-    }
-
-    /**
- * Adds a list of objects to the map by calling `addToMap` for each object in the provided array.
- * 
- * @param {Array} objects Array of objects to be added to the map.
- */
-    addObjectstToMap(objects) {
-        objects.forEach(o => {
-            this.addToMap(o);
-        })
-    }
-
-    /**
- * Adds a single image object to the map. If the object has a `otherDirection` property, the image will be flipped
- * before drawing, and flipped back afterward.
- * 
- * @param {Object} imageObject The object to be added to the map, which should have a `draw` method.
- */
-    addToMap(imageObject) {
-        if (imageObject.otherDirection) {
-            this.flipImage(imageObject);
-        }
-        imageObject.draw(this.ctx);
-        if (imageObject.otherDirection) {
-            this.flipImageBack(imageObject);
-        }
     }
 
     /**
@@ -186,9 +150,7 @@ class World {
                 this.level.audio[1].play();
                 this.collectedCoins++;
                 this.draw();
-            }
-        })
-
+            }})
         if (this.level.coins.length === 0 && !this.wallClearingStarted) {
             this.unlockBossStage();
         }
@@ -420,7 +382,6 @@ class World {
         this.endbossDeadIntervall = null;
         this.stopGameInterval();
         this.stopAudio();
-
         setTimeout(() => {
             this.level.audio[3].muted = true;
             this.level.audio[11].play();
@@ -453,26 +414,7 @@ class World {
         });
     }
 
-    /**
- * Flips the given image object horizontally by saving the current drawing state, translating and scaling the context, 
- * and then adjusting the object's x-coordinate.
- * @param {object} imageObject - The object containing the image to be flipped.
- */
-    flipImage(imageObject) {
-        this.ctx.save();
-        this.ctx.translate(imageObject.width, 0);
-        this.ctx.scale(-1, 1);
-        imageObject.x = imageObject.x * -1;
-    }
 
-    /**
- * Restores the drawing context after an image has been flipped and adjusts the object's x-coordinate back to its original position.
- * @param {object} imageObject - The object containing the image to be flipped back.
- */
-    flipImageBack(imageObject) {
-        this.ctx.restore();
-        imageObject.x = imageObject.x * -1;
-    }
 
     /**
  * Sets an interval that can be stopped later. The interval ID is stored in the intervalIds array.

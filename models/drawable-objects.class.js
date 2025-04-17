@@ -158,4 +158,51 @@ class DrawableObject {
         endscreenRef.classList.add('win-screen');
     }
     
+        /**
+ * Flips the given image object horizontally by saving the current drawing state, translating and scaling the context, 
+ * and then adjusting the object's x-coordinate.
+ * @param {object} imageObject - The object containing the image to be flipped.
+ */
+        flipImage(imageObject) {
+            this.world.ctx.save();
+            this.world.ctx.translate(imageObject.width, 0);
+            this.world.ctx.scale(-1, 1);
+            imageObject.x = imageObject.x * -1;
+        }
+    
+        /**
+     * Restores the drawing context after an image has been flipped and adjusts the object's x-coordinate back to its original position.
+     * @param {object} imageObject - The object containing the image to be flipped back.
+     */
+        flipImageBack(imageObject) {
+            this.world.ctx.restore();
+            imageObject.x = imageObject.x * -1;
+        }
+
+           /**
+ * Adds a list of objects to the map by calling `addToMap` for each object in the provided array.
+ * 
+ * @param {Array} objects Array of objects to be added to the map.
+ */
+    addObjectstToMap(objects) {
+        objects.forEach(o => {
+            this.addToMap(o);
+        })
+    }
+
+    /**
+ * Adds a single image object to the map. If the object has a `otherDirection` property, the image will be flipped
+ * before drawing, and flipped back afterward.
+ * 
+ * @param {Object} imageObject The object to be added to the map, which should have a `draw` method.
+ */
+    addToMap(imageObject) {
+        if (imageObject.otherDirection) {
+            this.flipImage(imageObject);
+        }
+        imageObject.draw(this.world.ctx);
+        if (imageObject.otherDirection) {
+            this.flipImageBack(imageObject);
+        }
+    }
 }

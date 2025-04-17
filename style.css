@@ -73,6 +73,12 @@ canvas{
     height: 100vh;
 }
 
+:fullscreen #ui-buttons{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
 :fullscreen canvas{
     width: 100%;
     height: 100vh;
@@ -85,7 +91,7 @@ canvas{
     width: 100vw;
     height: 100vh;
     background-color: rgba(199, 197, 197, 0.642);
-    z-index: 9999;
+    z-index: 11;
 }
 
 #screen-rotation {
@@ -128,14 +134,14 @@ canvas{
     justify-content: space-around;
     align-items: center;
     position: fixed;
-    left: 42%;
+    left: 44%;
     top: 50%;
 }
 
 .win-screen{
     flex-direction: row !important;
     top: 60% !important;
-    left: 34% !important;
+    left: 43% !important;
     gap: 20px;
 }
 
@@ -246,8 +252,8 @@ canvas{
 
 /* Gemeinsamer Button-Stil */
 .btn {
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
     font-size: 18px;
     background-color: rgba(255, 255, 255, 0.7);
     border: none;
@@ -286,12 +292,12 @@ a:hover{
 /* D-Pad links unten */
 #dpad {
     position: absolute;
-    bottom: 40px;
-    left: 40px;
+    bottom: 30%;
+    left: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 99;
+    z-index: 10;
 }
 
 #dpad .horizontal {
@@ -305,21 +311,19 @@ a:hover{
 
 #actions {
     position: absolute;
-    bottom: 40px;
-    right: 40px;
+    bottom: 30%;
+    right: 30%;
     display: flex;
     gap: 10px;
-    z-index: 999;
+    z-index: 10;
 }
 
 
 #ui-buttons {
-    position: absolute;
-    top: 10px;
-    right: 10px;
     display: flex;
     gap: 10px;
-    z-index: 99;
+    z-index: 11;
+    justify-content: flex-end;
 }
 
 .ui-btn {
@@ -345,9 +349,51 @@ button, .gamepad-button, #dpad, #actions {
     touch-action: none;
 }
 
+@media(max-width: 1600px){
+    .win-screen{
+        left: 42% !important;
+    }
+}
+
+@media(max-width: 1400px){
+    .win-screen{
+        left: 40% !important;
+    }
+}
+
+@media(max-width: 1200px){
+    #dpad {
+        bottom: 25%;
+        left: 25%;
+    }
+    #actions {
+        bottom: 25%;
+        right: 25%;
+    }
+}
+
+@media(max-width: 1100px){
+    .win-screen{
+        left: 38% !important;
+    }
+}
+
 @media(max-width: 1050px){
     #endscreen{
         left: 38%;
+    }
+
+    #dpad {
+        left: 23%;
+    }
+    #actions {
+        right: 23%;
+    }
+}
+
+@media(max-width: 900px){
+    .win-screen{
+        left: 36% !important;
     }
 }
 
@@ -355,6 +401,11 @@ button, .gamepad-button, #dpad, #actions {
     #endscreen{
         left: 35%;
     }
+   
+    .win-screen{
+        left: 34% !important;
+    }
+    
 }
 
 @media(max-width: 720px){
@@ -362,20 +413,26 @@ button, .gamepad-button, #dpad, #actions {
         left: 33%;
     }
     #try-again{
-        width: 180px;
-        height: 60px;
+        width: 120px;
+        height: 50px;
     }
     .animated-tryagain {
-        background-size: 180px 60px;
+        background-size: 120px 50px;
     }
 
     #back-to-menu{
-        width: 200px;
-        height: 140px;
+        width: 140px;
+        height: 130px;
     }
 
     .animated-menu {
-        background-size: 200px 140px;
+        background-size: 140px 130px;
+    }
+    #dpad {
+        left: 15%;
+    }
+    #actions {
+        right: 15%;
     }
 }
 
@@ -412,6 +469,25 @@ button, .gamepad-button, #dpad, #actions {
         left: 30%;
         top: 50%;
     }
+
+    #try-again{
+        width: 120px;
+        height: 50px;
+    }
+    .animated-tryagain {
+        background-size: 120px 50px;
+    }
+
+    #back-to-menu{
+        width: 140px;
+        height: 130px;
+    }
+
+    .animated-menu {
+        background-size: 140px 130px;
+    }
+
+    
     #back{
         margin-left: -200px;
     }
@@ -470,6 +546,12 @@ button, .gamepad-button, #dpad, #actions {
     }
     h3{
         padding-top: 150px;
+    }
+    #dpad {
+        bottom: 10% !important;
+    }
+    #actions {
+        bottom: 10% !important;
     }
 }
 
