@@ -35,20 +35,14 @@ class World {
         this.run();
         this.draw();
     }
-
 /**
  * Applies the mute state to all audio elements in the game, including background music and sound effects.
  */
     applyMuteState() {
         if (menuAudio) menuAudio.muted = this.isMuted;
         if (clickSound) clickSound.muted = this.isMuted;
-        if (this.level && this.level.audio) {
-            this.level.audio.forEach(audio => {
-                audio.muted = this.isMuted;
-            });
-        }
+        if (this.level && this.level.audio) {this.level.audio.forEach(audio => {audio.muted = this.isMuted; });}
     }
-
     /**
  * Sets up and starts various game interval checks for collisions with enemies, coins, poison bottles, 
  * and walls, as well as checking for the endboss collision.
@@ -61,7 +55,6 @@ class World {
         this.setStoppableInterval(() => this.checkCollisionsBubbleWithWall(), 1000 / 60);
         this.setStoppableInterval(() => this.checkCollisionsEndboss(), 1000);
     }
-
     /**
  * Clears the canvas and redraws the game objects, including the background, character, enemies, and 
  * other elements like the speech bubble, lifebar, and coinbar.
@@ -83,7 +76,6 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
         requestAnimationFrame(() => this.draw());
     }
-
     /**
  * Clears the canvas and redraws the end screen, including the background, character, enemies, and 
  * end screen elements.
@@ -103,7 +95,6 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
         requestAnimationFrame(() => this.drawEndScreen(endscreen));
     }
-
     /**
  * Draws immutable game objects, such as the lifebar, coinbar, poisonbar, and endboss lifebar (if present).
  * Also writes the collected coin text on the screen.
@@ -117,7 +108,6 @@ class World {
         if (this.endbossLifebar) {this.character.addToMap(this.endbossLifebar);}
         this.ctx.translate(this.camera_x, 0);
     }
-
     /**
  * Writes the collected coin count on the screen with a white text and black stroke.
  */
@@ -129,14 +119,12 @@ class World {
         this.ctx.strokeText(`${this.collectedCoins}`, 100, 170);
         this.ctx.fillText(`${this.collectedCoins}`, 100, 170);
     }
-
     /**
  * Updates the world by animating the character.
  */
     setWorld() {
         this.character.animate();
     }
-
     /**
  * Checks for collisions between the character and the coins in the current level. If a collision is detected,
  * the coin is removed from the level, the sound effect is played, and the collected coins count is incremented.
@@ -155,7 +143,6 @@ class World {
             this.unlockBossStage();
         }
     }
-
     /**
  * Unlocks the boss stage by clearing the wall, starting the boss fight music, and creating necessary objects like
  * the endboss lifebar and speech bubble. It also pauses the current background audio.
@@ -171,18 +158,14 @@ class World {
         this.level.audio[10].loop = true;
         this.level.audio[10].play();
     }
-
     /**
  * Checks for collisions between the character and any walls in the level.
  * 
  * @returns {boolean} Returns true if the character is colliding with any wall, otherwise false.
  */
     checkCollisionsWall() {
-        return this.level.wall.some((wall) => {
-            return this.character.isColliding(wall);
-        });
+        return this.level.wall.some((wall) => {return this.character.isColliding(wall)});
     }
-
 /**
  * Checks for collisions between the character and the poison bottles in the current level. If a collision is detected
  * and the character's poison level is less than 100, the poison bottle is collected and the character's poison level
@@ -200,7 +183,6 @@ class World {
             }
         })
     }
-
     /**
  * Checks for collisions between the character and the endboss. If the character collides with the endboss,
  * the character receives damage and the lifebar is updated. If a bubble collides with the endboss, it triggers 
@@ -211,13 +193,11 @@ class World {
             this.character.hit();
             this.lifebar.setPercentage(this.character.life, this.lifebar.IMAGES_LIFEBAR);
         }
-
         else if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(this.endboss))) {
           this.hitEndboss()
           this.endbossLifebar.setPercentage(this.endboss.endboss_life, this.endbossLifebar.IMAGES_LIFEBAR);
         }
     }
-
     /**
  * Reduces the endboss's life by 20 and plays a hurt sound. If the endboss's life reaches 0 or less, 
  * it triggers the endboss death sequence.
@@ -227,13 +207,11 @@ class World {
         this.endbossHurt();
         this.level.audio[6].playbackRate = 2;
         this.level.audio[6].play();
-
         if (this.endboss.endboss_life <= 0) {
             this.endboss.endboss_life = 0;
             this.endbossDead();
         }
     }
-
     /**
  * Checks for collisions between the character and the enemies in the level. If a collision is detected and 
  * the enemy has life remaining, the character is damaged and the lifebar is updated.
@@ -246,7 +224,6 @@ class World {
             }
         })
     }
-
     /**
  * Checks for collisions between the enemies and the bubbles. If a bubble collides with an enemy, the bubble 
  * is removed, and the enemy is killed. After a short delay, the enemy is removed from the level.
@@ -266,7 +243,6 @@ class World {
             });
         });
     }
-
 /**
  * Checks for collisions between the bubbles and the walls. If a bubble collides with a wall, the bubble is removed.
  */
@@ -277,7 +253,6 @@ class World {
             }
         })
     }
-
 /**
  * Checks for user input to throw bubbles or poison bubbles. If the spacebar is pressed and the cooldown period 
  * has passed, a regular bubble is thrown. If the 'D' key is pressed and the character has enough poison, 
@@ -295,7 +270,6 @@ class World {
             this.bubble.shift();
         }
     }
-
     /**
  * Creates and throws a poison bubble attack from the character. The poison bubble is added to the bubble array, 
  * and the corresponding audio is played. The last bubble attack time is updated.
@@ -307,7 +281,6 @@ class World {
         this.bubble.push(poisonAttack);
         this.lastBubbleAttack = now;
     }
-
 /**
  * Creates and throws a regular bubble attack from the character. The bubble is added to the bubble array, 
  * and the corresponding audio is played. The last bubble attack time is updated.
@@ -319,7 +292,6 @@ class World {
         this.bubble.push(bubbleAttack);
         this.lastBubbleAttack = now;
     }
-
     /**
  * Removes the first wall from the level's wall array and continues removing walls at a set interval. 
  * The wall removal will stop once no walls remain in the array.
@@ -330,7 +302,6 @@ class World {
             setTimeout(() => this.removeWall(), 200);
         }
     }
-
     /**
  * Handles the hurt animation of the endboss. If the hurt animation is not already running, it starts an interval 
  * to display the hurt frames. Each time the animation frame changes, a bubble is popped from the array. 
@@ -340,7 +311,6 @@ class World {
         if (!this.hurtAnimationInterval) {
             let i = 0;
             let hurtFrames = this.endboss.IMAGES_ENDBOSS_HURT.length;
-
             this.hurtAnimationInterval = this.setStoppableInterval(() => {
                 this.endboss.useAnimation(this.endboss.IMAGES_ENDBOSS_HURT);
                 this.bubble.pop();
@@ -348,10 +318,8 @@ class World {
                 if (i >= hurtFrames) {
                     clearInterval(this.hurtAnimationInterval);
                     this.hurtAnimationInterval = null;
-                } 
-            }, 1000 / 30); }
+                }}, 1000 / 30); }
     }
-
     /**
  * Handles the death animation of the endboss. If the death animation is not already running, it starts an interval 
  * to display the death frames. Each time the animation frame changes, a bubble is popped from the array. 
@@ -372,7 +340,6 @@ class World {
                 this.playerHasWon(); } 
             }, 100)
     }
-
     /**
  * Handles the player's victory after the endboss dies. It stops the game intervals and audio, and then displays 
  * the "You Win" screen after a short delay.
@@ -389,14 +356,12 @@ class World {
             this.drawEndScreen(this.youwin);
         }, 1000)
     }
-
     /**
  * Handles the player's loss. It stops the game intervals and audio, and then displays the "You Lose" screen after a short delay.
  */
     playerHasLose() {
         this.stopGameInterval();
         this.stopAudio()
-
         setTimeout(() => {
             this.level.audio[3].muted = true;
             this.level.audio[12].play();
@@ -404,7 +369,6 @@ class World {
             this.drawEndScreen(this.youlose);
         }, 1000)
     }
-
     /**
  * Stops all audio that is currently playing in the level.
  */
@@ -413,9 +377,6 @@ class World {
             audio.pause();
         });
     }
-
-
-
     /**
  * Sets an interval that can be stopped later. The interval ID is stored in the intervalIds array.
  * @param {function} fn - The function to be executed at regular intervals.
@@ -428,7 +389,6 @@ class World {
         this.intervalIds.push(id);
         return id;
     }
-
     /**
  * Stops all active intervals for the game, character, and endboss by clearing each interval ID.
  */
