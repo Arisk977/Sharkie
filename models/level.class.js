@@ -1,13 +1,13 @@
-class Level{
+class Level {
     enemies;
     backgroundObjects;
     coins;
     audio;
     poisonBottles;
     wall;
-    level_end_x = 720*5 - 20;
-    
-    constructor(enemies, backgroundObjects, coins, poisonBottles, audio, wall){
+    level_end_x = 720 * 5 - 20;
+
+    constructor(enemies, backgroundObjects, coins, poisonBottles, audio, wall) {
         this.enemies = enemies;
         this.backgroundObjects = backgroundObjects;
         this.coins = coins;

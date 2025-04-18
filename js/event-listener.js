@@ -5,7 +5,7 @@ let isMuted = JSON.parse(localStorage.getItem("isMuted")) || false;
  * Initializes all necessary event listeners for gamepad controls, fullscreen toggle,
  * impressum visibility, and audio mute functionality.
  */
-function eventListener(){
+function eventListener() {
     setupGamepadButtons();
     fullscreenEventListener();
     impressumgVisibility()
@@ -32,13 +32,13 @@ function bindButton(buttonId, keyName) {
         e.preventDefault();
         keyboard[keyName] = false;
     });
-    btn.addEventListener('contextmenu', (e) => {e.preventDefault();});
+    btn.addEventListener('contextmenu', (e) => { e.preventDefault(); });
 }
 
 /**
  * Sets up the gamepad buttons by binding each one to a corresponding key.
  */
-  function setupGamepadButtons() {
+function setupGamepadButtons() {
     bindButton('btn-up', 'UP');
     bindButton('btn-down', 'DOWN');
     bindButton('btn-left', 'LEFT');
@@ -50,7 +50,7 @@ function bindButton(buttonId, keyName) {
 /**
  * Initiates fullscreen mode on the element with the ID 'fullscreen'.
  */
-function fullscreen(){
+function fullscreen() {
     let fullscreen = document.getElementById('fullscreen');
     openFullscreen(fullscreen);
 }
@@ -62,22 +62,23 @@ function fullscreen(){
  */
 function openFullscreen(elem) {
     if (elem.requestFullscreen) {
-      elem.requestFullscreen();
+        elem.requestFullscreen();
     } else if (elem.webkitRequestFullscreen) { /* Safari */
-      elem.webkitRequestFullscreen();
+        elem.webkitRequestFullscreen();
     } else if (elem.msRequestFullscreen) { /* IE11 */
-      elem.msRequestFullscreen();
+        elem.msRequestFullscreen();
     }
-  }
- 
-  /**
+}
+
+
+/**
  * Toggles between entering and exiting fullscreen mode based on the current state.
  */
-  function toggleFullscreen() {
+function toggleFullscreen() {
     if (!isFullscreen) {
         fullscreen();
         isFullscreen = true;
-    } else if(isFullscreen) {
+    } else if (isFullscreen) {
         document.exitFullscreen();
         isFullscreen = false;
     }
@@ -99,11 +100,11 @@ function fullscreenEventListener() {
 }
 
 /**
- * Replaces the content of the menu overlay with the impressum template.
- */
+* Replaces the content of the menu overlay with the impressum template.
+*/
 function toggleImpressum() {
-let menuOverlay = document.getElementById('menu-overlay');
-menuOverlay.innerHTML = impressumTemp();
+    let menuOverlay = document.getElementById('menu-overlay');
+    menuOverlay.innerHTML = impressumTemp();
 }
 
 /**
@@ -112,7 +113,7 @@ menuOverlay.innerHTML = impressumTemp();
  */
 function impressumgVisibility() {
     const visibilityBtn = document.getElementById('btn-impressum');
-   
+
     visibilityBtn.addEventListener('click', () => {
         toggleImpressum();
     });
@@ -147,8 +148,8 @@ function toggleMute(muteBtn) {
  */
 function audioMuteEventListener() {
     const muteBtn = document.getElementById('btn-mute');
-    
-    muteBtn.addEventListener('click', () =>  {
+
+    muteBtn.addEventListener('click', () => {
         toggleMute(muteBtn)
     });
     muteBtn.addEventListener('touchstart', (e) => {
@@ -185,12 +186,13 @@ window.addEventListener('orientationchange', lockToLandscape);
 window.addEventListener("DOMContentLoaded", () => {
     const muteBtn = document.getElementById('btn-mute');
 
-    if (muteBtn) {muteBtn.textContent = isMuted ? '🔇' : '🔊';}
+    if (muteBtn) { muteBtn.textContent = isMuted ? '🔇' : '🔊'; }
     if (menuAudio) menuAudio.muted = isMuted;
     if (clickSound) clickSound.muted = isMuted;
     if (typeof world !== 'undefined' && world.level.audio) {
         world.level.audio.forEach(audio => {
-            audio.muted = isMuted;});
+            audio.muted = isMuted;
+        });
     }
 });
 

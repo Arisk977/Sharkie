@@ -27,9 +27,9 @@ class PoisonBottles extends MovableObject {
     }
 
     /**
-  * Starts the poison bottle animation by cycling through `IMAGES_POISON_BOTTLES`.
-  * The animation frame is updated every 120 milliseconds using a stoppable interval.
-  */
+      * Starts the poison bottle animation by cycling through `IMAGES_POISON_BOTTLES`.
+      * The animation frame is updated every 120 milliseconds using a stoppable interval.
+      */
     animate() {
         this.setStoppableInterval(() => this.useAnimation(this.IMAGES_POISON_BOTTLES), 120);
     }

@@ -1,4 +1,4 @@
-body{
+body {
     display: flex;
     height: 100vh;
     justify-content: center;
@@ -22,7 +22,8 @@ body::after {
     background-size: cover;
     background-position: center;
     filter: brightness(70%);
-    z-index: -1; /* Hinter den Inhalt legen */
+    z-index: -1;
+    /* Hinter den Inhalt legen */
 }
 
 .background-overlay {
@@ -31,8 +32,10 @@ body::after {
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* Schwarzes Overlay mit 50% Opazität */
-    z-index: -1; /* Hinter den Inhalt legen */
+    background: rgba(0, 0, 0, 0.5);
+    /* Schwarzes Overlay mit 50% Opazität */
+    z-index: -1;
+    /* Hinter den Inhalt legen */
 }
 
 
@@ -41,7 +44,7 @@ body::after {
     src: url('./assets/5.Font/LuckiestGuy-Regular.ttf') format('truetype');
 }
 
-h1{
+h1 {
     font-family: 'LuckiestGuy';
     font-size: 60px;
     color: wheat;
@@ -51,7 +54,7 @@ h1{
     margin: -10px;
 }
 
-h3{
+h3 {
     font-family: 'LuckiestGuy';
     font-size: 42px;
     letter-spacing: 2px;
@@ -61,25 +64,25 @@ h3{
     color: white;
 }
 
-canvas{
+canvas {
     background-color: black;
     border-radius: 20px;
     box-shadow: 0px 0px 100px rgba(255, 255, 255, 0.564);
     display: block;
 }
 
-:fullscreen #menu-overlay{
+:fullscreen #menu-overlay {
     width: 100%;
     height: 100vh;
 }
 
-:fullscreen #ui-buttons{
+:fullscreen #ui-buttons {
     position: absolute;
     top: 20px;
     right: 20px;
 }
 
-:fullscreen canvas{
+:fullscreen canvas {
     width: 100%;
     height: 100vh;
 }
@@ -87,7 +90,8 @@ canvas{
 #rotate-lock {
     display: none;
     position: fixed;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgba(199, 197, 197, 0.642);
@@ -109,11 +113,11 @@ canvas{
     gap: 20px;
 }
 
-#screen-rotation img{
+#screen-rotation img {
     width: 100px;
 }
 
-#menu-overlay{
+#menu-overlay {
     height: 480px;
     width: 720px;
     position: fixed;
@@ -128,29 +132,29 @@ canvas{
     align-items: center;
 }
 
-#endscreen{
+#endscreen {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
     position: fixed;
-    left: 44%;
+    left: 43%;
     top: 50%;
 }
 
-.win-screen{
+.win-screen {
     flex-direction: row !important;
-    top: 60% !important;
+    top: 58% !important;
     left: 43% !important;
     gap: 20px;
 }
 
-#try-again{
+#try-again {
     width: 220px;
     height: 70px;
 }
 
-#back-to-menu{
+#back-to-menu {
     width: 240px;
     height: 170px;
 }
@@ -159,8 +163,9 @@ canvas{
     background-size: 220px 70px;
     background-position: center;
     animation: changeImage 2s infinite;
-  }
-.animated-tryagain:hover{
+}
+
+.animated-tryagain:hover {
     transform: scale(1.1);
     cursor: pointer;
 }
@@ -169,83 +174,92 @@ canvas{
     background-size: 240px 170px;
     background-position: center;
     animation: changeMenu 2s infinite;
-  }
-.animated-menu:hover{
+}
+
+.animated-menu:hover {
     transform: scale(1.1);
     cursor: pointer;
 }
-  
 
-  @keyframes changeImage {
+
+@keyframes changeImage {
     0% {
-      background-image: url('assets/6.Botones/Try again/Recurso 15.png');
+        background-image: url('assets/6.Botones/Try again/Recurso 15.png');
     }
-    25% {
-      background-image: url('assets/6.Botones/Try again/Recurso 16.png');
-    }
-    50% {
-      background-image: url('assets/6.Botones/Try again/Recurso 17.png');
-    }
-    75% {
-      background-image: url('assets/6.Botones/Try again/Recurso 18.png');
-    }
-    100% {
-      background-image: url('assets/6.Botones/Try again/Recurso 15.png');
-    }
-  }
 
-  @keyframes changeMenu {
+    25% {
+        background-image: url('assets/6.Botones/Try again/Recurso 16.png');
+    }
+
+    50% {
+        background-image: url('assets/6.Botones/Try again/Recurso 17.png');
+    }
+
+    75% {
+        background-image: url('assets/6.Botones/Try again/Recurso 18.png');
+    }
+
+    100% {
+        background-image: url('assets/6.Botones/Try again/Recurso 15.png');
+    }
+}
+
+@keyframes changeMenu {
     0% {
-      background-image: url('assets/6.Botones/Menü/menü-orange.png');
+        background-image: url('assets/6.Botones/Menü/menü-orange.png');
     }
-    25% {
-      background-image: url('assets/6.Botones/Menü/menü-yellow.png');
-    }
-    50% {
-      background-image: url('assets/6.Botones/Menü/menü-red.png');
-    }
-    75% {
-      background-image: url('assets/6.Botones/Menü/menü-violett.png');
-    }
-    100% {
-      background-image: url('assets/6.Botones/Menü/menü-orange.png');
-    }
-  }
-  
 
-#menu-overlay img:hover{
+    25% {
+        background-image: url('assets/6.Botones/Menü/menü-yellow.png');
+    }
+
+    50% {
+        background-image: url('assets/6.Botones/Menü/menü-red.png');
+    }
+
+    75% {
+        background-image: url('assets/6.Botones/Menü/menü-violett.png');
+    }
+
+    100% {
+        background-image: url('assets/6.Botones/Menü/menü-orange.png');
+    }
+}
+
+
+#menu-overlay img:hover {
     cursor: pointer;
     transform: scale(1.1);
 }
 
-#start{
+#start {
     width: 250px;
 }
 
-#controls{
+#controls {
     width: 280px;
     height: 220px;
     margin-top: 0px;
 }
 
-#instructions{
+#instructions {
     width: 600px;
     height: 300px;
     margin: -50px;
 }
 
-#instructions:hover{
+#instructions:hover {
     cursor: initial !important;
     transform: scale(1) !important;
 }
 
-#back{
+#back {
     width: 80px;
     height: 80px;
     margin-left: -300px;
 }
 
-.d_none{
+.d_none {
     display: none !important;
 
 }
@@ -262,29 +276,29 @@ canvas{
     margin: 5px;
 }
 
-button{
+button {
     width: 50px;
 }
 
-#impressum{
+#impressum {
     color: white;
     font-family: 'LuckiestGuy';
     -webkit-text-stroke: 0.5px;
     -webkit-text-stroke-color: black;
 }
 
-h4{
+h4 {
     font-size: 30px;
     color: wheat;
     margin-bottom: -10px;
 }
 
-a{
+a {
     color: aqua;
     text-decoration: none;
 }
 
-a:hover{
+a:hover {
     text-decoration: solid underline;
     text-decoration-color: aqua;
 }
@@ -305,7 +319,7 @@ a:hover{
     justify-content: center;
 }
 
-#btn-space{
+#btn-space {
     width: 100px;
 }
 
@@ -341,92 +355,110 @@ a:hover{
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-button, .gamepad-button, #dpad, #actions {
+button,
+.gamepad-button,
+#dpad,
+#actions {
     touch-action: none;
 }
 
-#btn-up, #btn-down, #btn-left, #btn-right, #btn-space, #btn-d {
+#btn-up,
+#btn-down,
+#btn-left,
+#btn-right,
+#btn-space,
+#btn-d {
     touch-action: none;
 }
 
-@media(max-width: 1600px){
-    .win-screen{
+@media(max-width: 1600px) {
+    .win-screen {
         left: 42% !important;
     }
 }
 
-@media(max-width: 1400px){
-    .win-screen{
+@media(max-width: 1400px) {
+    .win-screen {
         left: 40% !important;
+    }
+
+    #endscreen {
+        left: 41%;
     }
 }
 
-@media(max-width: 1200px){
+@media(max-width: 1200px) {
     #dpad {
         bottom: 25%;
         left: 25%;
     }
+
     #actions {
         bottom: 25%;
         right: 25%;
     }
 }
 
-@media(max-width: 1100px){
-    .win-screen{
+@media(max-width: 1100px) {
+    .win-screen {
         left: 38% !important;
     }
 }
 
-@media(max-width: 1050px){
-    #endscreen{
+@media(max-width: 1050px) {
+    #endscreen {
         left: 38%;
     }
 
     #dpad {
         left: 23%;
     }
+
     #actions {
         right: 23%;
     }
 }
 
-@media(max-width: 900px){
-    .win-screen{
+@media(max-width: 900px) {
+    .win-screen {
         left: 36% !important;
     }
 }
 
-@media(max-width: 800px){
-    #endscreen{
+@media(max-width: 800px) {
+    #endscreen {
         left: 35%;
     }
-   
-    .win-screen{
+
+    .win-screen {
         left: 34% !important;
     }
-    
+
 }
 
-@media(max-width: 720px){
-    #dpad{
+@media(max-width: 720px) {
+    #dpad {
         left: 10%;
     }
-    #actions{
+
+    #actions {
         right: 10%;
     }
-    #endscreen{
-        left: 33%;
+
+    #endscreen {
+        left: 39%;
     }
-    #try-again{
+
+    #try-again {
         width: 120px;
         height: 50px;
     }
+
     .animated-tryagain {
         background-size: 120px 50px;
     }
 
-    #back-to-menu{
+    #back-to-menu {
         width: 140px;
         height: 130px;
     }
@@ -434,34 +466,41 @@ button, .gamepad-button, #dpad, #actions {
     .animated-menu {
         background-size: 140px 130px;
     }
+
     #dpad {
         left: 15%;
     }
+
     #actions {
         right: 15%;
     }
 }
 
-@media(max-width: 600px){
-    h1{
+@media(max-width: 600px) {
+    h1 {
         font-size: 40px;
     }
-    h3{
+
+    h3 {
         font-size: 30px;
     }
-    #start{
+
+    #start {
         width: 200px;
     }
-    #controls{
+
+    #controls {
         width: 215px;
         height: 170px;
         margin-top: -50px;
     }
+
     #instructions {
         width: 450px;
         height: 250px;
         margin-top: -80px;
     }
+
     #back {
         width: 50px;
         height: 50px;
@@ -470,21 +509,22 @@ button, .gamepad-button, #dpad, #actions {
     }
 }
 
-@media(max-width: 450px){
-    #endscreen{
-        left: 30%;
+@media(max-width: 450px) {
+    #endscreen {
+        left: 33%;
         top: 50%;
     }
 
-    #try-again{
+    #try-again {
         width: 120px;
         height: 50px;
     }
+
     .animated-tryagain {
         background-size: 120px 50px;
     }
 
-    #back-to-menu{
+    #back-to-menu {
         width: 140px;
         height: 130px;
     }
@@ -493,108 +533,156 @@ button, .gamepad-button, #dpad, #actions {
         background-size: 140px 130px;
     }
 
-    
-    #back{
+
+    #back {
         margin-left: -200px;
     }
 }
 
-@media(max-width: 410px){
-    #endscreen{
+@media(max-width: 410px) {
+    #endscreen {
         left: 27%;
     }
-    #try-again{
-        width: 150px;
-        height: 50px;
-    }
-    .animated-tryagain {
-        background-size: 150px 50px;
-    }
 
-    #back-to-menu{
-        width: 170px;
-        height: 120px;
-    }
-
-    .animated-menu {
-        background-size: 170px 120px;
-    }
-    h1{
+    h1 {
         font-size: 30px;
         -webkit-text-stroke: 0.2px;
         -webkit-text-stroke-color: black;
     }
-    h3{
+
+    h3 {
         font-size: 20px;
         -webkit-text-stroke: 0.2px;
         -webkit-text-stroke-color: black;
     }
 
-    #back{
+    #back {
         margin-left: -175px !important;
     }
 }
 
-@media(max-width: 360px){
+@media(max-width: 360px) {
     #instructions {
         width: 380px !important;
         height: 200px !important;
     }
-    #back{
+
+    #back {
         margin-left: -150px !important;
     }
 }
 
-@media(max-height: 500px){
-    #ui-buttons{
+@media(max-height: 500px) {
+    #ui-buttons {
         position: absolute;
         top: 20px;
         right: 20px;
     }
+
     #dpad {
         bottom: 10% !important;
     }
+
     #actions {
         bottom: 10% !important;
     }
 }
 
-@media(max-height: 450px){
-    #start{
+@media(max-height: 450px) {
+    #start {
         width: 225px;
     }
-    #controls{
+
+    #controls {
         height: 200px;
         width: 250px;
     }
+
     #instructions {
         width: 450px;
         height: 250px;
         margin-top: -80px;
     }
+
     #back {
         width: 50px;
         height: 50px;
         margin-left: -200px;
         margin-top: -20px;
     }
-    h3{
+
+    h3 {
         padding-top: 150px;
     }
-  
+
 }
 
-@media only screen and (max-width: 720px){
+@media(max-height: 440px) {
+    #menu-overlay {
+        margin-left: -30px;
+    }
+}
+
+@media(max-height: 430px) {
+    #menu-overlay {
+        margin-left: -50px;
+    }
+}
+
+@media(max-height: 380px) {
+    h3 {
+        padding-top: 80px;
+    }
+
+    #menu-overlay {
+        margin-left: -70px;
+    }
+
+    #try-again {
+        width: 120px;
+        height: 50px;
+    }
+
+    .animated-tryagain {
+        background-size: 120px 50px;
+    }
+
+    #back-to-menu {
+        width: 140px;
+        height: 130px;
+    }
+
+    .animated-menu {
+        background-size: 140px 130px;
+    }
+}
+
+@media(max-height: 360px) {
+    #menu-overlay {
+        margin-left: -90px;
+    }
+}
+
+@media(max-height: 340px) {
+    #menu-overlay {
+        margin-left: -110px;
+    }
+}
+
+@media only screen and (max-width: 720px) {
     canvas {
         width: 100%;
     }
-    #menu-overlay{
+
+    #menu-overlay {
         width: 100%;
     }
 }
 
-@media only screen and (max-height: 480px){
-    canvas, #menu-overlay{
+@media only screen and (max-height: 480px) {
+
+    canvas,
+    #menu-overlay {
         height: 100vh;
     }
 }

@@ -14,9 +14,9 @@ class PoisonAttack extends MovableObject {
     }
 
     /**
- * Initiates the bubble attack animation in the direction the character is currently facing.
- * Sets a stoppable interval to move the bubble either to the right or left based on `otherDirection`.
- */
+     * Initiates the bubble attack animation in the direction the character is currently facing.
+     * Sets a stoppable interval to move the bubble either to the right or left based on `otherDirection`.
+     */
     attack() {
         if (this.otherDirection === false) {
             this.setStoppableInterval(() => this.applyThrowBubbleRight(), 1000 / 60);
@@ -27,9 +27,9 @@ class PoisonAttack extends MovableObject {
     }
 
     /**
- * Moves the bubble to the right by incrementing the `x` coordinate based on `speedX`.
- * Gradually decreases `speedX` by the defined acceleration until it reaches 0 or below.
- */
+     * Moves the bubble to the right by incrementing the `x` coordinate based on `speedX`.
+     * Gradually decreases `speedX` by the defined acceleration until it reaches 0 or below.
+     */
     applyThrowBubbleRight() {
         if (this.speedX >= 0) {
             this.x += this.speedX;
@@ -39,9 +39,9 @@ class PoisonAttack extends MovableObject {
     }
 
     /**
- * Moves the bubble to the left by decrementing the `x` coordinate based on `speedX`.
- * Gradually decreases `speedX` by the defined acceleration until it reaches 0 or below.
- */
+     * Moves the bubble to the left by decrementing the `x` coordinate based on `speedX`.
+     * Gradually decreases `speedX` by the defined acceleration until it reaches 0 or below.
+     */
     applyThrowBubbleLeft() {
         if (this.speedX >= 0) {
             this.x -= this.speedX;

@@ -4,7 +4,6 @@ let keyboard = new Keyboard();
 let menuAudio = new Audio('audio/loop-menu-preview-109594.mp3');
 let clickSound = new Audio('audio/click-buttons-ui-menu-sounds-effects-button-4-203597_VJP7uSOh.mp3');
 
-
 function init() {
     openMenu();
     eventListener();
@@ -22,7 +21,7 @@ function openMenu() {
 /**
  * Displays the main menu content in the overlay and starts the menu audio.
  */
-function touchDisplay(){
+function touchDisplay() {
     let menu = document.getElementById('menu-overlay');
     menu.innerHTML = menuOverlayTemp();
     playMenuAudio();
@@ -32,7 +31,7 @@ function touchDisplay(){
  * Starts the game by hiding the menu, pausing menu audio,
  * playing a click sound, and calling the game start function.
  */
-function clickStart(){
+function clickStart() {
     let menu = document.getElementById('menu-overlay');
     menu.classList.add('d_none');
     menuAudio.pause();
@@ -44,27 +43,27 @@ function clickStart(){
 /**
  * Returns to the main menu content and plays a click sound.
  */
-function clickBack(){
+function clickBack() {
     let menu = document.getElementById('menu-overlay');
     menu.innerHTML = menuOverlayTemp();
-        clickSound.playbackRate = 1.5;
+    clickSound.playbackRate = 1.5;
     clickSound.play();
 }
 
 /**
  * Displays the controls/instructions screen and plays a click sound.
  */
-function clickControls(){
+function clickControls() {
     let menu = document.getElementById('menu-overlay');
     menu.innerHTML = instructionsTemp();
-        clickSound.playbackRate = 1.5;
-        clickSound.play();
+    clickSound.playbackRate = 1.5;
+    clickSound.play();
 }
 
 /**
  * Starts looping and playing the menu background audio.
  */
-function playMenuAudio(){
+function playMenuAudio() {
     menuAudio.loop = true;
     menuAudio.play();
 }
@@ -75,45 +74,59 @@ function playMenuAudio(){
  */
 function startGame() {
     levelInit();
+    toggleImpressumBtn();
     if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
-        let gamepadRef= document.getElementById('gamepad');
-        if(gamepadRef) gamepadRef.classList.remove('d_none')
-      }
+        let gamepadRef = document.getElementById('gamepad');
+        if (gamepadRef) gamepadRef.classList.remove('d_none')
+    }
     setTimeout(() => {
-    canvas = document.getElementById("canvas");
-    world = new World(canvas, keyboard);
-    world.level.audio[0].loop = true;
-    world.level.audio[0].play();
+        canvas = document.getElementById("canvas");
+        world = new World(canvas, keyboard);
+        world.level.audio[0].loop = true;
+        world.level.audio[0].play();
     }, 100)
+}
+
+/**
+ * Toggles the visibility of the "Impressum" button.
+ * 
+ * This function selects the element with the ID 'btn-impressum'
+ * and toggles the CSS class 'd_none' on it. 
+ * The 'd_none' class is typically used to hide elements via display: none.
+ */
+function toggleImpressumBtn() {
+    let impressumRef = document.getElementById('btn-impressum');
+    impressumRef.classList.toggle('d_none');
 }
 
 /**
  * Resets the game state, returns to the main menu, hides the gamepad,
  * and displays the end screen.
  */
-function backToMenu(){
-    level1 = []; 
-    world = null;    
+function backToMenu() {
+    level1 = [];
+    world = null;
     let endscreenRef = document.getElementById('endscreen');
     let menu = document.getElementById('menu-overlay');
-    let gamepadRef= document.getElementById('gamepad');
+    let gamepadRef = document.getElementById('gamepad');
 
     if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
-        if(gamepadRef) gamepadRef.classList.add('d_none');
-      }
-    endscreenRef.classList.remove('win-screen');  
+        if (gamepadRef) gamepadRef.classList.add('d_none');
+    }
+    endscreenRef.classList.remove('win-screen');
     menu.classList.remove('d_none');
-    endscreenRef.classList.add('d_none');  
+    endscreenRef.classList.add('d_none');
     touchDisplay();
+    toggleImpressumBtn();
 }
 
 /**
  * Restarts the game by resetting the level, stopping any active game intervals,
  * and starting a new game.
  */
-function restartGame() {   
+function restartGame() {
     let endscreenRef = document.getElementById('endscreen');
-    endscreenRef.classList.remove('win-screen'); 
+    endscreenRef.classList.remove('win-screen');
     if (world) {
         world.stopGameInterval();
     }

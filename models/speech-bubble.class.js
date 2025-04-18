@@ -8,12 +8,12 @@ class SpeechBubble {
         this.visible = visible;
     }
 
-     /**
+    /**
      * Draws the speech bubble on the canvas.
      * 
      * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
      */
-     draw(ctx) {
+    draw(ctx) {
         if (!this.visible) return;
 
         this.setStyles(ctx);

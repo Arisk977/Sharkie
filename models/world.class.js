@@ -35,13 +35,13 @@ class World {
         this.run();
         this.draw();
     }
-/**
- * Applies the mute state to all audio elements in the game, including background music and sound effects.
- */
+    /**
+     * Applies the mute state to all audio elements in the game, including background music and sound effects.
+     */
     applyMuteState() {
         if (menuAudio) menuAudio.muted = this.isMuted;
         if (clickSound) clickSound.muted = this.isMuted;
-        if (this.level && this.level.audio) {this.level.audio.forEach(audio => {audio.muted = this.isMuted; });}
+        if (this.level && this.level.audio) { this.level.audio.forEach(audio => { audio.muted = this.isMuted; }); }
     }
     /**
  * Sets up and starts various game interval checks for collisions with enemies, coins, poison bottles, 
@@ -49,7 +49,7 @@ class World {
  */
     run() {
         this.setStoppableInterval(() => this.checkCollisionsEnemyAndChar(), 1000);
-        this.setStoppableInterval(() => this.checkCollisionsEnemyAndBubble(), 1000/60);
+        this.setStoppableInterval(() => this.checkCollisionsEnemyAndBubble(), 1000 / 60);
         this.setStoppableInterval(() => this.checkCollisionsCoins(), 300);
         this.setStoppableInterval(() => this.checkCollisionsPoisonBottles(), 500);
         this.setStoppableInterval(() => this.checkCollisionsBubbleWithWall(), 1000 / 60);
@@ -105,7 +105,7 @@ class World {
         this.character.addToMap(this.lifebar);
         this.character.addToMap(this.coinbar);
         this.character.addToMap(this.poisonbar);
-        if (this.endbossLifebar) {this.character.addToMap(this.endbossLifebar);}
+        if (this.endbossLifebar) { this.character.addToMap(this.endbossLifebar); }
         this.ctx.translate(this.camera_x, 0);
     }
     /**
@@ -138,7 +138,8 @@ class World {
                 this.level.audio[1].play();
                 this.collectedCoins++;
                 this.draw();
-            }})
+            }
+        })
         if (this.level.coins.length === 0 && !this.wallClearingStarted) {
             this.unlockBossStage();
         }
@@ -164,13 +165,13 @@ class World {
  * @returns {boolean} Returns true if the character is colliding with any wall, otherwise false.
  */
     checkCollisionsWall() {
-        return this.level.wall.some((wall) => {return this.character.isColliding(wall)});
+        return this.level.wall.some((wall) => { return this.character.isColliding(wall) });
     }
-/**
- * Checks for collisions between the character and the poison bottles in the current level. If a collision is detected
- * and the character's poison level is less than 100, the poison bottle is collected and the character's poison level
- * is updated. A sound effect is played, and the poison bar is updated.
- */
+    /**
+     * Checks for collisions between the character and the poison bottles in the current level. If a collision is detected
+     * and the character's poison level is less than 100, the poison bottle is collected and the character's poison level
+     * is updated. A sound effect is played, and the poison bar is updated.
+     */
     checkCollisionsPoisonBottles() {
         this.level.poisonBottles.forEach((poisonBottles, index) => {
             if (this.character.isColliding(poisonBottles) && this.character.poison < 100) {
@@ -194,15 +195,15 @@ class World {
             this.lifebar.setPercentage(this.character.life, this.lifebar.IMAGES_LIFEBAR);
         }
         else if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(this.endboss))) {
-          this.hitEndboss()
-          this.endbossLifebar.setPercentage(this.endboss.endboss_life, this.endbossLifebar.IMAGES_LIFEBAR);
+            this.hitEndboss()
+            this.endbossLifebar.setPercentage(this.endboss.endboss_life, this.endbossLifebar.IMAGES_LIFEBAR);
         }
     }
     /**
  * Reduces the endboss's life by 20 and plays a hurt sound. If the endboss's life reaches 0 or less, 
  * it triggers the endboss death sequence.
  */
-    hitEndboss(){
+    hitEndboss() {
         this.endboss.endboss_life -= 20;
         this.endbossHurt();
         this.level.audio[6].playbackRate = 2;
@@ -238,14 +239,14 @@ class World {
                     setTimeout(() => {
                         this.level.enemies.splice(index, 1);
                         this.draw();
-                    }, 1000);  
+                    }, 1000);
                 }
             });
         });
     }
-/**
- * Checks for collisions between the bubbles and the walls. If a bubble collides with a wall, the bubble is removed.
- */
+    /**
+     * Checks for collisions between the bubbles and the walls. If a bubble collides with a wall, the bubble is removed.
+     */
     checkCollisionsBubbleWithWall() {
         this.level.wall.forEach((wall) => {
             if (this.bubble.length > 0 && this.bubble.some(b => b.isColliding(wall))) {
@@ -253,11 +254,11 @@ class World {
             }
         })
     }
-/**
- * Checks for user input to throw bubbles or poison bubbles. If the spacebar is pressed and the cooldown period 
- * has passed, a regular bubble is thrown. If the 'D' key is pressed and the character has enough poison, 
- * a poison bubble is thrown. If there are more than 3 bubbles, the oldest bubble is removed.
- */
+    /**
+     * Checks for user input to throw bubbles or poison bubbles. If the spacebar is pressed and the cooldown period 
+     * has passed, a regular bubble is thrown. If the 'D' key is pressed and the character has enough poison, 
+     * a poison bubble is thrown. If there are more than 3 bubbles, the oldest bubble is removed.
+     */
     checkThrowObjects() {
         let now = Date.now();
         if (this.keyboard.SPACE && now - this.lastBubbleAttack > this.bubbleCooldown) {
@@ -281,11 +282,11 @@ class World {
         this.bubble.push(poisonAttack);
         this.lastBubbleAttack = now;
     }
-/**
- * Creates and throws a regular bubble attack from the character. The bubble is added to the bubble array, 
- * and the corresponding audio is played. The last bubble attack time is updated.
- * @param {number} now - The current timestamp to track the cooldown between bubble attacks.
- */
+    /**
+     * Creates and throws a regular bubble attack from the character. The bubble is added to the bubble array, 
+     * and the corresponding audio is played. The last bubble attack time is updated.
+     * @param {number} now - The current timestamp to track the cooldown between bubble attacks.
+     */
     throwBubbles(now) {
         let bubbleAttack = new BubbleAttack(this.character.x + 195, this.character.y + 195, this.character.otherDirection);
         this.level.audio[2].play();
@@ -318,7 +319,9 @@ class World {
                 if (i >= hurtFrames) {
                     clearInterval(this.hurtAnimationInterval);
                     this.hurtAnimationInterval = null;
-                }}, 1000 / 30); }
+                }
+            }, 1000 / 30);
+        }
     }
     /**
  * Handles the death animation of the endboss. If the death animation is not already running, it starts an interval 
@@ -337,8 +340,9 @@ class World {
             i++
             if (i >= deadFrames) {
                 this.endboss.loadImage('assets/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png')
-                this.playerHasWon(); } 
-            }, 100)
+                this.playerHasWon();
+            }
+        }, 100)
     }
     /**
  * Handles the player's victory after the endboss dies. It stops the game intervals and audio, and then displays 

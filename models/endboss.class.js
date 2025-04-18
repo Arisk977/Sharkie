@@ -41,24 +41,24 @@ class Endboss extends MovableObject {
     }
 
     /**
- * Main animation loop for the endboss. It coordinates the endboss animation and movement by calling the appropriate functions 
- * for each action (animation and movement). This method ensures that the endboss animation and movement are continuously updated.
- */
+     * Main animation loop for the endboss. It coordinates the endboss animation and movement by calling the appropriate functions 
+     * for each action (animation and movement). This method ensures that the endboss animation and movement are continuously updated.
+     */
     animate() {
         this.endbossAnimation();
         this.movement();
     }
 
     /**
- * Manages the animation sequence for the endboss during its intro phase. 
- * This includes triggering the intro animation based on the character's position and transitioning to 
- * different endboss states (idle, attack, or floating) depending on specific conditions.
- */
+     * Manages the animation sequence for the endboss during its intro phase. 
+     * This includes triggering the intro animation based on the character's position and transitioning to 
+     * different endboss states (idle, attack, or floating) depending on specific conditions.
+     */
     endbossAnimation() {
         let introFrames = this.IMAGES_ENDBOSS_INTRO.length;
         let i = 0;
         this.setStoppableInterval(() => {
-            
+
             if (this.character.x >= (this.x - 500) && i <= introFrames) {
 
                 this.intro = this.useAnimation(this.IMAGES_ENDBOSS_INTRO);
@@ -79,9 +79,9 @@ class Endboss extends MovableObject {
     }
 
     /**
- * Controls the endboss' movement by periodically checking for and updating its position in all four directions 
- * (left, right, down, and up). This function is called repeatedly at a fixed interval to ensure continuous movement.
- */
+     * Controls the endboss' movement by periodically checking for and updating its position in all four directions 
+     * (left, right, down, and up). This function is called repeatedly at a fixed interval to ensure continuous movement.
+     */
     movement() {
         this.setStoppableInterval(() => {
             this.moveLeftEndboss();
@@ -92,9 +92,9 @@ class Endboss extends MovableObject {
     }
 
     /**
- * Handles the endboss' idle state when it is not attacking. It clears any ongoing attack or intro animation intervals,
- * triggers a speech bubble, and plays the standard animation for the endboss.
- */
+     * Handles the endboss' idle state when it is not attacking. It clears any ongoing attack or intro animation intervals,
+     * triggers a speech bubble, and plays the standard animation for the endboss.
+     */
     idleMode() {
         this.endbossIntervalClear(this.attack);
         this.endbossIntervalClear(this.intro);
@@ -103,9 +103,9 @@ class Endboss extends MovableObject {
     }
 
     /**
- * Switches the endboss to its attack mode by clearing any previous animations (standard or floating) and 
- * playing the attack animation. It also adjusts the playback rate of the attack audio for faster playback.
- */
+     * Switches the endboss to its attack mode by clearing any previous animations (standard or floating) and 
+     * playing the attack animation. It also adjusts the playback rate of the attack audio for faster playback.
+     */
     attackMode() {
         this.endbossIntervalClear(this.standard);
         this.endbossIntervalClear(this.floating);
@@ -115,9 +115,9 @@ class Endboss extends MovableObject {
     }
 
     /**
- * Switches the endboss to its floating mode by clearing any previous animations (standard or attack) 
- * and playing the floating animation.
- */
+     * Switches the endboss to its floating mode by clearing any previous animations (standard or attack) 
+     * and playing the floating animation.
+     */
     floatingMode() {
         this.endbossIntervalClear(this.standard);
         this.endbossIntervalClear(this.attack);
@@ -125,9 +125,9 @@ class Endboss extends MovableObject {
     }
 
     /**
- * Adds a speech bubble for the endboss based on the state of the wall. If the wall is active, 
- * the speech bubble is created with a "true" argument, otherwise with "false".
- */
+     * Adds a speech bubble for the endboss based on the state of the wall. If the wall is active, 
+     * the speech bubble is created with a "true" argument, otherwise with "false".
+     */
     addSpeech() {
         if (this.world.wallActive) {
             this.world.speechBubble = new SpeechBubble(true);
@@ -138,9 +138,9 @@ class Endboss extends MovableObject {
     }
 
     /**
- * Moves the endboss left if the character's x-coordinate is less than or equal to the endboss's x-coordinate
- * and if the wall is not active. This movement is only allowed if the wall is not blocking the movement.
- */
+     * Moves the endboss left if the character's x-coordinate is less than or equal to the endboss's x-coordinate
+     * and if the wall is not active. This movement is only allowed if the wall is not blocking the movement.
+     */
     moveLeftEndboss() {
         if (this.character.x <= this.x && !this.world.wallActive) {
             this.x -= 10;
@@ -148,9 +148,9 @@ class Endboss extends MovableObject {
     }
 
     /**
- * Moves the endboss upwards if the character's y-coordinate is greater than or equal to the endboss's y-coordinate + 100,
- * and if the wall is not active. This movement is only allowed if the wall is not blocking the movement.
- */
+     * Moves the endboss upwards if the character's y-coordinate is greater than or equal to the endboss's y-coordinate + 100,
+     * and if the wall is not active. This movement is only allowed if the wall is not blocking the movement.
+     */
     moveUpEndboss() {
         if (this.character.y >= (this.y + 100) && !this.world.wallActive) {
             this.y += 10;
@@ -158,9 +158,9 @@ class Endboss extends MovableObject {
     }
 
     /**
- * Moves the endboss downwards if the character's y-coordinate is less than or equal to the endboss's y-coordinate + 150,
- * and if the wall is not active. This movement is only allowed if the wall is not blocking the movement.
- */
+     * Moves the endboss downwards if the character's y-coordinate is less than or equal to the endboss's y-coordinate + 150,
+     * and if the wall is not active. This movement is only allowed if the wall is not blocking the movement.
+     */
     moveDownEndboss() {
         if (this.character.y <= (this.y + 150) && !this.world.wallActive) {
             this.y -= 10;
@@ -168,55 +168,55 @@ class Endboss extends MovableObject {
     }
 
     /**
- * Moves the endboss right if the character's x-coordinate is greater than or equal to the endboss's x-coordinate
- * and if the wall is not active. This movement is only allowed if the wall is not blocking the movement.
- */
+     * Moves the endboss right if the character's x-coordinate is greater than or equal to the endboss's x-coordinate
+     * and if the wall is not active. This movement is only allowed if the wall is not blocking the movement.
+     */
     moveRightEndboss() {
         if (this.character.x >= this.x && !this.world.wallActive) {
             this.x += 10;
         }
     }
 
-/**
- * Checks if the endboss is within 200 pixels of the character. 
- * Returns `true` if the endboss is close enough to initiate an attack, otherwise returns `false`.
- * 
- * @returns {boolean} - Returns `true` if the endboss is within 200 pixels of the character.
- */
-returnEndbossAttackCoordination() {
-    return Math.abs(this.character.x - this.x) <= 200
-}
+    /**
+     * Checks if the endboss is within 200 pixels of the character. 
+     * Returns `true` if the endboss is close enough to initiate an attack, otherwise returns `false`.
+     * 
+     * @returns {boolean} - Returns `true` if the endboss is within 200 pixels of the character.
+     */
+    returnEndbossAttackCoordination() {
+        return Math.abs(this.character.x - this.x) <= 200
+    }
 
-/**
- * Clears a specific interval and sets the passed variable to `null`. 
- * This method is used to stop any ongoing interval processes for the endboss, 
- * such as animations or attack sequences.
- * 
- * @param {number} vari - The interval identifier to be cleared.
- */
-endbossIntervalClear(vari) {
-    clearInterval(vari);
-    vari = null;
-}
+    /**
+     * Clears a specific interval and sets the passed variable to `null`. 
+     * This method is used to stop any ongoing interval processes for the endboss, 
+     * such as animations or attack sequences.
+     * 
+     * @param {number} vari - The interval identifier to be cleared.
+     */
+    endbossIntervalClear(vari) {
+        clearInterval(vari);
+        vari = null;
+    }
 
-/**
- * Loads all the images required for the endboss's animations (e.g., idle, attack, hurt, floating, etc.)
- * by calling the `loadMultipleImages` method for each image array associated with the endboss.
- */
-loadAllImages() {
-    this.loadMultipleImages(this.IMAGES_ENDBOSS_ANIMATION);
-    this.loadMultipleImages(this.IMAGES_ENDBOSS_INTRO);
-    this.loadMultipleImages(this.IMAGES_ENDBOSS_ATTACK);
-    this.loadMultipleImages(this.IMAGES_ENDBOSS_HURT);
-    this.loadMultipleImages(this.IMAGES_ENDBOSS_FLOATING);
-    this.loadMultipleImages(this.IMAGES_ENDBOSS_DEAD);
-}
+    /**
+     * Loads all the images required for the endboss's animations (e.g., idle, attack, hurt, floating, etc.)
+     * by calling the `loadMultipleImages` method for each image array associated with the endboss.
+     */
+    loadAllImages() {
+        this.loadMultipleImages(this.IMAGES_ENDBOSS_ANIMATION);
+        this.loadMultipleImages(this.IMAGES_ENDBOSS_INTRO);
+        this.loadMultipleImages(this.IMAGES_ENDBOSS_ATTACK);
+        this.loadMultipleImages(this.IMAGES_ENDBOSS_HURT);
+        this.loadMultipleImages(this.IMAGES_ENDBOSS_FLOATING);
+        this.loadMultipleImages(this.IMAGES_ENDBOSS_DEAD);
+    }
 
-/**
- * Pushes image paths into the respective image arrays for the endboss’s animations 
- * (e.g., intro, attack, hurt, floating). This method ensures that the correct set 
- * of images is available for each animation state.
- */
+    /**
+     * Pushes image paths into the respective image arrays for the endboss’s animations 
+     * (e.g., intro, attack, hurt, floating). This method ensures that the correct set 
+     * of images is available for each animation state.
+     */
     getEndbossImagesIntoArray() {
         this.pushImagesToArray(`assets/2.Enemy/3 Final Enemy/2.floating/`, '.png', this.IMAGES_ENDBOSS_ANIMATION, 13);
         this.pushImagesToArray('assets/2.Enemy/3 Final Enemy/1.Introduce/', '.png', this.IMAGES_ENDBOSS_INTRO, 10);

@@ -1,6 +1,6 @@
-class Coinbar extends DrawableObject{
+class Coinbar extends DrawableObject {
 
-    constructor(){
+    constructor() {
         super().loadImage('assets/4. Marcadores/1. Coins/1.png');
         this.width = 40;
         this.height = 40;
