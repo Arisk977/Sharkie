@@ -1,5 +1,6 @@
 class Character extends MovableObject {
     IMAGES_CHARACTER_ANIMATION = [];
+    IMAGES_CHARACTER_SLEEP =[];
     IMAGES_DEAD = [];
     IMAGES_POISONED_HURT = [];
     IMAGES_BUBBLE_ATTACK_ANIMATION = [];
@@ -16,6 +17,9 @@ class Character extends MovableObject {
     attackInterval = null;
     poisonInterval = null;
     throwInterval = null;
+    timeSinceLastAction = 0;
+    lastActionTime = Date.now();
+
 
     constructor(world) {
         super().loadImage('assets/1.Sharkie/1.IDLE/1.png');
@@ -28,20 +32,16 @@ class Character extends MovableObject {
 
     }
 
-    /**
- * Starts the character's animation loops. It sets intervals to repeatedly move the character in different directions
- * (right, left, up, down), and also triggers the animation methods for movement, running, and other actions.
- * The intervals are set with a frequency of 60 frames per second (for movement) and 120 frames per second (for running animation).
- * Additionally, a 300ms interval is set for the movement animation.
+/**
+ * Starts the character's main animation loops.
+ * Handles movement and animation updates at defined intervals,
+ * and catches any errors related to missing keyboard input.
  */
     animate() {
         try {
-            this.setStoppableInterval(() => this.charMoveRight(), 1000 / 60);
-            this.setStoppableInterval(() => this.charMoveLeft(), 1000 / 60);
-            this.setStoppableInterval(() => this.charMoveUp(), 1000 / 60);
-            this.setStoppableInterval(() => this.charMoveDown(), 1000 / 60);
-            this.setStoppableInterval(() => this.moveAnimation(), 300);
+            this.movement();
             this.setStoppableInterval(() => this.runAnimation(), 120);
+            this.setStoppableInterval(() => this.charNoActions(), 120);
         }
         catch (e) {
             console.warn('no Keyboard found', e)
@@ -49,13 +49,21 @@ class Character extends MovableObject {
     }
 
     /**
- * Handles the animation of the character depending on its state. The method checks the current status of the character
- * (whether it's dead, poisoned, or performing a bubble attack) and triggers the appropriate animation based on the state.
- * - If the character is dead, the dead animation is used.
- * - If the character is poisoned, the poisoned animation is triggered.
- * - If the SPACE key is pressed, the character performs a bubble attack animation.
- * - If the D key is pressed and the character has poison, the character performs a poison attack animation.
- * - Otherwise, the default animation is played.
+ * Initiates character movement in all directions and the corresponding movement animation.
+ * Sets intervals for directional input handling and animation playback.
+ */
+    movement(){
+        this.setStoppableInterval(() => this.charMoveRight(), 1000 / 60);
+        this.setStoppableInterval(() => this.charMoveLeft(), 1000 / 60);
+        this.setStoppableInterval(() => this.charMoveUp(), 1000 / 60);
+        this.setStoppableInterval(() => this.charMoveDown(), 1000 / 60);
+        this.setStoppableInterval(() => this.moveAnimation(), 300);
+    }
+
+/**
+ * Executes the appropriate character animation based on the current state.
+ * Decides between death, cooldown, bubble attack, inactivity, or standard movement
+ * depending on key inputs and condition checks.
  */
     runAnimation() {
         if (this.isDead() && this.intervalStatus()) {
@@ -64,15 +72,28 @@ class Character extends MovableObject {
         else if (this.isCooldown() && this.intervalStatus()) {
             this.charPoisoned();
         }
-        else if (this.world.keyboard.SPACE && this.intervalStatus()) {
-           this.bubbleAttack();
+        else if (this.world.keyboard.SPACE || this.world.keyboard.D && this.intervalStatus()) {
+           this.throwBubbles();
         }
-        else if (this.world.keyboard.D && this.intervalStatus() && this.poison > 0) {
-           this.poisonAttack();
+        else if(this.noKeyboardActions && this.timeSinceLastAction > 5000){
+          this.useAnimation(this.IMAGES_CHARACTER_SLEEP);
         }
         else if(this.intervalStatus()){
-            this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);
+           this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);
         }
+    }
+
+    /**
+ * Triggers the appropriate bubble attack based on the pressed key and poison status.
+ * SPACE → regular bubble attack, D → poisoned bubble attack (if available).
+ */
+    throwBubbles(){
+        if(this.world.keyboard.SPACE && this.intervalStatus()){
+            this.bubbleAttack();
+        }
+        else if(this.world.keyboard.D && this.intervalStatus() && this.poison > 0) {
+            this.poisonAttack();
+         }
     }
 
     /**
@@ -108,6 +129,7 @@ class Character extends MovableObject {
         let array = this.IMAGES_BUBBLE_ATTACK_ANIMATION;
         this.checkInterval();
         this.charBubbleAttack(array);
+        this.lastActionTime = Date.now();
         return;
     }
 
@@ -127,6 +149,7 @@ class Character extends MovableObject {
         this.poison -= 20;
         this.world.poisonbar.setPercentage(this.poison, this.world.poisonbar.IMAGES_POISONBAR);
         this.charBubbleAttack(array);
+        this.lastActionTime = Date.now();
         return;
     }
 
@@ -186,6 +209,7 @@ class Character extends MovableObject {
                 clearInterval(this.poisonInterval);
                 this.poisonInterval = null;
                 this.useAnimation(this.IMAGES_CHARACTER_ANIMATION);
+                this.lastActionTime = Date.now();
             }}, 200);
     }
 
@@ -209,6 +233,7 @@ class Character extends MovableObject {
     charMoveRight() {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && !this.world.checkCollisionsWall()) {
             this.moveRight();
+            this.lastActionTime = Date.now();
             this.otherDirection = false;
         }
         this.world.camera_x = -this.x;
@@ -221,6 +246,7 @@ class Character extends MovableObject {
     charMoveLeft() {
         if (this.world.keyboard.LEFT && this.x > 0) {
             this.moveLeft();
+            this.lastActionTime = Date.now();
             this.otherDirection = true;
         }
         this.world.camera_x = -this.x;
@@ -232,6 +258,7 @@ class Character extends MovableObject {
     charMoveUp() {
         if (this.world.keyboard.UP && this.y > -150) {
             this.moveUp();
+            this.lastActionTime = Date.now();
         }
     }
 
@@ -241,6 +268,7 @@ class Character extends MovableObject {
     charMoveDown() {
         if (this.world.keyboard.DOWN && this.y < 190) {
             this.moveDown();
+            this.lastActionTime = Date.now();
         }
     }
 
@@ -281,12 +309,35 @@ class Character extends MovableObject {
         return this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN
     }
 
+/**
+ * Determines whether no movement or action keys are currently being pressed.
+ * 
+ * @returns {boolean} True if no relevant keys are active, false otherwise.
+ */
+    noKeyboardActions(){
+        return !this.world.keyboard.RIGHT || !this.world.keyboard.LEFT || !this.world.keyboard.UP || !this.world.keyboard.DOWN || this.world.keyboard.D || this.world.keyboard.SPACE
+    }
+
     /**
- * Loads the character images into various arrays for different animations (idle, swimming, attack, etc.) 
- * by pushing image paths into respective arrays based on the file naming conventions and expected count.
+ * Checks for character inactivity and updates the time since the last action.
+ * If no relevant keys are pressed, the inactivity duration is calculated.
+ */
+    charNoActions() {
+        if (this.noKeyboardActions()) {
+            let now = Date.now();
+            this.timeSinceLastAction = now - this.lastActionTime;  
+        }        
+    }
+    
+
+ /**
+ * Loads the character images into corresponding arrays for various animations.
+ * Each animation's images are loaded using the `pushImagesToArray` function,
+ * specifying the folder path, file extension, target array, and number of images.
  */
     getCharacterImagesIntoArray() {
         this.pushImagesToArray(`./assets/1.Sharkie/1.IDLE/`, '.png', this.IMAGES_CHARACTER_ANIMATION, 12);
+        this.pushImagesToArray(`./assets/1.Sharkie/2.Long_IDLE/i`, '.png', this.IMAGES_CHARACTER_SLEEP, 14);
         this.pushImagesToArray('./assets/1.Sharkie/3.Swim/', '.png', this.IMAGES_SWIM, 6);
         this.pushImagesToArray('./assets/1.Sharkie/4.Attack/Bubble trap/For Whale/', '.png', this.IMAGES_POISONED_BUBBLES, 8);
         this.pushImagesToArray('./assets/1.Sharkie/6.dead/1.Poisoned/', '.png', this.IMAGES_DEAD, 12);
@@ -294,12 +345,13 @@ class Character extends MovableObject {
         this.pushImagesToArray('./assets/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/', '.png', this.IMAGES_BUBBLE_ATTACK_ANIMATION, 7);
     }
     
-    /**
- * Loads all character-related images into the game by calling `loadMultipleImages` 
- * for each animation array (e.g., idle, swimming, attack, etc.).
+ /**
+ * Loads all character images by calling `loadMultipleImages` for each animation array.
+ * This ensures that all image arrays are populated with the necessary assets for various actions.
  */
     loadAllImages() {
         this.loadMultipleImages(this.IMAGES_CHARACTER_ANIMATION);
+        this.loadMultipleImages(this.IMAGES_CHARACTER_SLEEP);
         this.loadMultipleImages(this.IMAGES_SWIM);
         this.loadMultipleImages(this.IMAGES_POISONED_BUBBLES);
         this.loadMultipleImages(this.IMAGES_DEAD);
