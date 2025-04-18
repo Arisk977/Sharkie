@@ -252,8 +252,8 @@ canvas{
 
 /* Gemeinsamer Button-Stil */
 .btn {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     font-size: 18px;
     background-color: rgba(255, 255, 255, 0.7);
     border: none;
@@ -409,6 +409,12 @@ button, .gamepad-button, #dpad, #actions {
 }
 
 @media(max-width: 720px){
+    #dpad{
+        left: 10%;
+    }
+    #actions{
+        right: 10%;
+    }
     #endscreen{
         left: 33%;
     }
@@ -493,7 +499,7 @@ button, .gamepad-button, #dpad, #actions {
     }
 }
 
-@media(max-width: 400px){
+@media(max-width: 410px){
     #endscreen{
         left: 27%;
     }
@@ -523,6 +529,34 @@ button, .gamepad-button, #dpad, #actions {
         -webkit-text-stroke: 0.2px;
         -webkit-text-stroke-color: black;
     }
+
+    #back{
+        margin-left: -175px !important;
+    }
+}
+
+@media(max-width: 360px){
+    #instructions {
+        width: 380px !important;
+        height: 200px !important;
+    }
+    #back{
+        margin-left: -150px !important;
+    }
+}
+
+@media(max-height: 500px){
+    #ui-buttons{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    #dpad {
+        bottom: 10% !important;
+    }
+    #actions {
+        bottom: 10% !important;
+    }
 }
 
 @media(max-height: 450px){
@@ -547,12 +581,7 @@ button, .gamepad-button, #dpad, #actions {
     h3{
         padding-top: 150px;
     }
-    #dpad {
-        bottom: 10% !important;
-    }
-    #actions {
-        bottom: 10% !important;
-    }
+  
 }
 
 @media only screen and (max-width: 720px){
