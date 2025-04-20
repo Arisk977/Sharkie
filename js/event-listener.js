@@ -166,7 +166,7 @@ function lockToLandscape() {
     const rotateOverlay = document.getElementById('rotate-lock');
     const gameContent = document.getElementById('fullscreen');
 
-    if (window.innerHeight > window.innerWidth) {
+    if (window.innerHeight > window.innerWidth && window.innerWidth <= 820) {
         rotateOverlay.style.display = 'block';
         gameContent.style.display = 'none';
     } else {

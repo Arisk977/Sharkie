@@ -74,7 +74,7 @@ function playMenuAudio() {
  */
 function startGame() {
     levelInit();
-    toggleImpressumBtn();
+    hideImpressumBtn();
     if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
         let gamepadRef = document.getElementById('gamepad');
         if (gamepadRef) gamepadRef.classList.remove('d_none')
@@ -88,15 +88,23 @@ function startGame() {
 }
 
 /**
- * Toggles the visibility of the "Impressum" button.
+ * Hides the "Impressum" button by adding the 'd_none' class.
  * 
- * This function selects the element with the ID 'btn-impressum'
- * and toggles the CSS class 'd_none' on it. 
- * The 'd_none' class is typically used to hide elements via display: none.
+ * The 'd_none' class typically sets `display: none`, making the element invisible.
  */
-function toggleImpressumBtn() {
+function hideImpressumBtn() {
     let impressumRef = document.getElementById('btn-impressum');
-    impressumRef.classList.toggle('d_none');
+    impressumRef.classList.add('d_none');
+}
+
+/**
+ * Shows the "Impressum" button by removing the 'd_none' class.
+ * 
+ * Removing the 'd_none' class restores the element's default display behavior.
+ */
+function showImpressumBtn() {
+    let impressumRef = document.getElementById('btn-impressum');
+    impressumRef.classList.remove('d_none');
 }
 
 /**
@@ -117,7 +125,7 @@ function backToMenu() {
     menu.classList.remove('d_none');
     endscreenRef.classList.add('d_none');
     touchDisplay();
-    toggleImpressumBtn();
+    showImpressumBtn();
 }
 
 /**
